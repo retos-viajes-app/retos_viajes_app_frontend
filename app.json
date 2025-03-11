@@ -1,0 +1,64 @@
+{
+  "expo": {
+    "name": "retos_viajes_app",
+    "slug": "retos_viajes_app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "bundleIdentifier": "com.viajesapp.retos_viajes_app",
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.viajesapp.retos_viajes_app",
+      "config": {
+        "googleSignIn": {
+          "certificateHash": "29:F2:3B:B8:FA:F3:70:1D:B7:48:F2:56:50:8D:0C:89:E8:53:65:DE"
+        }
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png",
+      "config": {
+        "googleSignIn": {
+          "clientId": "441443892104-tjh14gkg69fa8ngea15cpau54mrdhbrj.apps.googleusercontent.com"
+        }
+      }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      "expo-secure-store"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "df458414-66fd-4726-827f-ba3e0302ad44"
+      },
+      "API_URL_WEB": "http://localhost:13000",
+      "API_URL_ANDROID": "http://10.0.2.2:13000"
+    }
+  }
+}

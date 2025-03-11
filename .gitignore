@@ -1,0 +1,61 @@
+# Dependencias de Node.js
+dist/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de configuración del entorno
+.env
+.env.*
+
+# Cachés y logs
+*.log
+*.lock
+
+# Archivos generados de Android/android
+android/.gradle
+android/.idea
+android/app/build/
+android/app/release/
+android/local.properties
+android/app/src/debug/
+android/app/src/release/
+android/app/src/main/assets/
+android/app/src/main/res/raw/
+android/app/src/main/res/xml/
+android/build/
+android/app/.cxx/
+android/app/.externalNativeBuild/
+android/gradlew
+android/gradlew.bat
+android/gradle/wrapper/gradle-wrapper.properties
+android/gradle/wrapper/gradle-wrapper.jar
+
+# Archivos generados de iOS/ios
+ios/build/
+ios/Pods/
+ios/Podfile.lock
+ios/.DS_Store
+ios/.idea/
+ios/*.xcodeproj/
+ios/*.xcworkspace/
+ios/DerivedData/
+ios/xcuserdata/
+
+# Archivos de Metro Bundler y caché
+.expo/
+.expo-shared/
+metro.config.js
+babel.config.js
+index.js
+
+# Imágenes de debugging en React Native
+*.tflite
+*.bin
+
+# Archivos de configuración de VSCode
+.vscode/
+
+# Caché de Watchman
+.watchmanconfig
