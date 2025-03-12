@@ -8,6 +8,7 @@ import * as SecureStore from 'expo-secure-store';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
+import PrimaryButton from '@/components/botones/Buttons';
 export default function HomeScreen() {
   //Verificación de usuario
   //Descomentar cuando se quiera probar en android para que borre los datos de la app
@@ -32,7 +33,7 @@ export default function HomeScreen() {
   //   }
   // }, []);
   const { user} = useAuth();
- 
+  const router = useRouter();
   return  user ? (
     
     <ParallaxScrollView
@@ -44,10 +45,10 @@ export default function HomeScreen() {
           style={styles.reactLogo}
         />
       }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Hello World</ThemedText>
-        <HelloWave />
-      </ThemedView>
+      <PrimaryButton title='Crear viaje' onPress={() => {
+          
+          router.push('/crearViaje/destino');
+      }}/>
       {user && (
         <Text>Welcome {user.email}</Text>
       )}
