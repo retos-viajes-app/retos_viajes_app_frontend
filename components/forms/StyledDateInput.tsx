@@ -9,45 +9,58 @@ import {
 } from "react-native";
 import { Colors } from "@/constants/ColoresPropios";
 import DateTimePicker from "@react-native-community/datetimepicker";
-// Definimos las propiedades que acepta el componente, extendiendo los props de TextInput.
-interface CustomTextInputProps extends TextInputProps {
-  errorMessage?: string; // Propiedad para el error (opcional)
-  disabled?: boolean; // Propiedad para manejar si el input está deshabilitado (opcional)
+import { Calendar } from "lucide-react-native";
+
+interface CustomDateInputProps {
+  date: Date | null;
+  setDate: (date: Date | null) => void;
+  errorMessage?: string;
+  disabled?: boolean;
+  title: string;
 }
 
-const StyledTextInputLabelText: React.FC<CustomTextInputProps> = ({
+export const StyledDateInput: React.FC<CustomDateInputProps> = ({
+  date,
+  setDate,
   errorMessage,
   disabled = false,
-  ...props
+  title,
 }) => {
-  const [isFocused, setIsFocused] = useState(false); // Estado para manejar el foco
-  // Manejar los cambios de foco
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
+  const [isPickerVisible, setPickerVisible] = useState(false);
 
-  // Condicionalmente, aplicamos estilos en función del estado
-  const inputStyles = [
-    styles.input,
-    isFocused && !disabled && styles.focused, // Cuando el input tiene foco y no está deshabilitado
-    errorMessage && styles.error, // Si hay error, aplicar el estilo de error
-    disabled && styles.disabled, // Si está deshabilitado, aplicar el estilo de deshabilitado
-  ];
+  const toggleDatePicker = () => {
+    if (!disabled) setPickerVisible(!isPickerVisible);
+  };
+
+  const onDateChange = (event: any, selectedDate?: Date) => {
+    setPickerVisible(false);
+    if (selectedDate) setDate(selectedDate);
+  };
 
   return (
     <View style={styles.container}>
-      <TextInput
-        {...props}
-        style={inputStyles}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        editable={!disabled} // Hace que el input sea no editable si está deshabilitado
-      />
+      <TouchableOpacity
+        style={[styles.input, errorMessage && styles.error, disabled && styles.disabled]}
+        onPress={toggleDatePicker}
+        disabled={disabled}
+      >
+      <View style={styles.inputContent}>
+        <Text style={styles.dateText}>{date ? date.toLocaleDateString() : title}</Text>
+        <Calendar size={20} color={Colors.colors.gray[400]} />
+      </View>
+      </TouchableOpacity>
+      {isPickerVisible && (
+        <DateTimePicker
+          value={date || new Date()}
+          mode="date"
+          display="default"
+          onChange={onDateChange}
+        />
+      )}
       {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
     </View>
   );
 };
-
-
 const styles = StyleSheet.create({
   container: {
     width: "100%", // Asegura que el contenedor ocupe todo el ancho disponible 
@@ -80,7 +93,15 @@ const styles = StyleSheet.create({
     marginTop: 4, // Espacio entre el input y el mensaje de error
     marginLeft: 10, // Alineación con el input
   },
-
+  //date+
+  dateText: {
+    color: Colors.colors.gray[400],
+  },  
+  inputContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  }
 });
 
-export default StyledTextInputLabelText;
+export default StyledDateInput;
