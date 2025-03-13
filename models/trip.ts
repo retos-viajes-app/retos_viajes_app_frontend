@@ -1,8 +1,9 @@
-export default interface Trip{
-    id:number;
-    user_id:number | null;
-    destination_id:number | null;
-    start_date:Date | null;
-    end_date:Date | null;
-    status:string | null;
-}
+export default interface Trip {
+    id?: number;
+    user_id?: number;
+    destination_id?: number;
+    start_date?: Date;
+    end_date?: Date;
+    status?: string;
+  }
+  

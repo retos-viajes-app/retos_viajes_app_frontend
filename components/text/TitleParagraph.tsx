@@ -23,10 +23,10 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 16,
-    textAlign: 'center', // Asegura que el texto del título esté centrado
+    textAlign: 'center', 
   },
   paragraph: {
-    textAlign: 'center', // Asegura que el texto del párrafo esté centrado
+    textAlign: 'center', 
   },
 });
 
