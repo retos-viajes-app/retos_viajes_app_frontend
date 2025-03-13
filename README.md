@@ -53,3 +53,11 @@ Join our community of developers creating universal apps.
 
 ### Recomendaciones
 Un scrollview no puede envolver un stack
+g
+
+
+
+
+### Recomendaciones
+Un scrollview no puede envolver un stack
+gg
