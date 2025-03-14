@@ -52,6 +52,7 @@ export const StyledDateInput: React.FC<CustomDateInputProps> = ({
       {isPickerVisible && (
         <DateTimePicker
           value={date || new Date()}
+          minimumDate={new Date()}
           mode="date"
           display="default"
           onChange={onDateChange}

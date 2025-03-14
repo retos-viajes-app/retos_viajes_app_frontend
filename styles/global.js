@@ -52,7 +52,7 @@ const globalStyles = StyleSheet.create({
     },
     largeBodySemiBold: {
       fontFamily: 'InterSemiBold',
-      fontSize: 18,
+      fontSize: 16,
       lineHeight: 20,
       color: Colors.colors.gray[400],
     },
@@ -64,8 +64,8 @@ const globalStyles = StyleSheet.create({
     },
     largeBodyMedium: {
       fontFamily: 'InterMedium',
-      fontSize:14,
-      lineHeight: 16,
+      fontSize:16,
+      lineHeight: 20,
       color: Colors.colors.gray[400],
     },
     title: {
