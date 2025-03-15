@@ -6,9 +6,11 @@ import { getCachedCategories, saveCategories } from "@/utils/asyncStorage";
 import { handleApiError } from "@/utils/errorHandler";
 import { getUser } from "@/utils/secureTokens";
 import React, { createContext, useState, ReactNode, useEffect } from "react";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 interface ViajeContextType {
   trip: Trip | null;
+  currentTrip: Trip | null;
   setTrip: (trip: Trip | null) => void;
   getDestinations: () => Promise<{ destinations: Destination[]; error?: string }>;
   destinations: Destination[];
@@ -26,6 +28,7 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
     const [selectedCategoriesId, setSelectedCategoriesId] = useState<string[]>([]);
     const [destinations, setDestinations] = useState<Destination[]>([]);
     const [trip, setTrip] = useState<Trip | null>(null);
+    const [currentTrip, setCurrentTrip] = useState<Trip | null>(null);
     const [categories, setCategories] = useState<Category[]>([]);
     const api = useApi();
     
@@ -71,6 +74,7 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
           selectedCategoriesId.forEach(async (categoryId) => {
             await postTripCategory(trip.id!, parseInt(categoryId));
           });
+          setCurrentTrip(trip);
           return {success: true};
         } catch (error) {
           return {
@@ -86,14 +90,27 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
           console.error(error);
         }
       }
+      const getTrips = async () => {
+        try {
+          const user = await getUser();
+      
+          const response = await api.get<Trip[]>(`trips/${user?.id}`);
+          setCurrentTrip(response.data.length > 0 ? response.data[0] : null); // Guardar el primer viaje
+          return { trips: response.data, error: undefined };
+        } catch (error) {
+          console.error(error);
+          return { trips: [], error: handleApiError(error, "Error al obtener los viajes") };
+        }
+      };
     useEffect(() => {
       getCategories();  // Carga las categorías al montar el contexto
+      getTrips(); // Carga los viajes al montar el contexto
     }, []);
 
 
     
     return (
-      <TripContext.Provider value={{ trip, setTrip, getDestinations,destinations,setDestinations,categories, getCategories,setSelectedCategoriesId,selectedCategoriesId,postTrip }}>
+      <TripContext.Provider value={{ trip, currentTrip, setTrip, getDestinations,destinations,setDestinations,categories, getCategories,setSelectedCategoriesId,selectedCategoriesId,postTrip }}>
         {children}
       </TripContext.Provider>
     );

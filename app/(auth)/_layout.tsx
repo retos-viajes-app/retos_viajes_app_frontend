@@ -13,7 +13,7 @@ export default function AuthLayout() {
       <Stack.Screen name="register" />
       <Stack.Screen name="endRegister" />
       <Stack.Screen name="request-password-reset" />
-      <Stack.Screen name="verify-reset-code" />
+      <Stack.Screen name="verify-confirmation-code" />
       <Stack.Screen name="reset-password" />
 
     </Stack>

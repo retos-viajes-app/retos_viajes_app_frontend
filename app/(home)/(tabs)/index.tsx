@@ -10,6 +10,9 @@ import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import PrimaryButton from '@/components/botones/Buttons';
 import TitleParagraph from '@/components/text/TitleParagraph';
+import { useTrip } from '@/hooks/useTrip';
+import  NoCurrentTripIndex  from '@/components/index/noCurrentTripIndex';
+import CurrentTripIndex from '@/components/index/currentTripIndex';
 export default function HomeScreen() {
   //Verificación de usuario
   //Descomentar cuando se quiera probar en android para que borre los datos de la app
@@ -35,24 +38,9 @@ export default function HomeScreen() {
   // }, []);
   const { user} = useAuth();
   const router = useRouter();
+  const {currentTrip} = useTrip();
   return  user ? (
-    
-    <ParallaxScrollView
-
-      headerBackgroundColor={{ light: '#ffffff', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/viaje-header.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <TitleParagraph title={'¡Hola, ' + user.name + "!"} paragraph='Preparaté para una nueva aventura'/>
-      <PrimaryButton title='Crear mi primer viaje' onPress={() => {
-          
-          router.push('/crearViaje/destino');
-      }}/>
-
-    </ParallaxScrollView>
+    currentTrip?  <CurrentTripIndex/>  :<NoCurrentTripIndex/>
   ) :  <LoadingScreen/>;
 }
 

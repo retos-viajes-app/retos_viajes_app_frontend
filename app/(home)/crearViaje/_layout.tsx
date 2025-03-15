@@ -6,7 +6,7 @@ import {TripProvider} from "@/context/TripContext";
 export default function CrearViajeLayout() {
   const router = useRouter();
   return (
-    <TripProvider>
+
       <Stack
         screenOptions={{ 
           headerTitleStyle: {
@@ -34,7 +34,7 @@ export default function CrearViajeLayout() {
         <Stack.Screen name="misiones" />
         <Stack.Screen name="resumen" />
       </Stack>
-    </TripProvider>
+    
   );
 }
 // 

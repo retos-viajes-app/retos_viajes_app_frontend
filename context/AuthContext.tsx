@@ -185,10 +185,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Obtener datos del usuario tras el registro
       const { data: userData } = await api.get<User>(`/users/${email}`, {
       });
-
-      await saveUser(userData);
+      
       setUser(userData);
-
+      console.log("User:" + user);
+      await saveUser(userData);
       return { success: true };
     } catch (error) {
       return {
@@ -223,6 +223,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       });
 
       setUser(updatedUserInfo);
+  
       await saveUser(updatedUserInfo);
 
       return { success: true };
@@ -238,8 +239,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const requestConfirmationCode = async (email: string, mode: string) => {
     try {
       const response = await api.post("/confirmation-code/request", { email });
+      const savedUser = await getUser();
+      console.log("User:" + savedUser);
       if(response.data.success){
         const userData : User = {
+          id: mode === "register" ? savedUser?.id : undefined,
           email: email,
           username: "",
           total_points: 0,

@@ -53,6 +53,7 @@ const RegisterScreen = () => {
       setLoading(false); 
       return;
     }
+    
     const { success: successCC, error: errorCC } = await requestConfirmationCode(email, "register");
     if(!successCC){
       setErrorMessage(error || "Hubo un problema con el registro.");
