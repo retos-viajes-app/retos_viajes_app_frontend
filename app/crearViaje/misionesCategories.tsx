@@ -12,11 +12,8 @@ import { useRouter } from "expo-router";
 export default function MisionesCategoriesScreen() {
     const {selectedCategoriesId,setSelectedCategoriesId} = useTrip();
     const [error,setError] = useState<string | undefined>(undefined);
-    const {categories,getCategories} = useTrip();
+    const {categories} = useTrip();
     const router = useRouter();
-    useEffect(() => {
-        getCategories(); 
-      }, []);
     const handleContinue = () => {
         if(selectedCategoriesId.length < 2){
             setError("Selecciona al menos dos categoría");

@@ -242,12 +242,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const userData : User = {
           email: email,
           username: "",
-          profile_photo_url: null,
-          bio: null,
           total_points: 0,
           is_verified: false,
           verification_type: mode ==="passwordReset" ? "passwordReset" : "register",
-          sub: null
         }; // Save only the email    
         await saveUser(userData);
         setUser(userData);

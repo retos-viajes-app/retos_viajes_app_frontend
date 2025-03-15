@@ -4,6 +4,7 @@ import Trip from "@/models/trip";
 import useApi from "@/utils/api";
 import { getCachedCategories, saveCategories } from "@/utils/asyncStorage";
 import { handleApiError } from "@/utils/errorHandler";
+import { getUser } from "@/utils/secureTokens";
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 
 interface ViajeContextType {
@@ -16,6 +17,7 @@ interface ViajeContextType {
   getCategories: () => Promise<{ categories: Category[]; error?: string }>;
   selectedCategoriesId: string[];
   setSelectedCategoriesId: (categoriesId: string[]) => void;
+  postTrip: (trip: Trip) => Promise<{ success: boolean; error?: string }>;
 }
 
 const TripContext = createContext<ViajeContextType | undefined>(undefined);
@@ -57,11 +59,41 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
       }
     };
 
+
+    const postTrip = async (trip: Trip) => {
+        try {
+          //Post trip, asociar con el usuario actual
+          //Asociar a selectedCategoriesId
+          const user = await getUser();
+          trip.user_id = user?.id;
+          const response = await api.post<{trip_id:string}>("trips", trip);
+          trip.id = parseInt(response.data.trip_id);
+          selectedCategoriesId.forEach(async (categoryId) => {
+            await postTripCategory(trip.id!, parseInt(categoryId));
+          });
+          return {success: true};
+        } catch (error) {
+          return {
+            success: false,
+            error: handleApiError( error, "Error inesperado al completar el perfil."),
+          };
+        } 
+      };
+      const postTripCategory = async (tripId: number, categoryId: number) => {
+        try {
+          await api.post("trips-categories", { trip_id: tripId, category_id: categoryId });
+        } catch (error) {
+          console.error(error);
+        }
+      }
     useEffect(() => {
       getCategories();  // Carga las categorías al montar el contexto
     }, []);
+
+
+    
     return (
-      <TripContext.Provider value={{ trip, setTrip, getDestinations,destinations,setDestinations,categories, getCategories,setSelectedCategoriesId,selectedCategoriesId }}>
+      <TripContext.Provider value={{ trip, setTrip, getDestinations,destinations,setDestinations,categories, getCategories,setSelectedCategoriesId,selectedCategoriesId,postTrip }}>
         {children}
       </TripContext.Provider>
     );
