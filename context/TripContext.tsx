@@ -9,8 +9,8 @@ import React, { createContext, useState, ReactNode, useEffect } from "react";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 interface ViajeContextType {
-  trip: Trip | null;
-  currentTrip: Trip | null;
+  trip?: Trip | null;
+  currentTrip: Trip | undefined;
   setTrip: (trip: Trip | null) => void;
   getDestinations: () => Promise<{ destinations: Destination[]; error?: string }>;
   destinations: Destination[];
@@ -28,7 +28,7 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
     const [selectedCategoriesId, setSelectedCategoriesId] = useState<string[]>([]);
     const [destinations, setDestinations] = useState<Destination[]>([]);
     const [trip, setTrip] = useState<Trip | null>(null);
-    const [currentTrip, setCurrentTrip] = useState<Trip | null>(null);
+    const [currentTrip, setCurrentTrip] = useState<Trip | undefined>(undefined);
     const [categories, setCategories] = useState<Category[]>([]);
     const api = useApi();
     
@@ -95,7 +95,7 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
           const user = await getUser();
       
           const response = await api.get<Trip[]>(`trips/${user?.id}`);
-          setCurrentTrip(response.data.length > 0 ? response.data[0] : null); // Guardar el primer viaje
+          setCurrentTrip(response.data.length > 0 ? response.data[0] : undefined); // Guardar el primer viaje
           return { trips: response.data, error: undefined };
         } catch (error) {
           console.error(error);

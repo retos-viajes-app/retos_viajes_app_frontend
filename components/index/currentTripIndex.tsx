@@ -2,10 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { useTrip } from "@/hooks/useTrip";
 import ParallaxScrollView from "../ParallaxScrollView";
+import TripProgressCircle from "../ui/progressCircle";
 
 const CurrentTripIndex = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-
+  const { currentTrip } = useTrip();
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
@@ -24,6 +25,9 @@ const CurrentTripIndex = () => {
           }
         >
       <View>
+        {currentTrip?.start_date && currentTrip?.end_date && (
+          <TripProgressCircle startDate={currentTrip.start_date} endDate={currentTrip.end_date} />
+        )}
         <Text>Tienes viaje, {currentTime.toLocaleTimeString()}</Text>
       </View>
     </ParallaxScrollView>
