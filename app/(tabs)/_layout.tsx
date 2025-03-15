@@ -7,7 +7,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/ColoresPropios';
 import { useColorScheme } from '@/hooks/useColorScheme';
-
+import { House,UserRound,Hash,MessageCircleHeart   } from 'lucide-react-native';
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -30,26 +30,56 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Viaje',
+          tabBarIcon: ({ focused }) => (
+            <House
+              color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]} // Cambia color según estado
+              strokeWidth={1}
+              size={35}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="actividad"
+        options={{
+          title: 'Actividad',
+          tabBarIcon: ({ focused }) => (
+            <MessageCircleHeart
+              color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]} // Cambia color según estado
+              strokeWidth={1}
+              size={35}
+            />
+          ),
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-        <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol name="paperplane.fill" size={28} color={color} /> // Ícono de perfil
+          tabBarIcon: ({ focused }) => (
+            <Hash
+              color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]} // Cambia color según estado
+              strokeWidth={1}
+              size={35}
+            />
           ),
         }}
       />
+     <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ focused }) => (
+            <UserRound
+              color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]} // Cambia color según estado
+              strokeWidth={1}
+              size={35}
+            />
+          ),
+        }}
+      />
+
     </Tabs>
     </>
   );

@@ -7,4 +7,5 @@ export default interface User  {
   is_verified: boolean;
   verification_type?: "register" | "passwordReset" | null;
   sub: string | null;
+  name: string | null;
 };
