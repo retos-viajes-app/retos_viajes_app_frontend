@@ -4,34 +4,40 @@ import { Colors } from "@/constants/ColoresPropios";
 import ViewInputs from "../views/ViewInputs";
 import globalStyles from "@/styles/global";
 import { Ionicons } from "@expo/vector-icons";
+
 interface RadioButtonProps {
   options: { label: string; value: string }[];
-  selectedValue: string;
+  selectedValues: string[]; // Ahora es un array
   onSelect: (value: string) => void;
 }
 
 const StyledRadioButton: React.FC<RadioButtonProps> = ({
   options,
-  selectedValue,
+  selectedValues,
   onSelect,
 }) => {
   return (
     <ViewInputs>
-      {options.map((option) => (
-        <TouchableOpacity
-          key={option.value}
-          style={[
-            styles.radioContainer,
-            selectedValue === option.value && styles.selected,
-          ]}
-          onPress={() => onSelect(option.value)}
-        >
-          <View style={[styles.radioCircle, selectedValue === option.value && styles.checkedCircle]} >
-             <Ionicons name="checkmark" size={16} color="white" />
-          </View>
-          <Text style={[globalStyles.largeBodyMedium, selectedValue === option.value && globalStyles.largeBodySemiBold]}>{option.label}</Text>
-        </TouchableOpacity>
-      ))}
+      {options.map((option) => {
+        const isSelected = selectedValues.includes(option.value);
+        return (
+          <TouchableOpacity
+            key={option.value}
+            style={[
+              styles.radioContainer,
+              isSelected && styles.selected,
+            ]}
+            onPress={() => onSelect(option.value)}
+          >
+            <View style={[styles.radioCircle, isSelected && styles.checkedCircle]}>
+              {isSelected && <Ionicons name="checkmark" size={16} color="white" />}
+            </View>
+            <Text style={[globalStyles.largeBodyMedium, isSelected && globalStyles.largeBodySemiBold]}>
+              {option.label}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
     </ViewInputs>
   );
 };
@@ -49,7 +55,7 @@ const styles = StyleSheet.create({
   },
   selected: {
     borderColor: Colors.colors.gray[400],
-    backgroundColor: Colors.colors.neutral[100],
+    backgroundColor: Colors.colors.primary[300],
   },
   radioCircle: {
     width: 24,
@@ -59,7 +65,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.colors.gray[400],
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 10, //Cual es
+    marginRight: 10,
   },
   checkedCircle: {
     backgroundColor: Colors.colors.gray[500],
@@ -67,7 +73,7 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 100,
     borderColor: Colors.colors.gray[500],
-  }
+  },
 });
 
 export default StyledRadioButton;

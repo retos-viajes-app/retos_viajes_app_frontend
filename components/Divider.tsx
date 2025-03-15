@@ -1,11 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const DividerWithText = ({ text = "o si lo prefieres" }) => {
+const DividerWithText = ({ text = "o si lo prefieres", full = false }) => {
   return (
     <View style={styles.container}>
       <View style={styles.line} />
-      <Text style={styles.text}>{text}</Text>
+      {!full && <Text style={styles.text}>{text}</Text>}
       <View style={styles.line} />
     </View>
   );

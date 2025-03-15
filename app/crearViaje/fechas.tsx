@@ -23,7 +23,7 @@ export default function FechasScreen() {
       if(startDate && endDate){
         if(startDate <= endDate){
           setTrip({...trip,start_date:startDate,end_date:endDate});
-          router.push("/crearViaje/misiones");
+          router.push("/crearViaje/misionesCategories");
         }else{
           setError("La fecha de inicio debe ser menor a la fecha de fin");
         }
