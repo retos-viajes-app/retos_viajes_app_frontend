@@ -41,7 +41,7 @@ const TripProgressCircle: React.FC<TripProgressCircleProps> = ({ startDate, endD
 
   return (
     <View style={styles.container}>
-      <Svg width={120} height={120} viewBox="0 0 120 120">
+      <Svg width={64} height={64} viewBox="0 0 120 120">
         <Circle cx="60" cy="60" r={radius} stroke="#E0E0E0" strokeWidth={strokeWidth} fill="none" />
         <Circle
           cx="60"
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   percentageText: {
     position: "absolute",
-    fontSize: 22,
+    fontSize: 17,
     fontWeight: "bold",
     color: "#007BFF",
   },

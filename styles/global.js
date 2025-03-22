@@ -45,10 +45,10 @@ const globalStyles = StyleSheet.create({
       color: Colors.colors.gray[400],
     },
     subtitle: {
-      fontFamily: 'InterMedium',
-      fontSize: 16,
+      fontFamily: 'InterSemiBold',
+      fontSize: 18,
       lineHeight: 20,
-      color: Colors.colors.gray[400],
+      color: Colors.colors.gray[500],
     },
     largeBodySemiBold: {
       fontFamily: 'InterSemiBold',
@@ -72,6 +72,12 @@ const globalStyles = StyleSheet.create({
       fontFamily: 'InterSemiBold',
       fontSize: 24,
       lineHeight: 28,
+      color: Colors.colors.gray[500],
+    },
+    diplaySemiBold: {
+      fontFamily: 'InterBlack',
+      fontSize: 24,
+      lineHeight: 24,
       color: Colors.colors.gray[500],
     },
   });

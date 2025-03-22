@@ -34,6 +34,7 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
     
     const getDestinations = async () => {
         try {
+          //cachear en asyncStorage
           const response = await api.get<Destination[]>('destinations');
           setDestinations(response.data);
           return {destinations: response.data, error: undefined};
@@ -92,6 +93,7 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
       }
       const getTrips = async () => {
         try {
+          //cachear?
           const user = await getUser();
       
           const response = await api.get<Trip[]>(`trips/${user?.id}`);
@@ -103,6 +105,7 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
         }
       };
     useEffect(() => {
+      getDestinations(); // Carga los destinos al montar el contexto
       getCategories();  // Carga las categorías al montar el contexto
       getTrips(); // Carga los viajes al montar el contexto
     }, []);
