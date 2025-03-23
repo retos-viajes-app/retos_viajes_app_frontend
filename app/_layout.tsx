@@ -10,6 +10,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { useAuth } from '@/hooks/useAuth';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import Toast from 'react-native-toast-message';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Evita que la pantalla de carga desaparezca antes de tiempo
 SplashScreen.preventAutoHideAsync();
@@ -37,14 +38,15 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <AuthProvider>
-        <RootLayoutWithAuth />
-        <Toast />
-        <StatusBar style="auto" />
-      </AuthProvider>
-    </ThemeProvider>
-  );
+    <SafeAreaView style={{ flex: 1 }}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <AuthProvider>
+          <RootLayoutWithAuth />
+          <Toast />
+          <StatusBar style="auto" />
+        </AuthProvider>
+      </ThemeProvider>
+    </SafeAreaView>  );
 }
 
 // Se mueve el uso de `useAuth()` dentro del `AuthProvider`

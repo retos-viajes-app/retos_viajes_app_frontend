@@ -32,6 +32,12 @@ const globalStyles = StyleSheet.create({
       lineHeight: 16,
       color: Colors.colors.gray[400],
     },
+    mediumBodyMedium: {
+      fontFamily: 'InterMedium',
+      fontSize: 14,
+      lineHeight: 16,
+      color: Colors.colors.gray[400],
+    },
     smallBodySemiBold: {
       fontFamily: 'InterSemiBold',
       fontSize: 12,
@@ -80,6 +86,10 @@ const globalStyles = StyleSheet.create({
       lineHeight: 24,
       color: Colors.colors.gray[500],
     },
+    link: {
+    color: Colors.colors.primary[200],
+    textDecorationLine: 'underline',
+    }
   });
   
   export default globalStyles;

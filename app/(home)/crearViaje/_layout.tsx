@@ -8,22 +8,24 @@ export default function CrearViajeLayout() {
   return (
 
       <Stack
-        screenOptions={{ 
+        screenOptions={{
           headerTitleStyle: {
             fontWeight: 'bold',
           },
           headerTitle: "Crear Viaje",
           headerTitleAlign: "center",
           //Aplica esos estilos para todo el contenido de las pantallas
-          contentStyle: { backgroundColor: Colors.colors.neutral[100] },
-    
+          contentStyle: { 
+            backgroundColor: Colors.colors.neutral[100],
+           },
+         
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
               <ArrowLeft size={24} color="black" />
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={() => router.replace("/")} style={{ padding: 10 }}>
+            <TouchableOpacity onPress={() => router.replace("/")} >
               <X size={24} color="black" />
             </TouchableOpacity>
           ),

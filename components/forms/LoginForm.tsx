@@ -17,6 +17,7 @@ import ViewContentContinue from "../views/ViewContentContinue";
 import { useFormValidation } from "@/hooks/useFormValidation";
 import { validations } from "@/utils/validations";
 import { LoadingScreen } from "../LoadingScreen";
+import PasswordInput from "./PasswordInput";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -106,7 +107,7 @@ const LoginForm = () => {
                 onBlur={() => setuseridFocused(false)}
                 errorMessage={errors.userid}
               />
-              <StyledTextInputLabelText
+              <PasswordInput
                 style={globalStyles.largeBodyMedium}
                 placeholder="Contraseña"
                 secureTextEntry
@@ -120,15 +121,8 @@ const LoginForm = () => {
             <TouchableOpacity
               onPress={() => router.push("/request-password-reset")}
             >
-              <Text
-                style={{
-                  color: "#0066CC",
-                  textAlign: "center",
-                  marginTop: 8,
-                  marginBottom: 16,
-                }}
-              >
-                ¿Has olvidado tu contraseña? Recuperar
+              <Text style={globalStyles.mediumBodyMedium}>
+                ¿Has olvidado tu contraseña? <Text style={globalStyles.link}>Recuperar</Text>
               </Text>
             </TouchableOpacity>
             <DividerWithText />
@@ -136,7 +130,9 @@ const LoginForm = () => {
             <GoogleSignInButton />
 
             <TouchableOpacity onPress={() => router.push("/register")}>
-              <Text>¿No tienes cuenta? Regístrate gratis</Text>
+            <Text style={globalStyles.mediumBodyMedium}>
+              ¿No tienes una cuenta? <Text style={globalStyles.link}>Regístrate gratis</Text>
+            </Text>
             </TouchableOpacity>
           </ViewForm>
           <PrimaryButton
