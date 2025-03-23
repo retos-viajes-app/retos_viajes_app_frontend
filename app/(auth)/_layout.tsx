@@ -14,7 +14,11 @@ export default function AuthLayout() {
           <Stack.Screen name="login" />
           <Stack.Screen name="register" />
           <Stack.Screen name="endRegister" />
-          <Stack.Screen name="request-password-reset" />
+          <Stack.Screen name="request-password-reset"   options={{
+                headerShown: true,
+                headerTitle: "Recuperar contraseña",
+                headerTitleAlign: "center",
+              }}/>
           <Stack.Screen name="verify-confirmation-code" />
           <Stack.Screen name="reset-password" />
 

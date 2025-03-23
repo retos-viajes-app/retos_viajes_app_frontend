@@ -54,17 +54,6 @@ export default function RequestPasswordResetScreen() {
   return (
     loading?<LoadingScreen />:
     <>
-      <ImageBackground
-        source={require("@/assets/images/loginImage.png")}
-        style={{
-          width: "100%",
-          height: 124,
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: 24,
-        }}
-        resizeMode="cover"
-      ></ImageBackground>
       <PaddingView>
         <ViewContentContinue>
           <ViewForm>
