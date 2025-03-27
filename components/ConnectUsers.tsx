@@ -6,11 +6,15 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import UserCard from "./UserCard";
 import { useConnectUser } from "@/hooks/useConnectUser";
 import { getUserSuggestions } from "@/services/user_connections_service";
 import { UserWithConnectionStatus } from "@/models/userConnections";
+import globalStyles from "@/styles/global";
+import { Colors } from "@/constants/ColoresPropios";
+import Toast from "react-native-toast-message";
 
 const ConnectUsers: React.FC = () => {
   const [users, setUsers] = useState<UserWithConnectionStatus[]>([]);
@@ -20,13 +24,31 @@ const ConnectUsers: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
 
-  const [connectingUserId, setConnectingUserId] = useState<number | null>(null);
+  const [connectingUserIds, setConnectingUserIds] = useState<number[]>([]);
   const { sendConnectionRequest, cancelConnectionRequest} = useConnectUser();
   const flatListRef = useRef<FlatList>(null);
 
+  const addConnectingUserId = (userId: number) =>
+    setConnectingUserIds((prev) => [...prev, userId]);
+
+  const removeConnectingUserId = (userId: number) =>
+    setConnectingUserIds((prev) => prev.filter((id) => id !== userId));
+
+  const isUserConnecting = (userId: number) => connectingUserIds.includes(userId);
+
+  const updateUserStatus = (
+    userId: number,
+    newStatus: UserWithConnectionStatus["connection_status"]
+  ) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((u) =>
+        u.id === userId ? { ...u, connection_status: newStatus } : u
+      )
+    );
+  };
+
   const fetchUsers = async (currentPage: number) => {
     if ((loading && currentPage > 1) || !hasMore) return;
-
     setLoading(true);
     try {
       const response = await getUserSuggestions(currentPage);
@@ -61,40 +83,61 @@ const ConnectUsers: React.FC = () => {
       fetchUsers(nextPage);
     }
   };
+  
 
   const handleConnect = async (userId: number) => {
-    if (!userId) return;
-    setConnectingUserId(userId); 
+    if (isUserConnecting(userId)) return;
+    addConnectingUserId(userId);
+    const previousStatus = users.find((u) => u.id === userId)?.connection_status;
+    updateUserStatus(userId, "pending");
     try {
       await sendConnectionRequest(userId);
-      // Actualizar el estado local del usuario tras enviar la solicitud
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === userId ? { ...user, connection_status: "pending" } : user
-        )
-      );
-    } catch (error) {
-      console.error("Error sending connection request:");
-      setError("Error sending connection request:");
+    } catch (error : any) {
+       updateUserStatus(userId, previousStatus);
+       Toast.show({
+         type: "error",
+         text1: "Error",
+         text2: error.message,
+         position: "bottom",
+         bottomOffset: 80,
+       });
+       
+       /* Creo que solo funciona en móvil
+       Alert.alert(
+         "Error",
+         "No se pudo completar la acción. Revisa tu conexión"
+       );
+       */
     }finally{
-      setConnectingUserId(null);
+      removeConnectingUserId(userId);
     }
   };
   const handleCancelRequest = async (userId: number) => {
-    if (!userId) return;
-    setConnectingUserId(userId);
+    if (isUserConnecting(userId)) return;
+    addConnectingUserId(userId);
+    const previousStatus = users.find((u) => u.id === userId)?.connection_status;
+    updateUserStatus(userId, "none");
     try {
       await cancelConnectionRequest(userId);
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === userId ? { ...user, connection_status: "none" } : user
-        )
+     
+    } catch (error : any) {
+      updateUserStatus(userId, previousStatus);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error.message,
+        position: "bottom",
+        bottomOffset: 80,
+      });
+
+      /* Solo funciona en móvil
+      Alert.alert(
+        "Error",
+        error.message
       );
-    } catch (error) {
-      console.error("Error canceling connection request:", error);
-      setError("Error canceling connection request");
+      */
     } finally {
-      setConnectingUserId(null);
+      removeConnectingUserId(userId);
     }
   };
 
@@ -109,7 +152,6 @@ const ConnectUsers: React.FC = () => {
       user={item}
       onConnect={() => item.id && handleConnect(item.id)}
       onCancelRequest={() => item.id && handleCancelRequest(item.id)}
-      isConnecting={connectingUserId == item.id}
     />
   );
 
@@ -118,7 +160,7 @@ const ConnectUsers: React.FC = () => {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Conecta con otros viajeros</Text>
-        <View style={styles.centerContainer}>
+        <View>
           <ActivityIndicator size="large" color="#0066CC" />
         </View>
       </View>
@@ -130,10 +172,10 @@ const ConnectUsers: React.FC = () => {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Conecta con otros viajeros</Text>
-        <View style={styles.centerContainer}>
-          <Text style={styles.errorText}>{error}</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={handleRetry}>
-            <Text style={styles.retryButtonText}>Reintentar</Text>
+        <View>
+          <Text>{error}</Text>
+          <TouchableOpacity onPress={handleRetry}>
+            <Text>Reintentar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -145,8 +187,8 @@ const ConnectUsers: React.FC = () => {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Conecta con otros viajeros</Text>
-        <View style={styles.centerContainer}>
-          <Text style={styles.emptyText}>
+        <View>
+          <Text>
             No hay usuarios sugeridos disponibles
           </Text>
         </View>
@@ -162,17 +204,17 @@ const ConnectUsers: React.FC = () => {
         ref={flatListRef}
         data={users}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id!.toString()
-        }
+        keyExtractor={(item) => item.id!.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
-        contentContainerStyle={styles.listContainer}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        contentContainerStyle={styles.listContentContainer}
         ListFooterComponent={
           loading && !initialLoading ? (
             <View style={styles.loaderContainer}>
-              <ActivityIndicator size="large" color="#0066CC" />
+              <ActivityIndicator size="large" color={"#0066CC"} />
             </View>
           ) : null
         }
@@ -183,47 +225,30 @@ const ConnectUsers: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 20,
+    width: "100%", // Fill container
+    backgroundColor: Colors.colors.primary[500], // Azul según Figma
+    paddingHorizontal: 16, // Padding horizontal 16
+    paddingVertical: 20, // Padding vertical 20
   },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 12,
-    marginHorizontal: 16,
+    width: "100%", // 361 fill (393 - 32 de padding)
+    height: 29, // Height hug
+    ...globalStyles.title, // ag title (asumiendo que está definido en globalStyles)
+    color: Colors.colors.gray[500], // Color gray/500
+    textAlign: "left", // Alineación izquierda
+    marginBottom: 16, // Gap de 16 entre título y cards
   },
-  listContainer: {
-    paddingHorizontal: 8,
-    paddingVertical: 8,
+  separator: {
+    width: 10, // Gap de 10 entre cada tarjeta
+  },
+  listContentContainer: {
+    paddingVertical: 4, // Pequeño padding vertical para las cards
   },
   loaderContainer: {
     width: 100,
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 16,
-  },
-  centerContainer: {
-    padding: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  errorText: {
-    color: "red",
-    textAlign: "center",
-    marginBottom: 12,
-  },
-  emptyText: {
-    color: "#666",
-    textAlign: "center",
-  },
-  retryButton: {
-    backgroundColor: "#0066CC",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-  },
-  retryButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "500",
   },
 });
 export default ConnectUsers;

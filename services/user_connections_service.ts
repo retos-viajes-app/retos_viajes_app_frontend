@@ -18,6 +18,7 @@ export const sendConnectionRequest = async (userId : number) => {
     return response.data;
   } catch (error) {
     return {
+      success: false,
       error: handleApiError(error, "Error al enviar la solicitud"),
     };
   }
@@ -28,6 +29,7 @@ export const cancelConnectionRequest = async (userId: number) => {
     return response.data;
   }catch (error){
     return {
+      success: false,
       error: handleApiError(error, "Error al cancelar la solicitud"),
     };
   }

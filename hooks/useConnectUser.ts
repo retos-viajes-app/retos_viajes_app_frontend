@@ -4,20 +4,20 @@ export const useConnectUser = () => {
 
   const sendConnectionRequest = async (userId: number) => {
 
-    try {
-      const response = await apiSendConnectionRequest(userId);
-      return response;
-    } catch (err) {
-      throw err;
+    const response = await apiSendConnectionRequest(userId);
+    if(!response.success){
+      throw new Error(response.error);
     }
+    return response.data;
+    
   };
   const cancelConnectionRequest = async (userId: number) => {
-     try {
-       const response = await apiCancelConnectionRequest(userId);
-       return response;
-     } catch (err) {
-       throw err;
-     } 
+
+     const response = await apiCancelConnectionRequest(userId);
+     if (!response.success) {
+       throw new Error(response.error);
+     }
+     return response.data;
   }
 
 
