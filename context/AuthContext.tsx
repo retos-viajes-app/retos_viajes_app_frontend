@@ -293,7 +293,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         ]);
         setUser(null);
       }
-      return { success: response.data.success,};
+      return { success: true,};
     } catch (error: any) {
       return{
         success: false,
