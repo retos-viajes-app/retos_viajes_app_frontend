@@ -1,31 +1,36 @@
+// React & React Native Imports
 import React, { useState, useContext } from "react";
-import { View, Text,  TouchableOpacity, ScrollView,ImageBackground } from "react-native";
+import { Text, TouchableOpacity, ImageBackground } from "react-native";
 import { useRouter } from "expo-router";
+
+// Component Imports
 import globalStyles from "@/styles/global";
-import StyledTextInputLabelText from "@/components/forms/Inputs";
+import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
 import PaddingView from "@/components/views/PaddingView";
 import DividerWithText from "@/components/Divider";
-import { AuthContext } from '@/context/AuthContext';
+import { AuthContext } from "@/context/AuthContext";
 import PrimaryButton from "@/components/botones/Buttons";
-import GoogleSignInButton from "../botones/GoogleSignInButton";
-
+import GoogleSignInButton from "@/components/botones/GoogleSignInButton";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
-import ViewForm from "../views/ViewForm";
-import ViewInputs from "../views/ViewInputs";
-import ViewContentContinue from "../views/ViewContentContinue";
+import ViewForm from "@/components/views/ViewForm";
+import ViewInputs from "@/components/views/ViewInputs";
+import ViewContentContinue from "@/components/views/ViewContentContinue";
+import PasswordInput from "@/components/forms/PasswordInput"; // Assuming it's inside forms folder
+
+// Hook Imports
 import { useFormValidation } from "@/hooks/useFormValidation";
+
+// Utility Imports
 import { validations } from "@/utils/validations";
-import { LoadingScreen } from "../LoadingScreen";
-import PasswordInput from "./PasswordInput";
+import { LoadingScreen } from "@/components/LoadingScreen";
+
 
 const LoginForm = () => {
   const router = useRouter();
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [useridFocused, setuseridFocused] = useState(false);
-  const [passwordFocused, setPasswordFocused] = useState(false);
   const authContext = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   
@@ -103,18 +108,13 @@ const LoginForm = () => {
                 autoCapitalize="none"
                 value={userid}
                 onChangeText={setUserid}
-                onFocus={() => setuseridFocused(true)}
-                onBlur={() => setuseridFocused(false)}
                 errorMessage={errors.userid}
               />
               <PasswordInput
                 style={globalStyles.largeBodyMedium}
                 placeholder="Contraseña"
-                secureTextEntry
                 value={password}
                 onChangeText={setPassword}
-                onFocus={() => setPasswordFocused(true)}
-                onBlur={() => setPasswordFocused(false)}
                 errorMessage={errors.password}
               />
             </ViewInputs>

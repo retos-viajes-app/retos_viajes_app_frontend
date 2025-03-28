@@ -7,13 +7,12 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Eye, EyeOff } from "lucide-react-native"; // Importamos los íconos de lucide-react-native
+import { Eye, EyeOff } from "lucide-react-native";
 import { Colors } from "@/constants/ColoresPropios";
 
-// Definimos las propiedades que acepta el componente, extendiendo los props de TextInput.
 interface CustomTextInputProps extends TextInputProps {
-  errorMessage?: string; // Propiedad para el error (opcional)
-  disabled?: boolean; // Propiedad para manejar si el input está deshabilitado (opcional)
+  errorMessage?: string;
+  disabled?: boolean;
 }
 
 const PasswordInput: React.FC<CustomTextInputProps> = ({
@@ -21,25 +20,16 @@ const PasswordInput: React.FC<CustomTextInputProps> = ({
   disabled = false,
   ...props
 }) => {
-  const [isFocused, setIsFocused] = useState(false); // Estado para manejar el foco
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Estado para mostrar/ocultar la contraseña
-  const [inputValue, setInputValue] = useState(""); // Estado para manejar el valor del input
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  // Manejar los cambios de foco
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
-
-  // Función para alternar la visibilidad de la contraseña
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  // Condicionalmente, aplicamos estilos en función del estado
   const inputStyles = [
     styles.input,
-    isFocused && !disabled && styles.focused, // Cuando el input tiene foco y no está deshabilitado
-    errorMessage && styles.error, // Si hay error, aplicar el estilo de error
-    disabled && styles.disabled, // Si está deshabilitado, aplicar el estilo de deshabilitado
+    errorMessage && styles.error,
+    disabled && styles.disabled,
   ];
 
   return (
@@ -47,13 +37,9 @@ const PasswordInput: React.FC<CustomTextInputProps> = ({
       <View style={styles.inputContainer}>
         <TextInput
           {...props}
-          value={inputValue}
-          onChangeText={setInputValue}
           style={inputStyles}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          editable={!disabled} // Hace que el input sea no editable si está deshabilitado
-          secureTextEntry={!isPasswordVisible} // Determina si el texto debe ser visible o no
+          editable={!disabled}
+          secureTextEntry={!isPasswordVisible}
         />
         <TouchableOpacity
           style={styles.iconContainer}
@@ -73,46 +59,43 @@ const PasswordInput: React.FC<CustomTextInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%", // Asegura que el contenedor ocupe todo el ancho disponible
+    width: "100%",
   },
   inputContainer: {
-    position: "relative", // Necesario para colocar el ícono dentro del input
+    position: "relative",
   },
   input: {
-    fontFamily: "InterRegular", // Asegúrate de tener la fuente correcta
+    fontFamily: "InterRegular",
     padding: 10,
-    paddingRight: 40, // Dejamos espacio para el ícono dentro del input
-    borderColor: Colors.colors.gray[200], // Color de borde gris
+    paddingRight: 40,
+    borderColor: Colors.colors.gray[200],
     borderWidth: 1,
     borderRadius: 16,
-    backgroundColor: Colors.colors.gray[100], // Color de fondo gris suave
-    color: Colors.colors.gray[400], // Color de texto gris
-    width: "100%", // Ajustamos el ancho al 100%
+    backgroundColor: Colors.colors.gray[100],
+    color: Colors.colors.gray[400],
+    width: "100%",
     minHeight: 48,
   },
-  focused: {
-    borderColor: Colors.colors.gray[400], // Color cuando tiene el foco
-    backgroundColor: Colors.colors.neutral[100], // Fondo suave azul cuando tiene el foco
-  },
   error: {
-    borderColor: Colors.colors.error[100], // Color de borde cuando hay error
+    borderColor: Colors.colors.error[100],
   },
   disabled: {
-    backgroundColor: Colors.colors.gray[200], // Fondo gris claro cuando está deshabilitado
-    borderColor: Colors.colors.gray[300], // Borde gris claro cuando está deshabilitado
+    backgroundColor: Colors.colors.gray[200],
+    borderColor: Colors.colors.gray[300],
   },
   iconContainer: {
-    position: "absolute", // Colocamos el ícono dentro del input
-    right: 10, // Lo posicionamos a la derecha
-    top: "50%", // Lo centramos verticalmente
-    transform: [{ translateY: -12 }], // Ajustamos la alineación vertical para centrarlo
+    position: "absolute",
+    right: 10,
+    top: "50%",
+    transform: [{ translateY: -12 }],
   },
   errorText: {
-    color: Colors.colors.error[100], // Color del texto de error
-    fontSize: 12, // Tamaño del texto de error
-    marginTop: 4, // Espacio entre el input y el mensaje de error
-    marginLeft: 10, // Alineación con el input
+    color: Colors.colors.error[100],
+    fontSize: 12,
+    marginTop: 4,
+    marginLeft: 10,
   },
 });
 
 export default PasswordInput;
+

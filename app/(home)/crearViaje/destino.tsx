@@ -1,7 +1,7 @@
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ListRenderItem } from "react-native";
 import Destination from "@/models/destination";
 import { useState, useEffect } from "react";
-import StyledTextInputLabelText from "@/components/forms/Inputs";
+import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
 import ViewContentContinue from "@/components/views/ViewContentContinue";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewForm from "@/components/views/ViewForm";

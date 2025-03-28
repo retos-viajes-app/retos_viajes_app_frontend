@@ -1,29 +1,35 @@
-
+// React & React Native Imports
 import React, { useContext, useState } from "react";
-import { Text, TouchableOpacity, ImageBackground} from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
+
+// Component Imports
 import { LoadingScreen } from "@/components/LoadingScreen";
 import PaddingView from "@/components/views/PaddingView";
 import PrimaryButton from "@/components/botones/Buttons";
-import StyledTextInputLabelText from "@/components/forms/Inputs";
+import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewContentContinue from "@/components/views/ViewContentContinue";
 import ViewForm from "@/components/views/ViewForm";
+
+// Hook Imports
 import { useFormValidation } from "@/hooks/useFormValidation";
-import globalStyles from "@/styles/global";
-import { validations } from "@/utils/validations";
-import useApi from "@/utils/api";
 import { AuthContext } from "@/context/AuthContext";
+
+// Style Imports
+import globalStyles from "@/styles/global";
+
+// Utility Imports
+import { validations } from "@/utils/validations";
+
 
 export default function RequestPasswordResetScreen() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [emailFocused, setEmailFocused] = useState(false);
   const {requestConfirmationCode} = useContext(AuthContext)!;
-  const api = useApi();
 
   const { errors, validateForm } = useFormValidation({
     email: validations.email,
@@ -71,8 +77,6 @@ export default function RequestPasswordResetScreen() {
               autoCapitalize="none"
               value={email}
               onChangeText={setEmail}
-              onFocus={() => setEmailFocused(true)}
-              onBlur={() => setEmailFocused(false)}
               errorMessage={errors.email}
             />
 

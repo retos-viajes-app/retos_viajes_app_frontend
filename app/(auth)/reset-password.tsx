@@ -1,21 +1,25 @@
-import React, { useContext, useEffect, useState } from "react";
-import { ImageBackground, Alert } from "react-native";
+//react y react native
+import React, { useEffect, useState } from "react";
+import { ImageBackground } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
+import Toast from "react-native-toast-message";
+//Componentes
 import PrimaryButton from "@/components/botones/Buttons";
-import StyledTextInputLabelText from "@/components/forms/Inputs";
+import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
+import ViewInputs from "@/components/views/ViewInputs";
 import PaddingView from "@/components/views/PaddingView";
 import ViewContentContinue from "@/components/views/ViewContentContinue";
 import ViewForm from "@/components/views/ViewForm";
+//Hooks
 import { useFormValidation } from "@/hooks/useFormValidation";
+import { useAuth } from "@/hooks/useAuth";
+//estilos y validaciones
 import globalStyles from "@/styles/global";
 import { validations } from "@/utils/validations";
-import useApi from "@/utils/api";
-import { useAuth } from "@/hooks/useAuth";
-import ViewInputs from "@/components/views/ViewInputs";
-import Toast from "react-native-toast-message";
+
 
 
 export default function ResetPasswordScreen() {
@@ -26,10 +30,8 @@ export default function ResetPasswordScreen() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [passwordFocused, setPasswordFocused] = useState(false);
-  const [confirmPasswordFocused, setConfirmPasswordFocused] = useState(false);
   const {resetPassword,} = useAuth();
-  const api = useApi();
+
   useEffect(() => {
     if (user?.is_verified && user.verification_type == "passwordReset") {
       Toast.show({
@@ -102,8 +104,6 @@ export default function ResetPasswordScreen() {
                 secureTextEntry
                 value={newPassword}
                 onChangeText={setNewPassword}
-                onFocus={() => setPasswordFocused(true)}
-                onBlur={() => setPasswordFocused(false)}
                 errorMessage={errors.newPassword}
               />
 
@@ -113,8 +113,6 @@ export default function ResetPasswordScreen() {
                 secureTextEntry
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
-                onFocus={() => setConfirmPasswordFocused(true)}
-                onBlur={() => setConfirmPasswordFocused(false)}
                 errorMessage={errors.confirmPassword}
               />
             </ViewInputs>

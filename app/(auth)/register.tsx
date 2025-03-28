@@ -1,25 +1,33 @@
+// React & React Native Imports
 import React, { useState, useContext } from "react";
-import { View, Text,  TouchableOpacity, ScrollView,ImageBackground } from "react-native";
+import { View, Text, TouchableOpacity, ImageBackground } from "react-native";
 import { useRouter } from "expo-router";
+
+// Component Imports
 import { AuthContext } from "@/context/AuthContext";
 import DividerWithText from "@/components/Divider";
-import StyledTextInputLabelText from "@/components/forms/Inputs";
-import globalStyles from "@/styles/global";
+import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
 import PaddingView from "@/components/views/PaddingView";
 import GoogleSignInButton from "@/components/botones/GoogleSignInButton";
 import PrimaryButton from "@/components/botones/Buttons";
-import { useAuth } from "@/hooks/useAuth";
 import ViewContentContinue from "@/components/views/ViewContentContinue";
 import ViewForm from "@/components/views/ViewForm";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewInputs from "@/components/views/ViewInputs";
 import { LoadingScreen } from "@/components/LoadingScreen";
+
+// Hook Imports
+import { useAuth } from "@/hooks/useAuth";
 import { useFormValidation } from "@/hooks/useFormValidation";
+
+// Style Imports
+import globalStyles from "@/styles/global";
+
+// Utility Imports
 import { validations } from "@/utils/validations";
-//Maneja el registro + errores
-//Navegación añadida
+
+
 const RegisterScreen = () => {
-  //Check de user
   const {user} = useAuth();
   const router = useRouter();
   const { register, requestConfirmationCode } = useContext(AuthContext)!;
@@ -33,16 +41,14 @@ const RegisterScreen = () => {
     password: validations.password,
     passwordCheck: (value) => validations.passwordCheck(value, password),
   });
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [passwordFocused, setPasswordFocused] = useState(false);
 
   const handleRegister = async () => {
-    setErrorMessage(""); // Limpiar mensaje de error
+    setErrorMessage(""); 
     setLoading(true);
 
     const isValid = validateForm({ email, password, passwordCheck });
     if (!isValid) {
-      setLoading(false); // Ocultar la pantalla de carga si el formulario no es válido
+      setLoading(false); 
       return;
     }
 
@@ -68,21 +74,21 @@ const RegisterScreen = () => {
   return user ? <LoadingScreen /> : (
     loading?<LoadingScreen />:
     <>
-      {/* Imagen encima del componente */}
+
       <ImageBackground
-        source={require("@/assets/images/registerImage.png")} // Asegúrate de tener esta imagen en "assets"
+        source={require("@/assets/images/registerImage.png")} 
         style={{
           width: "100%",
-          height: 124, // Ajusta el tamaño según el diseño
-          justifyContent: "center", // Centrar contenido si agregas más cosas
+          height: 124, 
+          justifyContent: "center", 
           alignItems: "center",
           marginBottom: 24,
         }}
-        resizeMode="cover" // Cubre todo el espacio sin distorsión
+        resizeMode="cover" 
       >
-        {/* Puedes agregar un logo aquí si quieres */}
+        
       </ImageBackground >
-      {/* Componente con padding a los lados */}
+     
       <PaddingView>
         <ViewContentContinue>
           <ViewForm>
@@ -96,7 +102,6 @@ const RegisterScreen = () => {
                 placeholder="Correo electrónico"
                 autoCapitalize="none"
                 value={email}
-
                 onChangeText={setEmail}
                 errorMessage={errors.email}
               />
@@ -106,7 +111,6 @@ const RegisterScreen = () => {
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
-                onFocus={() => setPasswordFocused(true)}
                 errorMessage={errors.password}
               />
               <StyledTextInputLabelText

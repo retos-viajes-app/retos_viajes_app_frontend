@@ -17,7 +17,7 @@ import ErrorText from "@/components/text/ErrorText";
 import ViewInputs from "@/components/views/ViewInputs";
 import ViewContentContinue from "@/components/views/ViewContentContinue";
 import PaddingView from "@/components/views/PaddingView";
-import StyledTextInputLabelText from "@/components/forms/Inputs";
+import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import React from "react";
 import { validations } from "@/utils/validations";
