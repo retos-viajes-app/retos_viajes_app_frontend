@@ -225,17 +225,17 @@ const ConnectUsers: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%", // Fill container
-    backgroundColor: Colors.colors.primary[500], // Azul según Figma
-    paddingHorizontal: 16, // Padding horizontal 16
-    paddingVertical: 20, // Padding vertical 20
+    width: "100%",
+    backgroundColor: Colors.colors.primary[500],
+    paddingHorizontal: 16, 
+    paddingVertical: 20,
   },
   title: {
-    width: "100%", // 361 fill (393 - 32 de padding)
-    height: 29, // Height hug
-    ...globalStyles.title, // ag title (asumiendo que está definido en globalStyles)
-    color: Colors.colors.gray[500], // Color gray/500
-    textAlign: "left", // Alineación izquierda
+    width: "100%",
+    height: 29,
+    ...globalStyles.title,
+    color: Colors.colors.gray[500],
+    textAlign: "left",
     marginBottom: 16, // Gap de 16 entre título y cards
   },
   separator: {
