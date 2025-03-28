@@ -97,24 +97,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
 
     try {
-      const response = await api.post(
+      const {data: userTokens}= await api.post(
         "/verify-google-token",
         {},
         {
           headers: { Authorization: `Bearer ${idToken}` },
         }
       );
-
-      const { access_token, refresh_token } = response.data;
-
-      if (access_token && refresh_token) {
-        await saveAccessToken(access_token);
-        await saveRefreshToken(refresh_token);
+      
+      if(userTokens.access_token && userTokens.refresh_token) {
 
         const email = decodeEmailJwt(idToken);
         if (email) await saveEmail(email);
 
-        await fetchUserDetails(access_token);
+        await fetchUserDetails(userTokens.access_token);
       } else {
         console.error("Tokens no válidos en la respuesta");
       }
@@ -245,8 +241,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const userData : User = {
           id: mode === "register" ? savedUser?.id : undefined,
           email: email,
-          username: "",
-          total_points: 0,
           is_verified: false,
           verification_type: mode ==="passwordReset" ? "passwordReset" : "register",
         }; // Save only the email    

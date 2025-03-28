@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import {
-  TextInput,
-  TextInputProps,
   StyleSheet,
   View,
   Text,
