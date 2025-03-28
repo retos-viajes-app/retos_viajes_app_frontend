@@ -4,14 +4,7 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { LoadingScreen } from '@/components/LoadingScreen';
-import * as SecureStore from 'expo-secure-store';
 import { useAuth } from '@/hooks/useAuth';
-import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
-import {sendConnectionRequest} from '@/services/user_connections_service';
-import {useConnectUser} from '@/hooks/useConnectUser';
-import UserCard from '@/components/UserCard';
-import User from '@/models/user';
 import ConnectUsers from '@/components/ConnectUsers';
 export default function HomeScreen() {
   //Verificación de usuario
