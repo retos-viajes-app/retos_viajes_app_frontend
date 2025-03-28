@@ -14,8 +14,8 @@ import { useTrip } from '@/hooks/useTrip';
 import  NoCurrentTripIndex  from '@/components/index/noCurrentTripIndex';
 import CurrentTripIndex from '@/components/index/currentTripIndex';
 export default function HomeScreen() {
-  //Verificación de usuario
-  //Descomentar cuando se quiera probar en android para que borre los datos de la app
+  // Verificación de usuario
+  // Descomentar cuando se quiera probar en android para que borre los datos de la app
   // useEffect(() => {
   //   if (Platform.OS === 'android') {
   //     // Si es Android, borra todos los datos de expo-secure-store

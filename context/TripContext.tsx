@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/useAuth";
 import Category from "@/models/category";
 import Destination from "@/models/destination";
 import Trip from "@/models/trip";
@@ -5,18 +6,15 @@ import useApi from "@/utils/api";
 import { getCachedCategories, saveCategories } from "@/utils/asyncStorage";
 import { handleApiError } from "@/utils/errorHandler";
 import { getUser } from "@/utils/secureTokens";
+import { useSegments } from "expo-router";
 import React, { createContext, useState, ReactNode, useEffect } from "react";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 interface ViajeContextType {
   trip?: Trip | null;
   currentTrip: Trip | undefined;
   setTrip: (trip: Trip | null) => void;
-  getDestinations: () => Promise<{ destinations: Destination[]; error?: string }>;
   destinations: Destination[];
-  setDestinations: (destinations: Destination[]) => void;
   categories: Category[];
-  getCategories: () => Promise<{ categories: Category[]; error?: string }>;
   selectedCategoriesId: string[];
   setSelectedCategoriesId: (categoriesId: string[]) => void;
   postTrip: (trip: Trip) => Promise<{ success: boolean; error?: string }>;
@@ -31,7 +29,8 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
     const [currentTrip, setCurrentTrip] = useState<Trip | undefined>(undefined);
     const [categories, setCategories] = useState<Category[]>([]);
     const api = useApi();
-    
+    const segments = useSegments();
+    const {user} = useAuth();
     const getDestinations = async () => {
         try {
           //cachear en asyncStorage
@@ -105,15 +104,17 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
         }
       };
     useEffect(() => {
-      getDestinations(); // Carga los destinos al montar el contexto
-      getCategories();  // Carga las categorías al montar el contexto
-      getTrips(); // Carga los viajes al montar el contexto
+      if (user && user.username) {
+        getDestinations(); // Carga los destinos al montar el contexto
+        getCategories();  // Carga las categorías al montar el contexto
+        getTrips(); // Carga los viajes al montar el contexto
+      }
     }, []);
 
 
     
     return (
-      <TripContext.Provider value={{ trip, currentTrip, setTrip, getDestinations,destinations,setDestinations,categories, getCategories,setSelectedCategoriesId,selectedCategoriesId,postTrip }}>
+      <TripContext.Provider value={{ trip, currentTrip, setTrip,destinations,categories,setSelectedCategoriesId,selectedCategoriesId,postTrip }}>
         {children}
       </TripContext.Provider>
     );

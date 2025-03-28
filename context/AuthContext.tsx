@@ -184,7 +184,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       });
       
       setUser(userData);
-      console.log("User:" + user);
+  
       await saveUser(userData);
       return { success: true };
     } catch (error) {
@@ -237,7 +237,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const response = await api.post("/confirmation-code/request", { email });
       const savedUser = await getUser();
-      console.log("User:" + savedUser);
       if(response.data.success){
         const userData : User = {
           id: mode === "register" ? savedUser?.id : undefined,
@@ -260,7 +259,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const verifyConfirmationCode = async (email: string, code: string, isRegistration = false) => {
     try {
       const response = await api.post("/confirmation-code/verify", { email, code, is_registration: isRegistration });
-      console.log("AUth:" + isRegistration);
       if(response.data.success){
         if(user){
             const updatedUserInfo : User = {

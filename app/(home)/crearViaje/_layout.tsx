@@ -1,8 +1,7 @@
 import { Stack, useRouter } from "expo-router";
-import { ScrollView, TouchableOpacity, Text, SafeAreaView, Pressable } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { ArrowLeft, X } from "lucide-react-native";
 import {Colors} from "@/constants/ColoresPropios";
-import {TripProvider} from "@/context/TripContext";
 export default function CrearViajeLayout() {
   const router = useRouter();
   return (
@@ -39,21 +38,3 @@ export default function CrearViajeLayout() {
     
   );
 }
-// 
-
-
-// headerRight: () => (
-//   <TouchableOpacity onPress={() => router.replace("/")}>
-//     <X size={24} color="black" />
-//   </TouchableOpacity>
-// ),
-     // headerLeft: () => (
-      //   <TouchableOpacity onPress={() => router.back()}>
-      //     <Text style={{ fontSize: 18 }}>← Volver</Text>
-      //   </TouchableOpacity>
-      // ),
-      // headerRight: () => (
-      //   <TouchableOpacity onPress={() => router.replace("/")}>
-      //     <Text style={{ fontSize: 18 }}>✖ Cerrar</Text>
-      //   </TouchableOpacity>
-      // ),

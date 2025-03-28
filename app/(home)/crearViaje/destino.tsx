@@ -15,24 +15,8 @@ export default function DestinosScreen() {
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
   const router = useRouter();
-  const {setDestinations,destinations,getDestinations,setTrip,trip } = useTrip();
+  const {destinations,setTrip,trip } = useTrip();
 
-  useEffect(() => {
-    const fetchDestinations = async () => {
-      try {
-        const { destinations, error } = await getDestinations();
-        if (error) {
-          setError(error);
-        } else {
-          setDestinations(destinations);
-        }
-      } catch (err) {
-        setError("Hubo un problema al cargar los destinos.");
-      }
-    };
-
-    fetchDestinations();
-  }, []);
 
   const handleContinue = () => {
     if (selectedId) {
