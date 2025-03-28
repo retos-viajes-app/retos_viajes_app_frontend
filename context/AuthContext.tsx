@@ -106,7 +106,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       );
       
       if(userTokens.access_token && userTokens.refresh_token) {
-
+        await saveAccessToken(userTokens.access_token);
+        await saveRefreshToken(userTokens.refresh_token);
         const email = decodeEmailJwt(idToken);
         if (email) await saveEmail(email);
 
