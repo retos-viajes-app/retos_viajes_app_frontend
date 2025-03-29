@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, ListRenderItem } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, ListRenderItem, ImageBackground } from "react-native";
 import Destination from "@/models/destination";
 import { useState, useEffect } from "react";
 import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
@@ -10,6 +10,7 @@ import PaddingView from "@/components/views/PaddingView";
 import { useTrip } from "@/hooks/useTrip";
 import PrimaryButton from "@/components/botones/Buttons";
 import { useRouter } from "expo-router";
+import globalStyles from "@/styles/global";
 export default function DestinosScreen() {
   const [search, setSearch] = useState<string>("");
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
@@ -40,13 +41,24 @@ export default function DestinosScreen() {
 
   const renderItemF = ({ item }: { item: Destination }) => (
     <TouchableOpacity
-      style={styles.item}
+      style={[
+      styles.item,
+      { opacity: selectedId === item.id ? 0.5 : 1 }
+      ]}
       onPress={() => {
-        setSelectedId(item.id);    
+      setSelectedId(item.id);    
       }}
     >
-      <Text>{item.city}</Text>
-      <Text>{item.country}</Text>
+    <ImageBackground 
+      source={item.image_url ? { uri: item.image_url } : require('@/assets/images/ciudad-defecto-destino-grid.jpg')}
+      style={styles.imageBackground}
+      imageStyle={styles.imageStyle}
+    >
+      <View style={styles.textContainer}>
+        <Text style={[globalStyles.mediumBodyBold, styles.cityText]}>{item.city}</Text>
+        <Text style={[ globalStyles.smallBodyRegular,styles.countryText]}>{item.country}</Text>
+      </View>
+    </ImageBackground>
     </TouchableOpacity>
   );
 
@@ -90,15 +102,33 @@ export default function DestinosScreen() {
 
 
 const styles = StyleSheet.create({
-  item: {
+   item: {
     flex: 1,
-    backgroundColor: '#ddd',
-    padding: 20,
-    height: 80,
+    height: 80, // Making it taller
     borderRadius: 16,
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
+    overflow: 'hidden',
+  },
+  imageBackground: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'flex-end', // Text at the bottom
+    padding: 0,
+  },
+  imageStyle: {
+    borderRadius: 16,
+  },
+  textContainer: {
+    width: '100%',
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(0,0,0,0.5)', // Semi-transparent overlay
+    padding: 10,
+  },
+  cityText: {
+    color: 'white',
+  },
+  countryText: {
+    color: 'white',
   },
 });
 
