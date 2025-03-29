@@ -65,6 +65,7 @@ export default function ActivityScreen() {
         /*onConnect={() => item.id && handleConnect(item.id)}
         onCancelRequest={() => item.id && handleCancelRequest(item.id)}*/
         // /> 
+        <LoadingScreen />
     );
  
     return user ? (
