@@ -65,7 +65,6 @@ const ConnectUsers: React.FC = () => {
       setError(null);
     } catch (error) {
       setError("No se pudieron cargar los usuarios sugeridos");
-      console.error("Error fetching user suggestions:", error);
     } finally {
       setLoading(false);
       setInitialLoading(false);

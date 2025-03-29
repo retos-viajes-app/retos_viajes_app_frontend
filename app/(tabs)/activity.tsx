@@ -8,6 +8,8 @@ import globalStyles from "@/styles/global";
 import { useEffect, useRef, useState } from "react";
 import { CompletedChallenge } from "@/models/completedChallenge";
 import { ActivityIndicator } from "react-native";
+import CompletedChallengePost from "@/components/CompletedChallengePost";
+import { getCompletedChallengesSuggestions } from "@/services/completed_challenges_service";
 
 
 export default function ActivityScreen() {
@@ -16,34 +18,27 @@ export default function ActivityScreen() {
     const { user} = useAuth();
     const [loading, setLoading] = useState(false);
     const [initialLoading, setInitialLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const flatListRef = useRef<FlatList>(null);
     const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(1);
 
     const fetchCompletedChallengesPosts = async (currentPage: number) => {
         if ((loading && currentPage > 1) || !hasMore) return;
         setLoading(true);
-        /*
         try {
-        const response = await getUserSuggestions(currentPage);
-        const formattedUsers = response.users.map(
-            (user: UserWithConnectionStatus) => ({
-            ...user,
-            connection_status: "none" as "none",
-            })
-        );
-        setUsers((prevUsers: UserWithConnectionStatus[]) =>
-            currentPage === 1 ? formattedUsers : [...prevUsers, ...formattedUsers]
-        );
-        setHasMore(response.pagination.has_more);
-        setError(null);
+            const response = await getCompletedChallengesSuggestions(currentPage);
+            setCompletedChallengesPosts((prevCompletedChallengesPosts: CompletedChallenge[]) =>
+                currentPage === 1 ? response.completed_challenges : [...prevCompletedChallengesPosts, ...response.completed_challenges]
+            );
+            setHasMore(response.pagination.has_more);
+            setError(null);
         } catch (error) {
-        setError("No se pudieron cargar los usuarios sugeridos");
-        console.error("Error fetching user suggestions:", error);
+            setError("No se pudieron cargar publicaciones");
         } finally {
-        setLoading(false);
-        setInitialLoading(false);
+            setLoading(false);
+            setInitialLoading(false);
         }
-        */
     };
 
     useEffect(() => {
@@ -51,21 +46,21 @@ export default function ActivityScreen() {
     }, []);
 
     const handleLoadMore = () => {
-        /*
         if (!loading && hasMore) {
-        const nextPage = page + 1;
-        setPage(nextPage);
-        fetchUsers(nextPage);
-        }*/
+            const nextPage = page + 1;
+            setPage(nextPage);
+            fetchCompletedChallengesPosts(nextPage);
+        }
     };
+    const handleLike = async (completedChallengeId : number) => {
+        console.log("Like");
+    }
     const renderItem = ({ item }: { item: CompletedChallenge}) => (
-        /*
+    
         <CompletedChallengePost
-        completedChallenge={item}
-        /*onConnect={() => item.id && handleConnect(item.id)}
-        onCancelRequest={() => item.id && handleCancelRequest(item.id)}*/
-        // /> 
-        <LoadingScreen />
+            completedChallenge={item}
+            onLikePress={() => item.id && handleLike(item.id)}
+        /> 
     );
  
     return user ? (

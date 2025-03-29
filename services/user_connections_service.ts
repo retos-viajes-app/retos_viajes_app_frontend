@@ -49,7 +49,6 @@ export const getUserSuggestions = async (
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching user suggestions:", error);
     // Devolver un objeto vacío para evitar errores en el componente
     return {
       users: [],
@@ -61,6 +60,8 @@ export const getUserSuggestions = async (
     };
   }
 };
+
+
 // Este método ahora toma los dos IDs de usuario que componen la conexión
 export const acceptConnection = async (userId1 : number, userId2: number) => {
   try {

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { sendConnectionRequest as apiSendConnectionRequest, cancelConnectionRequest as apiCancelConnectionRequest } from "@/services/user_connections_service";
 export const useConnectUser = () => {
 
