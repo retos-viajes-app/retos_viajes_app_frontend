@@ -5,3 +5,6 @@ Más flexible y optimizado
 
 ## TouchableOpacity
 Más simple si solo quieres efecto de opacidad al presionar
+
+### Recomendaciones
+Un scrollview no puede envolver un stack
