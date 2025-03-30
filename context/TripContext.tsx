@@ -3,7 +3,7 @@ import Category from "@/models/category";
 import Destination from "@/models/destination";
 import Trip from "@/models/trip";
 import useApi from "@/utils/api";
-import { getCachedCategories, saveCategories } from "@/utils/asyncStorage";
+import { getCachedCategories, getCachedDestinations, getCachedTrip, saveCategories, saveDestinations, saveTrip } from "@/utils/asyncStorage";
 import { handleApiError } from "@/utils/errorHandler";
 import { getUser } from "@/utils/secureTokens";
 import { useSegments } from "expo-router";
@@ -29,13 +29,17 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
     const [currentTrip, setCurrentTrip] = useState<Trip | undefined>(undefined);
     const [categories, setCategories] = useState<Category[]>([]);
     const api = useApi();
-    const segments = useSegments();
     const {user} = useAuth();
     const getDestinations = async () => {
         try {
           //cachear en asyncStorage
+          const cachedDestinations = await getCachedDestinations();
+          if (cachedDestinations) {
+            setDestinations(cachedDestinations);
+          }
           const response = await api.get<Destination[]>('destinations');
           setDestinations(response.data);
+          await saveDestinations(response.data); // Guardar en cache
           return {destinations: response.data, error: undefined};
         } catch (error) {
           console.error(error);
@@ -90,13 +94,22 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
           console.error(error);
         }
       }
+      //Ahora mismo solo devuelve un viaje, el primero que encuentra
       const getTrips = async () => {
         try {
-          //cachear?
+          const cachedTrip = await getCachedTrip();
+          if (cachedTrip) {
+            setCurrentTrip(cachedTrip);
+          }
+          
           const user = await getUser();
       
           const response = await api.get<Trip[]>(`trips/${user?.id}`);
-          setCurrentTrip(response.data.length > 0 ? response.data[0] : undefined); // Guardar el primer viaje
+          if(response.data.length > 0) {
+            setCurrentTrip(response.data[0]); // Guardar el primer viaje en el estado
+            await saveTrip(response.data[0]); 
+          }
+          
           return { trips: response.data, error: undefined };
         } catch (error) {
           console.error(error);
