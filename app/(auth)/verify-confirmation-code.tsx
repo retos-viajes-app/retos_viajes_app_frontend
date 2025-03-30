@@ -5,7 +5,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import Toast from "react-native-toast-message";
 // Component Imports
 import PrimaryButton from "@/components/botones/Buttons";
-import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
+import StyledTextInput from "@/components/forms/StyledTextInput";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
@@ -132,7 +132,7 @@ export default function verifyConfirmationCodeScreen() {
               <ErrorText text={errorMessage} />
             ) : null}
 
-            <StyledTextInputLabelText
+            <StyledTextInput
               style={globalStyles.largeBodyMedium}
               placeholder="Código de 6 dígitos"
               keyboardType="number-pad"

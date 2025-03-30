@@ -5,7 +5,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import Toast from "react-native-toast-message";
 //Componentes
 import PrimaryButton from "@/components/botones/Buttons";
-import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
+import StyledTextInput from "@/components/forms/StyledTextInput";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
@@ -98,7 +98,7 @@ export default function ResetPasswordScreen() {
 
             {errorMessage ? <ErrorText text={errorMessage} /> : null}
             <ViewInputs>
-              <StyledTextInputLabelText
+              <StyledTextInput
                 style={globalStyles.largeBodyMedium}
                 placeholder="Nueva contraseña"
                 secureTextEntry
@@ -107,7 +107,7 @@ export default function ResetPasswordScreen() {
                 errorMessage={errors.newPassword}
               />
 
-              <StyledTextInputLabelText
+              <StyledTextInput
                 style={globalStyles.largeBodyMedium}
                 placeholder="Confirmar contraseña"
                 secureTextEntry

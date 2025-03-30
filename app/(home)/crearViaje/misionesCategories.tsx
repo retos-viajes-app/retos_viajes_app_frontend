@@ -1,5 +1,5 @@
 import { View,Text } from "react-native";
-import StyledRadioButton from "@/components/forms/StyledRadioButton";
+import StyledRadioButtonList from "@/components/forms/StyledRadioButtonList";
 import PaddingView from "@/components/views/PaddingView";
 import ViewContentContinue from "@/components/views/ViewContentContinue";
 import ViewForm from "@/components/views/ViewForm";
@@ -41,7 +41,7 @@ export default function MisionesCategoriesScreen() {
             />
             <ViewInputs>
                 
-            <StyledRadioButton
+            <StyledRadioButtonList
                 options={categories.map((category) => ({ label: category.name || '', value: String(category.id) }))}
                 selectedValues={selectedCategoriesId} // Ahora maneja múltiples selecciones
                 onSelect={handleSelect}

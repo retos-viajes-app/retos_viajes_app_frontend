@@ -7,7 +7,7 @@ import { useRouter } from "expo-router";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import PaddingView from "@/components/views/PaddingView";
 import PrimaryButton from "@/components/botones/Buttons";
-import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
+import StyledTextInput from "@/components/forms/StyledTextInput";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewContentContinue from "@/components/views/ViewContentContinue";
@@ -70,7 +70,7 @@ export default function RequestPasswordResetScreen() {
 
             {errorMessage ? <ErrorText text={errorMessage} /> : null}
 
-            <StyledTextInputLabelText
+            <StyledTextInput
               style={globalStyles.largeBodyMedium}
               placeholder="Correo electrónico"
               keyboardType="email-address"

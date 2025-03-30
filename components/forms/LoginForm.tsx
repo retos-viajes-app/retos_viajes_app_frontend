@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 
 // Component Imports
 import globalStyles from "@/styles/global";
-import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
+import StyledTextInput from "@/components/forms/StyledTextInput";
 import PaddingView from "@/components/views/PaddingView";
 import DividerWithText from "@/components/Divider";
 import { AuthContext } from "@/context/AuthContext";
@@ -102,7 +102,7 @@ const LoginForm = () => {
 
             {errorMessage ? <ErrorText text={errorMessage} /> : null}
             <ViewInputs>
-              <StyledTextInputLabelText
+              <StyledTextInput
                 style={globalStyles.largeBodyMedium}
                 placeholder="Usuario o correo"
                 autoCapitalize="none"

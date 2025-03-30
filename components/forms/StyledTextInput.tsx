@@ -15,7 +15,7 @@ interface CustomTextInputProps extends TextInputProps {
   disabled?: boolean; // Propiedad para manejar si el input está deshabilitado (opcional)
 }
 
-const StyledTextInputLabelText: React.FC<CustomTextInputProps> = ({
+const StyledTextInput: React.FC<CustomTextInputProps> = ({
   errorMessage,
   disabled = false,
   ...props
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default StyledTextInputLabelText;
+export default StyledTextInput;

@@ -6,7 +6,6 @@ import {
 } from "react-native";
 import {  useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import { ThemedView } from "@/components/ThemedView";
 import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import TextAreaWithCounter from "@/components/forms/TextAreaWithCounter";
@@ -17,7 +16,7 @@ import ErrorText from "@/components/text/ErrorText";
 import ViewInputs from "@/components/views/ViewInputs";
 import ViewContentContinue from "@/components/views/ViewContentContinue";
 import PaddingView from "@/components/views/PaddingView";
-import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
+import StyledTextInput from "@/components/forms/StyledTextInput";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import React from "react";
 import { validations } from "@/utils/validations";
@@ -96,7 +95,7 @@ export default  function RegisterScreen() {
             </TouchableOpacity>
             <ViewInputs>
               {/* Nombre Input */}
-              <StyledTextInputLabelText
+              <StyledTextInput
                 style={styles.input}
                 autoCapitalize="none"
                 placeholder="Nombre Completo"
@@ -104,7 +103,7 @@ export default  function RegisterScreen() {
                 onChangeText={setName}
                 errorMessage={errors.name}
               />
-              <StyledTextInputLabelText
+              <StyledTextInput
                 style={styles.input}
                 value={username}
                 onChangeText={setUsername}

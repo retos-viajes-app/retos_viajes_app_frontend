@@ -11,7 +11,7 @@ interface RadioButtonProps {
   onSelect: (value: string) => void;
 }
 
-const StyledRadioButton: React.FC<RadioButtonProps> = ({
+const StyledRadioButtonList: React.FC<RadioButtonProps> = ({
   options,
   selectedValues,
   onSelect,
@@ -76,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StyledRadioButton;
+export default StyledRadioButtonList;

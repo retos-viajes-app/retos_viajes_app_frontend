@@ -6,7 +6,7 @@ import { useRouter } from "expo-router";
 // Component Imports
 import { AuthContext } from "@/context/AuthContext";
 import DividerWithText from "@/components/Divider";
-import StyledTextInputLabelText from "@/components/forms/StyledTextInputLabelText";
+import StyledTextInput from "@/components/forms/StyledTextInput";
 import PaddingView from "@/components/views/PaddingView";
 import GoogleSignInButton from "@/components/botones/GoogleSignInButton";
 import PrimaryButton from "@/components/botones/Buttons";
@@ -97,7 +97,7 @@ const RegisterScreen = () => {
             paragraph="Crea tu cuenta para transformar tus viajes en aventuras inolvidables." />
             {errorMessage ? <Text>{errorMessage}</Text> : null}
             <ViewInputs>
-              <StyledTextInputLabelText
+              <StyledTextInput
                 style={globalStyles.largeBodyMedium}
                 placeholder="Correo electrónico"
                 autoCapitalize="none"
@@ -105,7 +105,7 @@ const RegisterScreen = () => {
                 onChangeText={setEmail}
                 errorMessage={errors.email}
               />
-              <StyledTextInputLabelText
+              <StyledTextInput
                 style={globalStyles.largeBodyMedium}
                 placeholder="Contraseña"
                 secureTextEntry
@@ -113,7 +113,7 @@ const RegisterScreen = () => {
                 onChangeText={setPassword}
                 errorMessage={errors.password}
               />
-              <StyledTextInputLabelText
+              <StyledTextInput
                 style={globalStyles.largeBodyMedium}
                 placeholder="Repite tu contraseña"
                 secureTextEntry

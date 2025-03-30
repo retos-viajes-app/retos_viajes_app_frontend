@@ -60,7 +60,7 @@ const globalStyles = StyleSheet.create({
       fontFamily: 'InterSemiBold',
       fontSize: 16,
       lineHeight: 20,
-      color: Colors.colors.gray[400],
+      color: Colors.colors.gray[500],
     },
     largeBodyBold: {
       fontFamily: 'InterBold',
