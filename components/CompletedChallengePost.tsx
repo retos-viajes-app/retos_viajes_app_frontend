@@ -4,6 +4,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 import { Colors } from "@/constants/ColoresPropios";
 import globalStyles from "@/styles/global";
+import { getTimeAgo } from "@/utils/dateFormatter";
 
 interface CompletedChallengePostProps {
   completedChallenge : CompletedChallenge
@@ -14,6 +15,11 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
   completedChallenge,
   onLikePress,
 }) => {
+
+  const timeAgo = completedChallenge.completed_at
+    ? getTimeAgo(completedChallenge.completed_at)
+    : "";
+     
   return (
     <View style={styles.container}>
       {/* Header section with profile photo, username and mission completed text */}
@@ -37,20 +43,22 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
               {completedChallenge.user?.username}
             </Text>
             <Text
-              style={
-                [globalStyles.mediumBodyRegular,{ color: Colors.colors.gray[500] },]
-              }
+              style={[
+                globalStyles.mediumBodyRegular,
+                { color: Colors.colors.gray[500] },
+              ]}
             >
               ha completado una misión
             </Text>
           </View>
         </View>
         <Text
-          style={
-            [globalStyles.smallBodyRegular, { color: Colors.colors.gray[400] }]
-          }
+          style={[
+            globalStyles.smallBodyRegular,
+            { color: Colors.colors.gray[400] },
+          ]}
         >
-          {completedChallenge.completed_at?.toDateString()}
+          {timeAgo}
         </Text>
       </View>
 
@@ -69,22 +77,20 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
         {/* Likes section */}
         <View style={styles.likesContainer}>
           <TouchableOpacity onPress={onLikePress}>
-            <Feather
-              name="heart"
-              size={16}
-              color={Colors.colors.error[100]}
-            />
+            <Feather name="heart" size={16} color={Colors.colors.error[100]} />
           </TouchableOpacity>
           <Text
-            style={ 
-                [ globalStyles.mediumBodyRegular, { color: Colors.colors.gray[500] },]
-            }
+            style={[
+              globalStyles.mediumBodyRegular,
+              { color: Colors.colors.gray[500] },
+            ]}
           >
             Le gusta a{" "}
             <Text
-              style={
-                [globalStyles.mediumBodySemiBold, { color: Colors.colors.gray[500] },]
-              }
+              style={[
+                globalStyles.mediumBodySemiBold,
+                { color: Colors.colors.gray[500] },
+              ]}
             >
               7 viajeros
             </Text>
@@ -94,14 +100,20 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
         {/* Challenge title and location */}
         <View style={styles.challengeTitleContainer}>
           <Text
-            style={[globalStyles.largeBodySemiBold, { color: Colors.colors.gray[500] },]}
+            style={[
+              globalStyles.largeBodySemiBold,
+              { color: Colors.colors.gray[500] },
+            ]}
           >
             {completedChallenge.challenge?.title}
           </Text>
           <View style={styles.locationContainer}>
             <Feather name="map-pin" size={16} color={Colors.colors.gray[500]} />
             <Text
-              style={[globalStyles.mediumBodyRegular,{ color: Colors.colors.gray[500] },]}
+              style={[
+                globalStyles.mediumBodyRegular,
+                { color: Colors.colors.gray[500] },
+              ]}
             >
               {/*Hay que poner mediumBody/medium*/}
               {completedChallenge.challenge?.destination?.city}
@@ -111,7 +123,10 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
 
         {/* Comment */}
         <Text
-          style={[globalStyles.mediumBodyRegular, { color: Colors.colors.gray[500] },]}
+          style={[
+            globalStyles.mediumBodyRegular,
+            { color: Colors.colors.gray[500] },
+          ]}
         >
           {completedChallenge.description}
         </Text>
@@ -119,6 +134,7 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
     </View>
   );
 };
+export default CompletedChallengePost;
 
 const styles = StyleSheet.create({
   container: {
@@ -172,4 +188,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CompletedChallengePost;

@@ -8,7 +8,7 @@ import globalStyles from "@/styles/global";
 import { useEffect, useRef, useState } from "react";
 import { CompletedChallenge } from "@/models/completedChallenge";
 import { ActivityIndicator } from "react-native";
-import CompletedChallengePost from "@/components/CompletedChallengePost";
+import CompletedChallengePost  from "@/components/CompletedChallengePost";
 import { getCompletedChallengesSuggestions } from "@/services/completed_challenges_service";
 
 
@@ -56,58 +56,54 @@ export default function ActivityScreen() {
         console.log("Like");
     }
     const renderItem = ({ item }: { item: CompletedChallenge}) => (
-    
-        <CompletedChallengePost
-            completedChallenge={item}
-            onLikePress={() => item.id && handleLike(item.id)}
-        /> 
+        <View style={{paddingHorizontal: 16}}>
+            <CompletedChallengePost
+                completedChallenge={item}
+                onLikePress={() => item.id && handleLike(item.id)}
+            /> 
+        </View>
     );
  
     return user ? (
-        <ScrollView
-        contentContainerStyle={styles.container}
+      <FlatList
+        data={completedChallengesPosts}
+        style={styles.container}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id!.toString()}
         showsVerticalScrollIndicator={false}
-        >
-        <View style={styles.headerContainer}>
-            <Text
-            style={[
-                globalStyles.title,
-                { color: Colors.colors.gray[500] },
-            ]}
-            >
-            No te pierdas nada
-            </Text>
-            <TouchableOpacity style={styles.notificationButton}>
-            <MaterialCommunityIcons
-                name="bell-badge-outline"
-                size={24}
-                color={Colors.colors.primary[100]}
-            />
-            </TouchableOpacity>
-        </View>
-        <View>
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        ListHeaderComponent={
+          <>
+            <View style={styles.headerContainer}>
+              <Text
+                style={[globalStyles.title, { color: Colors.colors.gray[500] }]}
+              >
+                No te pierdas nada
+              </Text>
+              <TouchableOpacity style={styles.notificationButton}>
+                <MaterialCommunityIcons
+                  name="bell-badge-outline"
+                  size={24}
+                  color={Colors.colors.primary[100]}
+                />
+              </TouchableOpacity>
+            </View>
             <ConnectUsers />
-        </View>
-        <FlatList
-                ref={flatListRef}
-                data={completedChallengesPosts}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id!.toString()}
-                showsVerticalScrollIndicator={false}
-                onEndReached={handleLoadMore}
-                onEndReachedThreshold={0.5}
-                ItemSeparatorComponent={() => <View style={styles.separator} />}
-                ListFooterComponent={
-                loading && !initialLoading ? (
-                    <View style={styles.loaderContainer}>
-                    <ActivityIndicator size="large" color={"#0066CC"} />
-                    </View>
-                ) : null
-                }
-            />
-        </ScrollView>
+            <View style={{ marginBottom: 16 }} />
+          </>
+        }
+        ListFooterComponent={
+          loading && !initialLoading ? (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color={"#0066CC"} />
+            </View>
+          ) : null
+        }
+      />
     ) : (
-        <LoadingScreen />
+      <LoadingScreen />
     );
 }
 
@@ -115,7 +111,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 0,
-    paddingTop: 20,
+    paddingVertical: 24,
     backgroundColor: Colors.colors.neutral[100],
   },
   headerContainer: {
