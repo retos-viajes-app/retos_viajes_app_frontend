@@ -1,30 +1,36 @@
+// React & React Native Imports
 import React, { useState, useContext } from "react";
-import { View, Text,  TouchableOpacity, ScrollView,ImageBackground } from "react-native";
+import { Text, TouchableOpacity, ImageBackground } from "react-native";
 import { useRouter } from "expo-router";
+
+// Component Imports
 import globalStyles from "@/styles/global";
-import StyledTextInputLabelText from "@/components/forms/Inputs";
+import StyledTextInput from "@/components/forms/StyledTextInput";
 import PaddingView from "@/components/views/PaddingView";
 import DividerWithText from "@/components/Divider";
-import { AuthContext } from '@/context/AuthContext';
+import { AuthContext } from "@/context/AuthContext";
 import PrimaryButton from "@/components/botones/Buttons";
-import GoogleSignInButton from "../botones/GoogleSignInButton";
-
+import GoogleSignInButton from "@/components/botones/GoogleSignInButton";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
-import ViewForm from "../views/ViewForm";
-import ViewInputs from "../views/ViewInputs";
-import ViewContentContinue from "../views/ViewContentContinue";
+import ViewForm from "@/components/views/ViewForm";
+import ViewInputs from "@/components/views/ViewInputs";
+import ViewContentContinue from "@/components/views/ViewContentContinue";
+import PasswordInput from "@/components/forms/PasswordInput"; // Assuming it's inside forms folder
+
+// Hook Imports
 import { useFormValidation } from "@/hooks/useFormValidation";
+
+// Utility Imports
 import { validations } from "@/utils/validations";
-import { LoadingScreen } from "../LoadingScreen";
+import { LoadingScreen } from "@/components/LoadingScreen";
+
 
 const LoginForm = () => {
   const router = useRouter();
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [useridFocused, setuseridFocused] = useState(false);
-  const [passwordFocused, setPasswordFocused] = useState(false);
   const authContext = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   
@@ -96,39 +102,27 @@ const LoginForm = () => {
 
             {errorMessage ? <ErrorText text={errorMessage} /> : null}
             <ViewInputs>
-              <StyledTextInputLabelText
+              <StyledTextInput
                 style={globalStyles.largeBodyMedium}
                 placeholder="Usuario o correo"
                 autoCapitalize="none"
                 value={userid}
                 onChangeText={setUserid}
-                onFocus={() => setuseridFocused(true)}
-                onBlur={() => setuseridFocused(false)}
                 errorMessage={errors.userid}
               />
-              <StyledTextInputLabelText
+              <PasswordInput
                 style={globalStyles.largeBodyMedium}
                 placeholder="Contraseña"
-                secureTextEntry
                 value={password}
                 onChangeText={setPassword}
-                onFocus={() => setPasswordFocused(true)}
-                onBlur={() => setPasswordFocused(false)}
                 errorMessage={errors.password}
               />
             </ViewInputs>
             <TouchableOpacity
               onPress={() => router.push("/request-password-reset")}
             >
-              <Text
-                style={{
-                  color: "#0066CC",
-                  textAlign: "center",
-                  marginTop: 8,
-                  marginBottom: 16,
-                }}
-              >
-                ¿Has olvidado tu contraseña? Recuperar
+              <Text style={globalStyles.mediumBodyMedium}>
+                ¿Has olvidado tu contraseña? <Text style={globalStyles.link}>Recuperar</Text>
               </Text>
             </TouchableOpacity>
             <DividerWithText />
@@ -136,7 +130,9 @@ const LoginForm = () => {
             <GoogleSignInButton />
 
             <TouchableOpacity onPress={() => router.push("/register")}>
-              <Text>¿No tienes cuenta? Regístrate gratis</Text>
+            <Text style={globalStyles.mediumBodyMedium}>
+              ¿No tienes una cuenta? <Text style={globalStyles.link}>Regístrate gratis</Text>
+            </Text>
             </TouchableOpacity>
           </ViewForm>
           <PrimaryButton

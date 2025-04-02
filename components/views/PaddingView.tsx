@@ -12,7 +12,8 @@ const PaddingView: React.FC<PaddingViewProps> = ({ children }) => {
 const styles = StyleSheet.create({
   container: {
     flex:1,
-    paddingHorizontal: 16, // Padding en el eje horizontal (izquierda y derecha)
+    paddingHorizontal: 16, 
+    paddingTop: 16, // Seguramente haya que quitarlo
   } as ViewStyle,
 });
 

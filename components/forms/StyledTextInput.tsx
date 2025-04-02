@@ -5,16 +5,17 @@ import {
   StyleSheet,
   View,
   Text,
+  TouchableOpacity,
 } from "react-native";
 import { Colors } from "@/constants/ColoresPropios";
-
+import DateTimePicker from "@react-native-community/datetimepicker";
 // Definimos las propiedades que acepta el componente, extendiendo los props de TextInput.
 interface CustomTextInputProps extends TextInputProps {
   errorMessage?: string; // Propiedad para el error (opcional)
   disabled?: boolean; // Propiedad para manejar si el input está deshabilitado (opcional)
 }
 
-const StyledTextInputLabelText: React.FC<CustomTextInputProps> = ({
+const StyledTextInput: React.FC<CustomTextInputProps> = ({
   errorMessage,
   disabled = false,
   ...props
@@ -45,6 +46,7 @@ const StyledTextInputLabelText: React.FC<CustomTextInputProps> = ({
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -78,6 +80,7 @@ const styles = StyleSheet.create({
     marginTop: 4, // Espacio entre el input y el mensaje de error
     marginLeft: 10, // Alineación con el input
   },
+
 });
 
-export default StyledTextInputLabelText;
+export default StyledTextInput;

@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
 import { AuthContext } from "@/context/AuthContext";
 import Svg, { Path } from "react-native-svg";
+import globalStyles from "@/styles/global";
+import { Colors } from "@/constants/ColoresPropios";
 
 const GoogleSignInButton: React.FC = () => {
   const auth = useContext(AuthContext);
@@ -11,7 +13,7 @@ const GoogleSignInButton: React.FC = () => {
   }
 
   return (
-    <TouchableOpacity style={styles.button} onPress={auth.promptAsync}>
+    <TouchableOpacity style={[styles.button, {borderColor:Colors.colors.gray[200]}]} onPress={auth.promptAsync}>
       <View style={styles.iconContainer}>
         <Svg width="24" height="24" viewBox="0 0 24 24">
           <Path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -21,7 +23,7 @@ const GoogleSignInButton: React.FC = () => {
           <Path d="M1 1h22v22H1z" fill="none"/>
         </Svg>
       </View>
-      <Text style={styles.text}>Sign in with Google</Text>
+      <Text style={[globalStyles.mediumBodyMedium, {color:Colors.colors.gray[500]}]}>Inicia sesión con Google</Text>
     </TouchableOpacity>
   );
 };
@@ -30,26 +32,15 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#DDDDDD",
-    borderRadius: 16,
+    borderRadius: 50,
     paddingVertical: 10,
-    paddingHorizontal: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-
+    paddingHorizontal: 16,
+    width: "100%",
+    justifyContent: "center",
   },
   iconContainer: {
     marginRight: 10,
-  },
-  text: {
-    color: "#757575",
-    fontSize: 16,
-    fontWeight: "bold",
   },
 });
 

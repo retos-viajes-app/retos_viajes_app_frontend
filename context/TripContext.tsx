@@ -1,0 +1,136 @@
+import { useAuth } from "@/hooks/useAuth";
+import Category from "@/models/category";
+import Destination from "@/models/destination";
+import Trip from "@/models/trip";
+import useApi from "@/utils/api";
+import { getCachedCategories, getCachedDestinations, getCachedTrip, saveCategories, saveDestinations, saveTrip } from "@/utils/asyncStorage";
+import { handleApiError } from "@/utils/errorHandler";
+import { getUser } from "@/utils/secureTokens";
+import { useSegments } from "expo-router";
+import React, { createContext, useState, ReactNode, useEffect } from "react";
+
+interface ViajeContextType {
+  trip?: Trip | null;
+  currentTrip: Trip | undefined;
+  setTrip: (trip: Trip | null) => void;
+  destinations: Destination[];
+  categories: Category[];
+  selectedCategoriesId: string[];
+  setSelectedCategoriesId: (categoriesId: string[]) => void;
+  postTrip: (trip: Trip) => Promise<{ success: boolean; error?: string }>;
+}
+
+const TripContext = createContext<ViajeContextType | undefined>(undefined);
+
+export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
+    const [selectedCategoriesId, setSelectedCategoriesId] = useState<string[]>([]);
+    const [destinations, setDestinations] = useState<Destination[]>([]);
+    const [trip, setTrip] = useState<Trip | null>(null);
+    const [currentTrip, setCurrentTrip] = useState<Trip | undefined>(undefined);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const api = useApi();
+    const {user} = useAuth();
+    const getDestinations = async () => {
+        try {
+          //cachear en asyncStorage
+          const cachedDestinations = await getCachedDestinations();
+          if (cachedDestinations) {
+            setDestinations(cachedDestinations);
+          }
+          const response = await api.get<Destination[]>('destinations');
+          setDestinations(response.data);
+          await saveDestinations(response.data); // Guardar en cache
+          return {destinations: response.data, error: undefined};
+        } catch (error) {
+          console.error(error);
+          return { destinations: [],  error: handleApiError(error, "Error al solicitar los destinos") };
+        }
+    }
+    
+    const getCategories = async () => {
+      try {
+        // Intentar cargar desde AsyncStorage
+        const cachedCategories = await getCachedCategories();
+        if (cachedCategories) {
+          setCategories(cachedCategories);
+        }
+  
+        // Hacer petición a la API para actualizar los datos
+        const response = await api.get<Category[]>("categories");
+        setCategories(response.data);
+        await saveCategories(response.data); // Guardar en cache
+        return { categories: response.data, error: undefined };
+      } catch (error) {
+        console.error(error);
+        return { categories: [], error: handleApiError(error, "Error al solicitar las categorías") };
+      }
+    };
+
+
+    const postTrip = async (trip: Trip) => {
+        try {
+          //Post trip, asociar con el usuario actual
+          //Asociar a selectedCategoriesId
+          const user = await getUser();
+          trip.user_id = user?.id;
+          const response = await api.post<{trip_id:string}>("trips", trip);
+          trip.id = parseInt(response.data.trip_id);
+          selectedCategoriesId.forEach(async (categoryId) => {
+            await postTripCategory(trip.id!, parseInt(categoryId));
+          });
+          setCurrentTrip(trip);
+          return {success: true};
+        } catch (error) {
+          return {
+            success: false,
+            error: handleApiError( error, "Error inesperado al completar el perfil."),
+          };
+        } 
+      };
+      const postTripCategory = async (tripId: number, categoryId: number) => {
+        try {
+          await api.post("trips-categories", { trip_id: tripId, category_id: categoryId });
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      //Ahora mismo solo devuelve un viaje, el primero que encuentra
+      const getTrips = async () => {
+        try {
+          const cachedTrip = await getCachedTrip();
+          if (cachedTrip) {
+            setCurrentTrip(cachedTrip);
+          }
+          
+          const user = await getUser();
+      
+          const response = await api.get<Trip[]>(`trips/${user?.id}`);
+          if(response.data.length > 0) {
+            setCurrentTrip(response.data[0]); // Guardar el primer viaje en el estado
+            await saveTrip(response.data[0]); 
+          }
+          
+          return { trips: response.data, error: undefined };
+        } catch (error) {
+          console.error(error);
+          return { trips: [], error: handleApiError(error, "Error al obtener los viajes") };
+        }
+      };
+    useEffect(() => {
+      if (user && user.username) {
+        getDestinations(); // Carga los destinos al montar el contexto
+        getCategories();  // Carga las categorías al montar el contexto
+        getTrips(); // Carga los viajes al montar el contexto
+      }
+    }, []);
+
+
+    
+    return (
+      <TripContext.Provider value={{ trip, currentTrip, setTrip,destinations,categories,setSelectedCategoriesId,selectedCategoriesId,postTrip }}>
+        {children}
+      </TripContext.Provider>
+    );
+};
+
+export default TripContext;
