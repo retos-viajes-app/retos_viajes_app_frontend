@@ -13,6 +13,8 @@ import TitleParagraph from '@/components/text/TitleParagraph';
 import { useTrip } from '@/hooks/useTrip';
 import  NoCurrentTripIndex  from '@/components/index/noCurrentTripIndex';
 import CurrentTripIndex from '@/components/index/currentTripIndex';
+import { View } from 'react-native';
+import ConnectUsers from '@/components/ConnectUsers';
 export default function HomeScreen() {
   // Verificación de usuario
   // Descomentar cuando se quiera probar en android para que borre los datos de la app
@@ -40,7 +42,14 @@ export default function HomeScreen() {
   const router = useRouter();
   const {currentTrip} = useTrip();
   return  user ? (
-    currentTrip?  <CurrentTripIndex/>  :<NoCurrentTripIndex/>
+    currentTrip?  <CurrentTripIndex/>  :(
+      <>
+      <NoCurrentTripIndex />
+      <View>
+        <ConnectUsers />
+      </View>
+      </>
+    )
   ) :  <LoadingScreen/>;
 }
 

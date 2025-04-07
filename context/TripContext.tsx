@@ -97,10 +97,10 @@ export const TripProvider: React.FC<{children: ReactNode}> = ({ children }) => {
       //Ahora mismo solo devuelve un viaje, el primero que encuentra
       const getTrips = async () => {
         try {
-          const cachedTrip = await getCachedTrip();
-          if (cachedTrip) {
-            setCurrentTrip(cachedTrip);
-          }
+          // const cachedTrip = await getCachedTrip();
+          // if (cachedTrip) {
+          //   setCurrentTrip(cachedTrip);
+          // }
           
           const user = await getUser();
       
