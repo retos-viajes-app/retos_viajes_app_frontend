@@ -1,20 +1,29 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Text, TouchableOpacity, ImageBackground, Alert } from "react-native";
+// React & React Native Imports
+import React, { useContext, useState } from "react";
+import { Text, TouchableOpacity, ImageBackground } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
+import Toast from "react-native-toast-message";
+// Component Imports
 import PrimaryButton from "@/components/botones/Buttons";
-import StyledTextInputLabelText from "@/components/forms/Inputs";
+import StyledTextInput from "@/components/forms/StyledTextInput";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import PaddingView from "@/components/views/PaddingView";
 import ViewContentContinue from "@/components/views/ViewContentContinue";
 import ViewForm from "@/components/views/ViewForm";
+
+// Hook Imports
 import { useFormValidation } from "@/hooks/useFormValidation";
-import globalStyles from "@/styles/global";
-import useApi from "@/utils/api";
-import { validations } from "@/utils/validations";
 import { AuthContext } from "@/context/AuthContext";
-import Toast from "react-native-toast-message";
+
+// Style Imports
+import globalStyles from "@/styles/global";
+
+// Utility Imports
+import { validations } from "@/utils/validations";
+
+
 
 
 export default function verifyConfirmationCodeScreen() {
@@ -23,10 +32,8 @@ export default function verifyConfirmationCodeScreen() {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [codeFocused, setCodeFocused] = useState(false);
   const {verifyConfirmationCode, requestConfirmationCode} = useContext(AuthContext)!;
   const [resendLoading, setResendLoading] = useState(false);
-  const api = useApi();
   
   // Obtener el email  y mode de los parámetros
   const email = params.email?.toString() || "";
@@ -125,15 +132,13 @@ export default function verifyConfirmationCodeScreen() {
               <ErrorText text={errorMessage} />
             ) : null}
 
-            <StyledTextInputLabelText
+            <StyledTextInput
               style={globalStyles.largeBodyMedium}
               placeholder="Código de 6 dígitos"
               keyboardType="number-pad"
               maxLength={6}
               value={code}
               onChangeText={setCode}
-              onFocus={() => setCodeFocused(true)}
-              onBlur={() => setCodeFocused(false)}
               errorMessage={errors.code}
             />
 

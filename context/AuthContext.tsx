@@ -104,13 +104,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           headers: { Authorization: `Bearer ${idToken}` },
         }
       );
-      console.log(idToken);
-      console.log(userTokens);
-
-      if (userTokens.access_token && userTokens.refresh_token) {
-         await saveAccessToken(userTokens.access_token);
-         await saveRefreshToken(userTokens.refresh_token);
-
+      
+      if(userTokens.access_token && userTokens.refresh_token) {
+        await saveAccessToken(userTokens.access_token);
+        await saveRefreshToken(userTokens.refresh_token);
         const email = decodeEmailJwt(idToken);
         if (email) await saveEmail(email);
 
@@ -185,10 +182,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Obtener datos del usuario tras el registro
       const { data: userData } = await api.get<User>(`/users/${email}`, {
       });
-
-      await saveUser(userData);
+      
       setUser(userData);
-
+  
+      await saveUser(userData);
       return { success: true };
     } catch (error) {
       return {
@@ -223,6 +220,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       });
 
       setUser(updatedUserInfo);
+  
       await saveUser(updatedUserInfo);
 
       return { success: true };
@@ -238,8 +236,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const requestConfirmationCode = async (email: string, mode: string) => {
     try {
       const response = await api.post("/confirmation-code/request", { email });
+      const savedUser = await getUser();
       if(response.data.success){
         const userData : User = {
+          id: mode === "register" ? savedUser?.id : undefined,
           email: email,
           is_verified: false,
           verification_type: mode ==="passwordReset" ? "passwordReset" : "register",
@@ -259,7 +259,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const verifyConfirmationCode = async (email: string, code: string, isRegistration = false) => {
     try {
       const response = await api.post("/confirmation-code/verify", { email, code, is_registration: isRegistration });
-      console.log("AUth:" + isRegistration);
       if(response.data.success){
         if(user){
             const updatedUserInfo : User = {
@@ -292,7 +291,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         ]);
         setUser(null);
       }
-      return { success: response.data.success,};
+      return { success: true,};
     } catch (error: any) {
       return{
         success: false,

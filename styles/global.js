@@ -32,6 +32,12 @@ const globalStyles = StyleSheet.create({
       lineHeight: 16,
       color: Colors.colors.gray[400],
     },
+    mediumBodyMedium: {
+      fontFamily: 'InterMedium',
+      fontSize: 14,
+      lineHeight: 16,
+      color: Colors.colors.gray[400],
+    },
     smallBodySemiBold: {
       fontFamily: 'InterSemiBold',
       fontSize: 12,
@@ -45,16 +51,16 @@ const globalStyles = StyleSheet.create({
       color: Colors.colors.gray[400],
     },
     subtitle: {
-      fontFamily: 'InterMedium',
-      fontSize: 16,
-      lineHeight: 20,
-      color: Colors.colors.gray[400],
-    },
-    largeBodySemiBold: {
       fontFamily: 'InterSemiBold',
       fontSize: 18,
       lineHeight: 20,
-      color: Colors.colors.gray[400],
+      color: Colors.colors.gray[500],
+    },
+    largeBodySemiBold: {
+      fontFamily: 'InterSemiBold',
+      fontSize: 16,
+      lineHeight: 20,
+      color: Colors.colors.gray[500],
     },
     largeBodyBold: {
       fontFamily: 'InterBold',
@@ -64,8 +70,8 @@ const globalStyles = StyleSheet.create({
     },
     largeBodyMedium: {
       fontFamily: 'InterMedium',
-      fontSize:14,
-      lineHeight: 16,
+      fontSize:16,
+      lineHeight: 20,
       color: Colors.colors.gray[400],
     },
     title: {
@@ -74,6 +80,16 @@ const globalStyles = StyleSheet.create({
       lineHeight: 28,
       color: Colors.colors.gray[500],
     },
+    diplaySemiBold: {
+      fontFamily: 'InterBlack',
+      fontSize: 24,
+      lineHeight: 24,
+      color: Colors.colors.gray[500],
+    },
+    link: {
+    color: Colors.colors.primary[200],
+    textDecorationLine: 'underline',
+    }
   });
   
   export default globalStyles;

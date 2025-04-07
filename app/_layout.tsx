@@ -10,6 +10,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { useAuth } from '@/hooks/useAuth';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import Toast from 'react-native-toast-message';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Evita que la pantalla de carga desaparezca antes de tiempo
 SplashScreen.preventAutoHideAsync();
@@ -37,32 +38,26 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <AuthProvider>
-        <RootLayoutWithAuth />
-        <Toast />
-        <StatusBar style="auto" />
-      </AuthProvider>
-    </ThemeProvider>
-  );
+    <SafeAreaView style={{ flex: 1 }}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <AuthProvider>
+          <RootLayoutWithAuth />
+          <Toast />
+          <StatusBar style="auto" />
+        </AuthProvider>
+      </ThemeProvider>
+    </SafeAreaView>  );
 }
 
-// Se mueve el uso de `useAuth()` dentro del `AuthProvider`
 function RootLayoutWithAuth() {
   const { user } = useAuth();
   const router = useRouter();
   const params = useLocalSearchParams();
   const segments = useSegments();
-
-  // useEffect(() => {
-  //   console.log("User:", user);
-  //   if (user === null && segments[0] !== "login") {
-  //     router.replace("/login"); // Redirigir a login si no está autenticado
-  //   }
-  // }, [user]);  // Asegurarse de que 'loading' sea una dependencia
    
 
   useEffect(() => {
+    console.log("user:", user);
     const currentRoute = segments[1];
     
     // Rutas públicas que no requieren autenticación
@@ -126,9 +121,8 @@ function RootLayoutWithAuth() {
   }, [user, segments, router]);
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="/" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{headerShown:false}}/>
+      <Stack.Screen name="(home)" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
     </Stack>
   );
