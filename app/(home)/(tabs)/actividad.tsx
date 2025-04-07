@@ -1,114 +1,140 @@
-import { StyleSheet, Image, Platform } from 'react-native';
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { useAuth } from '@/hooks/useAuth';
-import { LoadingScreen } from '@/components/LoadingScreen';
+import ConnectUsers from "@/components/ConnectUsers";
+import { LoadingScreen } from "@/components/LoadingScreen";
+import { useAuth } from "@/hooks/useAuth";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { StyleSheet,Text,View,ScrollView, TouchableOpacity, FlatList,} from "react-native";
+import { Colors } from "@/constants/ColoresPropios";
+import globalStyles from "@/styles/global";
+import { useEffect, useRef, useState } from "react";
+import { CompletedChallenge } from "@/models/completedChallenge";
+import { ActivityIndicator } from "react-native";
+import CompletedChallengePost  from "@/components/CompletedChallengePost";
+import { getCompletedChallengesSuggestions } from "@/services/completed_challenges_service";
+
 
 export default function TabActividadScreen() {
-    //Verificación de usuario
-    const {user} = useAuth();
+  const [completedChallengesPosts, setCompletedChallengesPosts] = useState<CompletedChallenge[]>([]);
+  const { user} = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const flatListRef = useRef<FlatList>(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
 
- 
+  const fetchCompletedChallengesPosts = async (currentPage: number) => {
+      if ((loading && currentPage > 1) || !hasMore) return;
+      setLoading(true);
+      try {
+          const response = await getCompletedChallengesSuggestions(currentPage);
+          setCompletedChallengesPosts((prevCompletedChallengesPosts: CompletedChallenge[]) =>
+              currentPage === 1 ? response.completed_challenges : [...prevCompletedChallengesPosts, ...response.completed_challenges]
+          );
+          setHasMore(response.pagination.has_more);
+          setError(null);
+      } catch (error) {
+          setError("No se pudieron cargar publicaciones");
+      } finally {
+          setLoading(false);
+          setInitialLoading(false);
+      }
+  };
+
+  useEffect(() => {
+      fetchCompletedChallengesPosts(1);
+  }, []);
+
+  const handleLoadMore = () => {
+      if (!loading && hasMore) {
+          const nextPage = page + 1;
+          setPage(nextPage);
+          fetchCompletedChallengesPosts(nextPage);
+      }
+  };
+  const handleLike = async (completedChallengeId : number) => {
+      console.log("Like");
+  }
+  const renderItem = ({ item }: { item: CompletedChallenge}) => (
+      <View style={{paddingHorizontal: 16}}>
+          <CompletedChallengePost
+              completedChallenge={item}
+              onLikePress={() => item.id && handleLike(item.id)}
+          /> 
+      </View>
+  );
+
   return user ? (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
-  ): <LoadingScreen/>;
+    <FlatList
+      data={completedChallengesPosts}
+      style={styles.container}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id!.toString()}
+      showsVerticalScrollIndicator={false}
+      onEndReached={handleLoadMore}
+      onEndReachedThreshold={0.5}
+      ItemSeparatorComponent={() => <View style={styles.separator} />}
+      ListHeaderComponent={
+        <>
+          <View style={styles.headerContainer}>
+            <Text
+              style={[globalStyles.title, { color: Colors.colors.gray[500] }]}
+            >
+              No te pierdas nada
+            </Text>
+            <TouchableOpacity style={styles.notificationButton}>
+              <MaterialCommunityIcons
+                name="bell-badge-outline"
+                size={24}
+                color={Colors.colors.primary[100]}
+              />
+            </TouchableOpacity>
+          </View>
+          <ConnectUsers />
+          <View style={{ marginBottom: 16 }} />
+        </>
+      }
+      ListFooterComponent={
+        loading && !initialLoading ? (
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator size="large" color={"#0066CC"} />
+          </View>
+        ) : null
+      }
+    />
+  ) : (
+    <LoadingScreen />
+  );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flexGrow: 1,
+    padding: 0,
+    paddingVertical: 24,
+    backgroundColor: Colors.colors.neutral[100],
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    marginBottom: 24,
+  },
+  notificationButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 50,
+    backgroundColor: Colors.colors.primary[400],
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  separator: {
+    height: 24,
+  },
+  loaderContainer: {
+    width: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 16,
   },
 });

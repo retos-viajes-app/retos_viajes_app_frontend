@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 export interface Destination {
   id?: number;
   city?: string;
@@ -7,12 +6,3 @@ export interface Destination {
   image_url?: string;
   active?: boolean; 
 }
-=======
-export default interface Destination{
-  id: number;
-  description: string;
-  image_url: string;
-  city: string;
-  country: string;
-}
->>>>>>> develop
