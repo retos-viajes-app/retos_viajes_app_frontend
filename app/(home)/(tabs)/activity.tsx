@@ -1,18 +1,31 @@
-import ConnectUsers from "@/components/ConnectUsers";
-import { LoadingScreen } from "@/components/LoadingScreen";
-import { useAuth } from "@/hooks/useAuth";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { StyleSheet,Text,View,ScrollView, TouchableOpacity, FlatList,} from "react-native";
-import { Colors } from "@/constants/ColoresPropios";
-import globalStyles from "@/styles/global";
+// React & React Native Imports
 import { useEffect, useRef, useState } from "react";
-import { CompletedChallenge } from "@/models/completedChallenge";
-import { ActivityIndicator } from "react-native";
-import CompletedChallengePost  from "@/components/CompletedChallengePost";
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
+
+// Component Imports
+import ConnectUsers from "@/components/SuggestedUsers";
+import { LoadingScreen } from "@/components/LoadingScreen";
+import CompletedChallengePost from "@/components/activity/CompletedChallengePost";
+
+// Hook Imports
+import { useAuth } from "@/hooks/useAuth";
+
+// Style Imports
+import globalStyles from "@/styles/global";
+
+// Utility Imports
+import { Colors } from "@/constants/ColoresPropios";
 import { getCompletedChallengesSuggestions } from "@/services/completed_challenges_service";
 
+// Icon Imports
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-export default function TabActividadScreen() {
+// Model Imports
+import { CompletedChallenge } from "@/models/completedChallenge";
+
+
+
+export default function ActivityScreen() {
   const [completedChallengesPosts, setCompletedChallengesPosts] = useState<CompletedChallenge[]>([]);
   const { user} = useAuth();
   const [loading, setLoading] = useState(false);

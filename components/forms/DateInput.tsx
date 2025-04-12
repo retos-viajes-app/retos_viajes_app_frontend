@@ -1,13 +1,16 @@
+// React & React Native Imports
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+
+// Utility Imports
 import { Colors } from "@/constants/ColoresPropios";
-import DateTimePicker from "@react-native-community/datetimepicker";
+
+// Icon Imports
 import { Calendar } from "lucide-react-native";
+
+// Third-Party Imports
+import DateTimePicker from "@react-native-community/datetimepicker";
+
 
 interface CustomDateInputProps {
   date: Date | null;
@@ -17,7 +20,7 @@ interface CustomDateInputProps {
   title: string;
 }
 
-export const StyledDateInput: React.FC<CustomDateInputProps> = ({
+export const  DateInput: React.FC<CustomDateInputProps> = ({
   date,
   setDate,
   errorMessage,
@@ -103,4 +106,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default StyledDateInput;
+export default DateInput;

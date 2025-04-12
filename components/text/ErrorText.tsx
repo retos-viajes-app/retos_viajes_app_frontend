@@ -1,6 +1,11 @@
+// React & React Native Imports
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Colors } from '../../constants/ColoresPropios';
+
+
+// Utility Imports
+import { Colors } from '@/constants/ColoresPropios';
+
 
 interface ErrorTextProps {
   text: string;  // Aquí definimos la propiedad que acepta el texto

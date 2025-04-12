@@ -1,12 +1,16 @@
-import { useAuth } from '@/hooks/useAuth';
+// React & React Native Imports
 import React from 'react';
-import { Image, StyleSheet, View, Text, ImageBackground } from 'react-native';
-import ParallaxScrollView from '../ParallaxScrollView';
+import { View, Text, ImageBackground } from 'react-native';
 import { useRouter } from 'expo-router';
-import TitleParagraph from '../text/TitleParagraph';
-import PrimaryButton from '../botones/Buttons';
-import PaddingView from '../views/PaddingView';
-import { TestTube } from 'lucide-react-native';
+
+// Component Imports
+import PrimaryButton from '@/components/buttons/PrimaryButton';
+import PaddingView from '@/components/views/PaddingView';
+
+// Hook Imports
+import { useAuth } from '@/hooks/useAuth';
+
+// Style Imports
 import globalStyles from '@/styles/global';
 
 
@@ -25,7 +29,7 @@ const NoCurrentTripIndex = () => {
           </View>
           <PrimaryButton 
             title='Crear mi primer viaje' 
-            onPress={() => router.push('/crearViaje/destino')}
+            onPress={() => router.push('/createTrip/selectDestination')}
           />
         </View>
       </PaddingView>

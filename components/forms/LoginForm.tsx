@@ -9,14 +9,14 @@ import StyledTextInput from "@/components/forms/StyledTextInput";
 import PaddingView from "@/components/views/PaddingView";
 import DividerWithText from "@/components/Divider";
 import { AuthContext } from "@/context/AuthContext";
-import PrimaryButton from "@/components/botones/Buttons";
-import GoogleSignInButton from "@/components/botones/GoogleSignInButton";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
+import GoogleSignInButton from "@/components/buttons/GoogleSignInButton";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewForm from "@/components/views/ViewForm";
 import ViewInputs from "@/components/views/ViewInputs";
-import ViewContentContinue from "@/components/views/ViewContentContinue";
-import PasswordInput from "@/components/forms/PasswordInput"; // Assuming it's inside forms folder
+import ViewContentContinue from "@/components/views/ViewForContinueButton";
+import PasswordInput from "@/components/forms/PasswordInput"; 
 
 // Hook Imports
 import { useFormValidation } from "@/hooks/useFormValidation";
@@ -119,7 +119,7 @@ const LoginForm = () => {
               />
             </ViewInputs>
             <TouchableOpacity
-              onPress={() => router.push("/request-password-reset")}
+              onPress={() => router.push("/requestConfirmationCode")}
             >
               <Text style={globalStyles.mediumBodyMedium}>
                 ¿Has olvidado tu contraseña? <Text style={globalStyles.link}>Recuperar</Text>

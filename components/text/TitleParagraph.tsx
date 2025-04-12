@@ -1,6 +1,10 @@
+// React & React Native Imports
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+
+// Style Imports
 import globalStyles from '@/styles/global';
+
 
 interface TitleParagraphProps {
   title: string;

@@ -1,10 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+// React & React Native Imports
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
+
+// Component Imports
+import TripProgressCircle from "@/components/ui/TripProgressCircle";
+import PaddingView from "@/components/views/PaddingView";
+
+// Hook Imports
 import { useTrip } from "@/hooks/useTrip";
-import ParallaxScrollView from "../ParallaxScrollView";
-import TripProgressCircle from "../ui/progressCircle";
-import { ImageBackground } from "react-native";
-import PaddingView from "../views/PaddingView";
+
+// Style Imports
+// (No hay estilos personalizados en este caso)
 
 const CurrentTripIndex = () => {
   const [currentTime, setCurrentTime] = useState(new Date());

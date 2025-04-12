@@ -282,7 +282,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const resetPassword = async (user: User, new_password: string) => {
     try {
-      const response = await api.post(`/users/reset-password/${user.email}`, {new_password });
+      const response = await api.post(`/users/resetPassword/${user.email}`, {new_password });
       if(response.data.success){
         await Promise.all([
           saveUser(null),

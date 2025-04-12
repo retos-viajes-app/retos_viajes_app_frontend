@@ -1,13 +1,21 @@
-import { Tabs } from 'expo-router';
+// React & React Native Imports
 import React from 'react';
-import { Platform, SafeAreaView } from 'react-native';
-import { Stack } from 'expo-router';
+import { Platform } from 'react-native';
+import { Tabs } from 'expo-router';
+
+// Component Imports
 import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/ColoresPropios';
+
+// Hook Imports
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { House,UserRound,Hash,MessageCircleHeart   } from 'lucide-react-native';
+
+// Utility Imports
+import { Colors } from '@/constants/ColoresPropios';
+
+// Icon Imports
+import { House, UserRound, Hash, MessageCircleHeart } from 'lucide-react-native';
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -42,7 +50,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="actividad"
+        name="activity"
         options={{
           title: 'Actividad',
           tabBarIcon: ({ focused }) => (
@@ -55,9 +63,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="ranking"
         options={{
-          title: 'Explore',
+          title: 'Ranking',
           tabBarIcon: ({ focused }) => (
             <Hash
               color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]} // Cambia color según estado
@@ -70,7 +78,7 @@ export default function TabLayout() {
      <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
+          title: "Perfil",
           tabBarIcon: ({ focused }) => (
             <UserRound
               color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]} // Cambia color según estado

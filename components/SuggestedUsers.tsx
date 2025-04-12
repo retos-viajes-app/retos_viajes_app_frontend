@@ -1,22 +1,30 @@
+// React & React Native Imports
 import React, { useEffect, useState, useRef } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from "react-native";
+
+// Component Imports
 import UserCard from "./UserCard";
+
+// Hook Imports
 import { useConnectUser } from "@/hooks/useConnectUser";
-import { getUserSuggestions } from "@/services/user_connections_service";
-import { UserWithConnectionStatus } from "@/models/userConnections";
+
+// Style Imports
 import globalStyles from "@/styles/global";
+
+// Utility Imports
 import { Colors } from "@/constants/ColoresPropios";
+
+// Model Imports
+import { UserWithConnectionStatus } from "@/models/userConnections";
+
+// Service Imports
+import { getUserSuggestions } from "@/services/user_connections_service";
+
+// Third-Party Imports
 import Toast from "react-native-toast-message";
 
-const ConnectUsers: React.FC = () => {
+
+const SuggestedUsers: React.FC = () => {
   const [users, setUsers] = useState<UserWithConnectionStatus[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -250,4 +258,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
 });
-export default ConnectUsers;
+export default SuggestedUsers;

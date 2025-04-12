@@ -6,11 +6,11 @@ import { useRouter } from "expo-router";
 // Component Imports
 import { LoadingScreen } from "@/components/LoadingScreen";
 import PaddingView from "@/components/views/PaddingView";
-import PrimaryButton from "@/components/botones/Buttons";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
 import StyledTextInput from "@/components/forms/StyledTextInput";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
-import ViewContentContinue from "@/components/views/ViewContentContinue";
+import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import ViewForm from "@/components/views/ViewForm";
 
 // Hook Imports
@@ -24,7 +24,7 @@ import globalStyles from "@/styles/global";
 import { validations } from "@/utils/validations";
 
 
-export default function RequestPasswordResetScreen() {
+export default function RequestConfirmationCodeScreen() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -49,7 +49,7 @@ export default function RequestPasswordResetScreen() {
     const { success, error } = await requestConfirmationCode(email, "passwordReset");
        if (success) {
         setLoading(false);
-        router.push(`/verify-confirmation-code?mode=passwordReset&&email=${email}`);
+        router.push(`/verifyConfirmationCode?mode=passwordReset&&email=${email}`);
        }else {
         setErrorMessage( error ||"No pudimos enviar el código. Por favor, verifica tu correo e intenta de nuevo." );
         setLoading(false); 

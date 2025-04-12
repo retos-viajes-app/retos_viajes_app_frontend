@@ -1,4 +1,4 @@
-export interface Destination {
+export default interface Destination {
   id?: number;
   city?: string;
   country?: string;

@@ -5,7 +5,7 @@ interface PaddingViewProps {
   children: React.ReactNode;
 }
 
-const ViewContentContinue: React.FC<PaddingViewProps> = ({ children }) => {
+const ViewForContinueButton: React.FC<PaddingViewProps> = ({ children }) => {
   return <View style={[styles.container]}>{children}</View>;
 };
 
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   } as ViewStyle,
 });
 
-export default ViewContentContinue;
+export default ViewForContinueButton;

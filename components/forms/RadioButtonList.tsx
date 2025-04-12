@@ -1,9 +1,19 @@
+// React & React Native Imports
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Colors } from "@/constants/ColoresPropios";
-import ViewInputs from "../views/ViewInputs";
+
+// Component Imports
+import ViewInputs from "@/components/views/ViewInputs";
+
+// Style Imports
 import globalStyles from "@/styles/global";
+
+// Utility Imports
+import { Colors } from "@/constants/ColoresPropios";
+
+// Icon Imports
 import { Ionicons } from "@expo/vector-icons";
+
 
 interface RadioButtonProps {
   options: { label: string; value: string }[];
@@ -11,7 +21,7 @@ interface RadioButtonProps {
   onSelect: (value: string) => void;
 }
 
-const StyledRadioButtonList: React.FC<RadioButtonProps> = ({
+const RadioButtonList: React.FC<RadioButtonProps> = ({
   options,
   selectedValues,
   onSelect,
@@ -76,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StyledRadioButtonList;
+export default RadioButtonList;

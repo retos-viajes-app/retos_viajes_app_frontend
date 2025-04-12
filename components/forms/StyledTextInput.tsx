@@ -1,14 +1,11 @@
+// React & React Native Imports
 import React, { useState } from "react";
-import {
-  TextInput,
-  TextInputProps,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { TextInput, TextInputProps, StyleSheet, View, Text } from "react-native";
+
+// Utility Imports
 import { Colors } from "@/constants/ColoresPropios";
-import DateTimePicker from "@react-native-community/datetimepicker";
+
+
 // Definimos las propiedades que acepta el componente, extendiendo los props de TextInput.
 interface CustomTextInputProps extends TextInputProps {
   errorMessage?: string; // Propiedad para el error (opcional)

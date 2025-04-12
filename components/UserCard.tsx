@@ -1,17 +1,19 @@
-
-import { Colors } from "@/constants/ColoresPropios";
-import { UserWithConnectionStatus } from "@/models/userConnections";
-import globalStyles from "@/styles/global";
-import { Feather } from '@expo/vector-icons';
+// React & React Native Imports
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
+
+// Style Imports
+import globalStyles from "@/styles/global";
+
+// Utility Imports
+import { Colors } from "@/constants/ColoresPropios";
+
+// Model Imports
+import { UserWithConnectionStatus } from "@/models/userConnections";
+
+// Icon Imports
+import { Feather } from '@expo/vector-icons';
+
 
 
 interface UserCardProps {

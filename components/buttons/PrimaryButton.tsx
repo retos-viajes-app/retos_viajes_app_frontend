@@ -1,7 +1,13 @@
+// React & React Native Imports
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, GestureResponderEvent } from 'react-native';
-import { Colors } from '@/constants/ColoresPropios';
+
+// Style Imports
 import globalStyles from '@/styles/global';
+
+// Utility Imports
+import { Colors } from '@/constants/ColoresPropios';
+
 interface ButtonProps {
   title: string;
   onPress?: (event: GestureResponderEvent) => void;

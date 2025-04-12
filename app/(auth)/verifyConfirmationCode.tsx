@@ -4,13 +4,13 @@ import { Text, TouchableOpacity, ImageBackground } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import Toast from "react-native-toast-message";
 // Component Imports
-import PrimaryButton from "@/components/botones/Buttons";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
 import StyledTextInput from "@/components/forms/StyledTextInput";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import PaddingView from "@/components/views/PaddingView";
-import ViewContentContinue from "@/components/views/ViewContentContinue";
+import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import ViewForm from "@/components/views/ViewForm";
 
 // Hook Imports
@@ -59,10 +59,10 @@ export default function verifyConfirmationCodeScreen() {
       setLoading(false); 
       if (mode === "register") {
         console.log("register");
-        router.replace("/endRegister");
+        router.replace("/completeRegister");
       } else {
         router.push({
-          pathname: "/reset-password",
+          pathname: "/resetPassword",
           params: {
             code: code
           }

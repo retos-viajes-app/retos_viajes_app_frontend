@@ -1,8 +1,14 @@
+// React & React Native Imports
 import { Stack, useRouter } from "expo-router";
 import { TouchableOpacity } from "react-native";
+
+// Style Imports
+import { Colors } from "@/constants/ColoresPropios";
+
+// Icon Imports
 import { ArrowLeft, X } from "lucide-react-native";
-import {Colors} from "@/constants/ColoresPropios";
-export default function CrearViajeLayout() {
+
+export default function CreateTripLayout() {
   const router = useRouter();
   return (
 
@@ -30,10 +36,10 @@ export default function CrearViajeLayout() {
           ),
         }}
       >
-        <Stack.Screen name="destino" />
-        <Stack.Screen name="fechas" />
-        <Stack.Screen name="misiones" />
-        <Stack.Screen name="resumen" />
+        <Stack.Screen name="selectDestination" />
+        <Stack.Screen name="selectDates" />
+        <Stack.Screen name="selectCategories" />
+        <Stack.Screen name="summary" />
       </Stack>
     
   );

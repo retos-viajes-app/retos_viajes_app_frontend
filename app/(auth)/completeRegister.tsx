@@ -1,28 +1,34 @@
+// React & React Native Imports
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   Image,
   TouchableOpacity,
-
 } from "react-native";
-import {  useEffect, useState } from "react";
-import { useRouter } from "expo-router";
-import { useContext } from "react";
-import { AuthContext } from "@/context/AuthContext";
-import TextAreaWithCounter from "@/components/forms/TextAreaWithCounter";
-import PrimaryButton from "@/components/botones/Buttons";
-import ViewForm from "@/components/views/ViewInputs";
-import { useAuth } from "@/hooks/useAuth";
-import ErrorText from "@/components/text/ErrorText";
-import ViewInputs from "@/components/views/ViewInputs";
-import ViewContentContinue from "@/components/views/ViewContentContinue";
-import PaddingView from "@/components/views/PaddingView";
-import StyledTextInput from "@/components/forms/StyledTextInput";
-import TitleParagraph from "@/components/text/TitleParagraph";
-import React from "react";
-import { validations } from "@/utils/validations";
-import { useFormValidation } from "@/hooks/useFormValidation";
-import { LoadingScreen } from "@/components/LoadingScreen";
 import Toast from "react-native-toast-message";
+import { useRouter } from "expo-router";
+
+// Component Imports
+import { LoadingScreen } from "@/components/LoadingScreen";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
+import TextAreaWithCounter from "@/components/forms/TextAreaWithCounter";
+import StyledTextInput from "@/components/forms/StyledTextInput";
+import ErrorText from "@/components/text/ErrorText";
+import TitleParagraph from "@/components/text/TitleParagraph";
+import ViewForm from "@/components/views/ViewInputs";
+import ViewInputs from "@/components/views/ViewInputs";
+import ViewContentContinue from "@/components/views/ViewForContinueButton";
+import PaddingView from "@/components/views/PaddingView";
+
+// Hook Imports
+import { useAuth } from "@/hooks/useAuth";
+import { useFormValidation } from "@/hooks/useFormValidation";
+
+
+// Utility Imports
+import { validations } from "@/utils/validations";
+import { AuthContext } from "@/context/AuthContext";
+
 
 export default  function RegisterScreen() {
   const { user } = useAuth();

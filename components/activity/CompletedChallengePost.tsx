@@ -1,10 +1,20 @@
-import { CompletedChallenge } from "@/models/completedChallenge";
+// React & React Native Imports
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import Feather from "@expo/vector-icons/Feather";
-import { Colors } from "@/constants/ColoresPropios";
+
+// Style Imports
 import globalStyles from "@/styles/global";
+
+// Utility Imports
+import { Colors } from "@/constants/ColoresPropios";
 import { getTimeAgo } from "@/utils/dateFormatter";
+
+// Icon Imports
+import Feather from "@expo/vector-icons/Feather";
+
+// Model Imports
+import { CompletedChallenge } from "@/models/completedChallenge";
+
 
 interface CompletedChallengePostProps {
   completedChallenge : CompletedChallenge

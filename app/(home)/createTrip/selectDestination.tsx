@@ -1,17 +1,27 @@
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, ListRenderItem, ImageBackground } from "react-native";
-import Destination from "@/models/destination";
-import { useState, useEffect } from "react";
+// React & React Native Imports
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, ImageBackground } from "react-native";
+import { useState } from "react";
+import { useRouter } from "expo-router";
+
+// Component Imports
 import StyledTextInputLabelText from "@/components/forms/StyledTextInput";
-import ViewContentContinue from "@/components/views/ViewContentContinue";
+import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewForm from "@/components/views/ViewForm";
 import ViewInputs from "@/components/views/ViewInputs";
 import PaddingView from "@/components/views/PaddingView";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
+
+// Hook Imports
 import { useTrip } from "@/hooks/useTrip";
-import PrimaryButton from "@/components/botones/Buttons";
-import { useRouter } from "expo-router";
+
+// Style Imports
 import globalStyles from "@/styles/global";
-export default function DestinosScreen() {
+
+// Utility Imports
+import Destination from "@/models/destination";
+
+export default function SelectDestinationScreen() {
   const [search, setSearch] = useState<string>("");
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -25,7 +35,7 @@ export default function DestinosScreen() {
         ...trip,  
         destination_id: selectedId,
         });
-      router.push("/crearViaje/fechas");
+      router.push("/createTrip/selectDates");
     } else {
       setError("Debes seleccionar un destino para continuar.");
     }
@@ -34,8 +44,8 @@ export default function DestinosScreen() {
   const filteredData = destinations
     .filter(
       (item) =>
-        item.country.toLowerCase().includes(search.toLowerCase()) ||
-        item.city.toLowerCase().includes(search.toLowerCase())
+        item.country!.toLowerCase().includes(search.toLowerCase()) ||
+        item.city!.toLowerCase().includes(search.toLowerCase())
     )
     .slice(0, 4);
 
@@ -83,7 +93,7 @@ export default function DestinosScreen() {
                 style={{ width: "100%" }}
                 data={filteredData}
                 numColumns={2}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.id!.toString()}
                 renderItem={renderItemF}
                 columnWrapperStyle={{ gap: 16 }}
                 contentContainerStyle={{ gap: 16 }}

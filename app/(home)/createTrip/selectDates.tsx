@@ -1,15 +1,22 @@
-import PrimaryButton from "@/components/botones/Buttons";
+// React & React Native Imports
+import React, { useState } from "react";
+import { Text } from "react-native";
+import { useRouter } from "expo-router";
+
+// Component Imports
+import PrimaryButton from "@/components/buttons/PrimaryButton";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import PaddingView from "@/components/views/PaddingView";
-import ViewContentContinue from "@/components/views/ViewContentContinue";
+import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import ViewForm from "@/components/views/ViewForm";
 import ViewInputs from "@/components/views/ViewInputs";
+import StyledDateInput from "@/components/forms/DateInput";
+
+// Hook Imports
 import { useTrip } from "@/hooks/useTrip";
-import React, { useState } from "react";
-import { View,Text } from "react-native";
-import StyledDateInput from "@/components/forms/StyledDateInput";
-import { useRouter } from "expo-router";
-export default function FechasScreen() {
+
+
+export default function SelectDatesScreen() {
     const [error,setError] = useState<string | undefined>(undefined);
     const {trip,setTrip} = useTrip();
     const [startDate,setStartDate] = useState<Date | null>(trip?.start_date || null);
@@ -23,7 +30,7 @@ export default function FechasScreen() {
       if(startDate && endDate){
         if(startDate <= endDate){
           setTrip({...trip,start_date:startDate,end_date:endDate});
-          router.push("/crearViaje/misionesCategories");
+          router.push("/createTrip/selectCategories");
         }else{
           setError("La fecha de inicio debe ser menor a la fecha de fin");
         }

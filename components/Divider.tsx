@@ -1,10 +1,15 @@
-import { Colors } from "@/constants/ColoresPropios";
-import globalStyles from "@/styles/global";
+// React & React Native Imports
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
+// Style Imports
+import globalStyles from "@/styles/global";
 
-const DividerWithText = ({ text = "o si lo prefieres", full = false }) => {
+// Utility Imports
+import { Colors } from "@/constants/ColoresPropios";
+
+
+const Divider = ({ text = "o si lo prefieres", full = false }) => {
   return (
     <View style={styles.container}>
       <View style={[styles.line,{backgroundColor: Colors.colors.gray[200]}]} />
@@ -29,4 +34,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default DividerWithText;
+export default Divider;

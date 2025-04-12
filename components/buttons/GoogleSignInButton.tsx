@@ -1,9 +1,19 @@
+// React & React Native Imports
 import React, { useContext } from "react";
 import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
-import { AuthContext } from "@/context/AuthContext";
-import Svg, { Path } from "react-native-svg";
+
+// Style Imports
 import globalStyles from "@/styles/global";
+
+// Utility Imports
 import { Colors } from "@/constants/ColoresPropios";
+
+// Icon Imports
+import Svg, { Path } from "react-native-svg";
+
+// Context Imports
+import { AuthContext } from "@/context/AuthContext";
+
 
 const GoogleSignInButton: React.FC = () => {
   const auth = useContext(AuthContext);

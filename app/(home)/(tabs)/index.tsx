@@ -1,21 +1,19 @@
-import { Image, StyleSheet, Platform,Text} from 'react-native';
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { LoadingScreen } from '@/components/LoadingScreen';
-import * as SecureStore from 'expo-secure-store';
-import { useAuth } from '@/hooks/useAuth';
+// React & React Native Imports
+import { StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
-import PrimaryButton from '@/components/botones/Buttons';
-import TitleParagraph from '@/components/text/TitleParagraph';
+
+// Component Imports
+import { LoadingScreen } from '@/components/LoadingScreen';
+import NoCurrentTripIndex from '@/components/index/NoCurrentTripIndex';
+import CurrentTripIndex from '@/components/index/CurrentTripIndex';
+import ConnectUsers from '@/components/SuggestedUsers';
+
+// Hook Imports
+import { useAuth } from '@/hooks/useAuth';
 import { useTrip } from '@/hooks/useTrip';
-import  NoCurrentTripIndex  from '@/components/index/noCurrentTripIndex';
-import CurrentTripIndex from '@/components/index/currentTripIndex';
-import { View } from 'react-native';
-import ConnectUsers from '@/components/ConnectUsers';
-export default function HomeScreen() {
+
+
+export default function IndexScreen() {
   // Verificación de usuario
   // Descomentar cuando se quiera probar en android para que borre los datos de la app
   // useEffect(() => {

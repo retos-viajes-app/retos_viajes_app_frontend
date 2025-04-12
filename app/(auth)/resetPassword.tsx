@@ -1,24 +1,30 @@
-//react y react native
+// React & React Native Imports
 import React, { useEffect, useState } from "react";
 import { ImageBackground } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import Toast from "react-native-toast-message";
-//Componentes
-import PrimaryButton from "@/components/botones/Buttons";
+
+// Component Imports
+import PrimaryButton from "@/components/buttons/PrimaryButton";
 import StyledTextInput from "@/components/forms/StyledTextInput";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewInputs from "@/components/views/ViewInputs";
 import PaddingView from "@/components/views/PaddingView";
-import ViewContentContinue from "@/components/views/ViewContentContinue";
+import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import ViewForm from "@/components/views/ViewForm";
-//Hooks
+
+// Hook Imports
 import { useFormValidation } from "@/hooks/useFormValidation";
 import { useAuth } from "@/hooks/useAuth";
-//estilos y validaciones
+
+// Style Imports
 import globalStyles from "@/styles/global";
+
+// Utility Imports
 import { validations } from "@/utils/validations";
+
 
 
 

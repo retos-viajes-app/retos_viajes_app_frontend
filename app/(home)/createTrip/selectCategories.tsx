@@ -1,15 +1,22 @@
-import { View,Text } from "react-native";
-import StyledRadioButtonList from "@/components/forms/StyledRadioButtonList";
+// React & React Native Imports
+import { Text } from "react-native";
+import { useState } from "react";
+import { useRouter } from "expo-router";
+
+// Component Imports
+import StyledRadioButtonList from "@/components/forms/RadioButtonList";
 import PaddingView from "@/components/views/PaddingView";
-import ViewContentContinue from "@/components/views/ViewContentContinue";
+import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import ViewForm from "@/components/views/ViewForm";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewInputs from "@/components/views/ViewInputs";
-import PrimaryButton from "@/components/botones/Buttons";
-import { useEffect, useState } from "react";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
+
+// Hook Imports
 import { useTrip } from "@/hooks/useTrip";
-import { useRouter } from "expo-router";
-export default function MisionesCategoriesScreen() {
+
+
+export default function SelectCategoriesScreen() {
     const {selectedCategoriesId,setSelectedCategoriesId} = useTrip();
     const [error,setError] = useState<string | undefined>(undefined);
     const {categories} = useTrip();
@@ -19,7 +26,7 @@ export default function MisionesCategoriesScreen() {
             setError("Selecciona al menos dos categoría");
             return;
         }
-        router.push("/crearViaje/resumen");
+        router.push("/createTrip/summary");
         // Continuar a la siguiente pantalla
     }
 

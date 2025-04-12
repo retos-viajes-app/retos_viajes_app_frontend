@@ -1,17 +1,28 @@
-import PrimaryButton from "@/components/botones/Buttons";
+// React & React Native Imports
+import { View, Text, FlatList } from "react-native";
+import { useState } from "react";
+import { useRouter } from "expo-router";
+
+// Component Imports
+import PrimaryButton from "@/components/buttons/PrimaryButton";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import PaddingView from "@/components/views/PaddingView";
-import ViewContentContinue from "@/components/views/ViewContentContinue";
-import ViewForm from "@/components/views/ViewForm";
-import { useTrip } from "@/hooks/useTrip";
-import { View,Text, FlatList } from "react-native";
-import { Map,CalendarMinus2, Star } from 'lucide-react-native'
-import { Colors } from "@/constants/ColoresPropios";
-import globalStyles from "@/styles/global";
+import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import Divider from "@/components/Divider";
-import { useEffect, useState } from "react";
-import { useRouter } from "expo-router";
-export default function MisionesScreen() {
+
+// Hook Imports
+import { useTrip } from "@/hooks/useTrip";
+
+// Style Imports
+import globalStyles from "@/styles/global";
+
+// Utility Imports
+import { Colors } from "@/constants/ColoresPropios";
+
+// Icon Imports
+import { Map, CalendarMinus2, Star } from 'lucide-react-native';
+
+export default function SummaryScreen() {
     const {destinations, trip, selectedCategoriesId,categories,postTrip} = useTrip();
     const [error,setError] = useState<string | undefined>(undefined);
     const router = useRouter();
@@ -31,7 +42,7 @@ export default function MisionesScreen() {
         <View style={{gap:30}}>
             <TitleParagraph
                 title="¡Todo listo para tu aventura!"
-                paragraph="Este es el resumen de tu viaje:"
+                paragraph="Este es el summary de tu viaje:"
             />
             {error && <Text style={{ color: "red", padding:20 }}>{error}</Text> } 
             <View style={{gap:20}}>

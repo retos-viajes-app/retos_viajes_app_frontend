@@ -1,6 +1,10 @@
+// React & React Native Imports
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
+
+// Icon Imports
 import Svg, { Circle } from "react-native-svg";
+
 
 interface TripProgressCircleProps {
   startDate: Date;

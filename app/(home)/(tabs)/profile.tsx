@@ -1,9 +1,15 @@
-import {  View, Text, Button} from 'react-native';
+// React & React Native Imports
+import { View, Text, Button } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuth } from '@/hooks/useAuth';
+
+// Component Imports
 import { LoadingScreen } from '@/components/LoadingScreen';
 
-export default function TabTwoScreen() {
+// Hook Imports
+import { useAuth } from '@/hooks/useAuth';
+
+
+export default function ProfileScreen() {
   const router = useRouter();
   const {logout, user} = useAuth();
 
