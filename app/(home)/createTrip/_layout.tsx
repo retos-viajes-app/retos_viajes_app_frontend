@@ -3,7 +3,7 @@ import { Stack, useRouter } from "expo-router";
 import { TouchableOpacity } from "react-native";
 
 // Style Imports
-import { Colors } from "@/constants/ColoresPropios";
+import { Colors } from "@/constants/Colors";
 
 // Icon Imports
 import { ArrowLeft, X } from "lucide-react-native";

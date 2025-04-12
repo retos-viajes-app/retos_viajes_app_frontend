@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { TextInput, TextInputProps, StyleSheet, View, Text } from "react-native";
 
 // Utility Imports
-import { Colors } from "@/constants/ColoresPropios";
+import { Colors } from "@/constants/Colors";
 
 
 // Definimos las propiedades que acepta el componente, extendiendo los props de TextInput.

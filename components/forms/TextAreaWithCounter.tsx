@@ -6,7 +6,7 @@ import { View, TextInput, Text, StyleSheet } from "react-native";
 import globalStyles from "@/styles/global";
 
 // Utility Imports
-import { Colors } from "@/constants/ColoresPropios";
+import { Colors } from "@/constants/Colors";
 
 
 interface TextAreaWithCounterProps {

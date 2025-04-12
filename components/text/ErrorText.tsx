@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 
 // Utility Imports
-import { Colors } from '@/constants/ColoresPropios';
+import { Colors } from '@/constants/Colors';
 
 
 interface ErrorTextProps {

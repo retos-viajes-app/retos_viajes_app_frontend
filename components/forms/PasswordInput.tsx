@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { TextInput, TextInputProps, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 // Utility Imports
-import { Colors } from "@/constants/ColoresPropios";
+import { Colors } from "@/constants/Colors";
 
 // Icon Imports
 import { Eye, EyeOff } from "lucide-react-native";

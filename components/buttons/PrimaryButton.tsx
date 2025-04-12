@@ -6,7 +6,7 @@ import { TouchableOpacity, Text, StyleSheet, GestureResponderEvent } from 'react
 import globalStyles from '@/styles/global';
 
 // Utility Imports
-import { Colors } from '@/constants/ColoresPropios';
+import { Colors } from '@/constants/Colors';
 
 interface ButtonProps {
   title: string;

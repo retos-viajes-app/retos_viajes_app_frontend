@@ -9,7 +9,7 @@ import ViewInputs from "@/components/views/ViewInputs";
 import globalStyles from "@/styles/global";
 
 // Utility Imports
-import { Colors } from "@/constants/ColoresPropios";
+import { Colors } from "@/constants/Colors";
 
 // Icon Imports
 import { Ionicons } from "@expo/vector-icons";

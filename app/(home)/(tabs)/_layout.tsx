@@ -7,17 +7,13 @@ import { Tabs } from 'expo-router';
 import { HapticTab } from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 
-// Hook Imports
-import { useColorScheme } from '@/hooks/useColorScheme';
-
 // Utility Imports
-import { Colors } from '@/constants/ColoresPropios';
+import { Colors } from '@/constants/Colors';
 
 // Icon Imports
 import { House, UserRound, Hash, MessageCircleHeart } from 'lucide-react-native';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
   return (
     <>

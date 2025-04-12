@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 import { ScrollView } from "react-native";
-import {Colors} from "@/constants/ColoresPropios";
+import {Colors} from "@/constants/Colors";
 
 export default function AuthLayout() {
   return (

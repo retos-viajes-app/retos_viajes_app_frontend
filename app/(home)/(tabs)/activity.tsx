@@ -14,7 +14,7 @@ import { useAuth } from "@/hooks/useAuth";
 import globalStyles from "@/styles/global";
 
 // Utility Imports
-import { Colors } from "@/constants/ColoresPropios";
+import { Colors } from "@/constants/Colors";
 import { getCompletedChallengesSuggestions } from "@/services/completed_challenges_service";
 
 // Icon Imports

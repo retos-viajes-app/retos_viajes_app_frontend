@@ -5,27 +5,24 @@ import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity }
 // Component Imports
 import UserCard from "./UserCard";
 
-// Hook Imports
-import { useConnectUser } from "@/hooks/useConnectUser";
-
 // Style Imports
 import globalStyles from "@/styles/global";
 
 // Utility Imports
-import { Colors } from "@/constants/ColoresPropios";
+import { Colors } from "@/constants/Colors";
 
 // Model Imports
 import { UserWithConnectionStatus } from "@/models/userConnections";
 
 // Service Imports
-import { getUserSuggestions } from "@/services/user_connections_service";
+import { cancelConnectionRequest, getUserSuggestions, sendConnectionRequest } from "@/services/user_connections_service";
 
 // Third-Party Imports
 import Toast from "react-native-toast-message";
 
 
 const SuggestedUsers: React.FC = () => {
-  const [users, setUsers] = useState<UserWithConnectionStatus[]>([]);
+  const [suggestedUsers, setSuggestedUsers] = useState<UserWithConnectionStatus[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -33,7 +30,6 @@ const SuggestedUsers: React.FC = () => {
   const [hasMore, setHasMore] = useState(true);
 
   const [connectingUserIds, setConnectingUserIds] = useState<number[]>([]);
-  const { sendConnectionRequest, cancelConnectionRequest} = useConnectUser();
   const flatListRef = useRef<FlatList>(null);
 
   const addConnectingUserId = (userId: number) =>
@@ -48,59 +44,53 @@ const SuggestedUsers: React.FC = () => {
     userId: number,
     newStatus: UserWithConnectionStatus["connection_status"]
   ) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((u) =>
+    setSuggestedUsers((prevSuggestedUsers) =>
+      prevSuggestedUsers.map((u) =>
         u.id === userId ? { ...u, connection_status: newStatus } : u
       )
     );
   };
 
-  const fetchUsers = async (currentPage: number) => {
+  const fetchSuggestedUsers = async (currentPage: number) => {
     if ((loading && currentPage > 1) || !hasMore) return;
     setLoading(true);
-    try {
-      const response = await getUserSuggestions(currentPage);
-      const formattedUsers = response.users.map(
-        (user: UserWithConnectionStatus) => ({
-          ...user,
-          connection_status: "none" as "none",
-        })
-      );
-      setUsers((prevUsers: UserWithConnectionStatus[]) =>
-        currentPage === 1 ? formattedUsers : [...prevUsers, ...formattedUsers]
-      );
-      setHasMore(response.pagination.has_more);
-      setError(null);
-    } catch (error) {
-      setError("No se pudieron cargar los usuarios sugeridos");
-    } finally {
-      setLoading(false);
-      setInitialLoading(false);
-    }
+    const response = await getUserSuggestions(currentPage);
+
+    const formattedUsers = response.users.map(
+      (user: UserWithConnectionStatus) => ({
+        ...user,
+        connection_status: "none" as "none",
+      })
+    );
+    setSuggestedUsers((prevSuggestedUsers: UserWithConnectionStatus[]) =>
+      currentPage === 1 ? formattedUsers : [...prevSuggestedUsers, ...formattedUsers]
+    );
+    setHasMore(response.pagination.has_more);
+    setError(null);
+    setLoading(false);
+    setInitialLoading(false);
   };
 
   useEffect(() => {
-    fetchUsers(1);
+    fetchSuggestedUsers(1);
   }, []);
 
   const handleLoadMore = () => {
     if (!loading && hasMore) {
       const nextPage = page + 1;
       setPage(nextPage);
-      fetchUsers(nextPage);
+      fetchSuggestedUsers(nextPage);
     }
   };
   
 
-  const handleConnect = async (userId: number) => {
+  const handleConnectRequest = async (userId: number) => {
     if (isUserConnecting(userId)) return;
     addConnectingUserId(userId);
-    const previousStatus = users.find((u) => u.id === userId)?.connection_status;
     updateUserStatus(userId, "pending");
-    try {
-      await sendConnectionRequest(userId);
-    } catch (error : any) {
-       updateUserStatus(userId, previousStatus);
+    const {success, error} = await sendConnectionRequest(userId);
+    if (!success){
+       updateUserStatus(userId, "none");
        Toast.show({
          type: "error",
          text1: "Error",
@@ -115,20 +105,17 @@ const SuggestedUsers: React.FC = () => {
          "No se pudo completar la acción. Revisa tu conexión"
        );
        */
-    }finally{
-      removeConnectingUserId(userId);
     }
+    removeConnectingUserId(userId);
+   
   };
   const handleCancelRequest = async (userId: number) => {
     if (isUserConnecting(userId)) return;
     addConnectingUserId(userId);
-    const previousStatus = users.find((u) => u.id === userId)?.connection_status;
     updateUserStatus(userId, "none");
-    try {
-      await cancelConnectionRequest(userId);
-     
-    } catch (error : any) {
-      updateUserStatus(userId, previousStatus);
+    const {success, error} = await cancelConnectionRequest(userId);
+    if(!success){
+      updateUserStatus(userId, "pending");
       Toast.show({
         type: "error",
         text1: "Error",
@@ -143,21 +130,20 @@ const SuggestedUsers: React.FC = () => {
         error.message
       );
       */
-    } finally {
-      removeConnectingUserId(userId);
     }
+    removeConnectingUserId(userId);
   };
 
   const handleRetry = () => {
     setError(null);
     setPage(1);
-    fetchUsers(1);
+    fetchSuggestedUsers(1);
   };
 
   const renderItem = ({ item }: { item: UserWithConnectionStatus }) => (
     <UserCard
       user={item}
-      onConnect={() => item.id && handleConnect(item.id)}
+      onConnect={() => item.id && handleConnectRequest(item.id)}
       onCancelRequest={() => item.id && handleCancelRequest(item.id)}
     />
   );
@@ -190,7 +176,7 @@ const SuggestedUsers: React.FC = () => {
   }
 
   // Si no hay usuarios, mostrar mensaje
-  if (users.length === 0 && !loading) {
+  if (suggestedUsers.length === 0 && !loading) {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Conecta con otros viajeros</Text>
@@ -209,7 +195,7 @@ const SuggestedUsers: React.FC = () => {
 
       <FlatList
         ref={flatListRef}
-        data={users}
+        data={suggestedUsers}
         renderItem={renderItem}
         keyExtractor={(item) => item.id!.toString()}
         horizontal

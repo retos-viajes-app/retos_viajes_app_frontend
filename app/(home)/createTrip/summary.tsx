@@ -17,7 +17,7 @@ import { useTrip } from "@/hooks/useTrip";
 import globalStyles from "@/styles/global";
 
 // Utility Imports
-import { Colors } from "@/constants/ColoresPropios";
+import { Colors } from "@/constants/Colors";
 
 // Icon Imports
 import { Map, CalendarMinus2, Star } from 'lucide-react-native';

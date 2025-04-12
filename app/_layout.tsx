@@ -8,7 +8,6 @@ import { LoadingScreen } from '@/components/LoadingScreen';
 
 // Hook Imports
 import { useAuth } from '@/hooks/useAuth';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { useFonts } from 'expo-font';
 
 // Utility Imports
@@ -16,7 +15,6 @@ import Toast from 'react-native-toast-message';
 
 
 // Navigation Imports
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack, useRouter, useSegments, useLocalSearchParams } from 'expo-router';
 
 // Context Imports
@@ -33,7 +31,6 @@ import 'react-native-reanimated';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   
   // Cargar fuentes personalizadas
   const [loaded] = useFonts({
@@ -56,13 +53,11 @@ export default function RootLayout() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <AuthProvider>
-          <RootLayoutWithAuth />
-          <Toast />
-          <StatusBar style="auto" />
-        </AuthProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <RootLayoutWithAuth />
+        <Toast />
+        <StatusBar style="auto" />
+      </AuthProvider>
     </SafeAreaView>  );
 }
 

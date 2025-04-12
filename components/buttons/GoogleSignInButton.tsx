@@ -6,7 +6,7 @@ import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
 import globalStyles from "@/styles/global";
 
 // Utility Imports
-import { Colors } from "@/constants/ColoresPropios";
+import { Colors } from "@/constants/Colors";
 
 // Icon Imports
 import Svg, { Path } from "react-native-svg";

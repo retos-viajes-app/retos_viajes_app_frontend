@@ -6,7 +6,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import globalStyles from "@/styles/global";
 
 // Utility Imports
-import { Colors } from "@/constants/ColoresPropios";
+import { Colors } from "@/constants/Colors";
 import { getTimeAgo } from "@/utils/dateFormatter";
 
 // Icon Imports
