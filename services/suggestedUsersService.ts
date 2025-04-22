@@ -1,6 +1,6 @@
 
 import User from "@/models/user";
-import { UserWithConnectionStatus } from "@/models/userConnections";
+import { SuggestedUsersResponse, UserWithConnectionStatus } from "@/models/userConnections";
 import useApi from "@/utils/api";
 import { handleApiError } from "@/utils/errorHandler";
 const api = useApi();
@@ -36,10 +36,10 @@ export const cancelConnectionRequest = async (userId: number) => {
   
 };
 
-export const getUserSuggestions = async (
+export const getSuggestedUsers = async (
   page = 1,
   perPage = 10
-): Promise<UserSuggestionsResponse> => {
+): Promise<SuggestedUsersResponse> => {
   try {
     const response = await api.get("/connections/suggested", {
       params: {
@@ -47,7 +47,20 @@ export const getUserSuggestions = async (
         per_page: perPage
       },
     });
-    return response.data;
+    // Poner conexion status en none para todos los usuarios
+    const usersWithStatus = response.data.users.map((user: User) => ({
+      ...user,
+      connection_status: "none" as UserWithConnectionStatus["connection_status"],
+    }));
+
+    return {
+      users: usersWithStatus,
+      pagination: {
+        page: response.data.pagination.page,
+        per_page: response.data.pagination.per_page,
+        has_more: response.data.pagination.has_more,
+      },
+    };
   } catch (error) {
     // Devolver un objeto vacío para evitar errores en el componente
     return {

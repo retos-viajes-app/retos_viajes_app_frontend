@@ -10,11 +10,7 @@ import { Colors } from "@/constants/Colors";
 
 // Model Imports
 import { UserWithConnectionStatus } from "@/models/userConnections";
-
-// Icon Imports
-import { Feather } from '@expo/vector-icons';
-
-
+import ConnectButton from "./buttons/ConnectButton";
 
 interface UserCardProps {
   user: UserWithConnectionStatus;
@@ -61,53 +57,12 @@ const UserCard: React.FC<UserCardProps> = ({
           </Text>
         </View>
       </View>
-
-      {connection_status === "pending" ? (
-        <TouchableOpacity
-          style={[
-            styles.button,
-            { backgroundColor: Colors.colors.gray[100] },
-          ]}
-          onPress={onCancelRequest}
-        >
-          <>
-            <Feather name="clock" size={16} color={Colors.colors.gray[400]} />
-            <Text
-              style={[
-                globalStyles.mediumBodySemiBold,
-                { color: Colors.colors.gray[400] },
-              ]}
-            >
-              Pendiente
-            </Text>
-          </>
-          
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={[
-            styles.button,
-            { backgroundColor: Colors.colors.primary[400] },
-          ]}
-          onPress={onConnect}
-        >
-            <>
-              <Feather
-                name="user-plus"
-                size={16}
-                color={Colors.colors.primary[100]}
-              />
-              <Text
-                style={[
-                  globalStyles.mediumBodySemiBold,
-                  { color: Colors.colors.primary[100] },
-                ]}
-              >
-                Conectar
-              </Text>
-            </>
-        </TouchableOpacity>
-      )}
+      <ConnectButton
+        connectionStatus={connection_status} 
+        onConnect={onConnect}
+        onCancelRequest={onCancelRequest}
+      />
+      
     </View>
   );
 };

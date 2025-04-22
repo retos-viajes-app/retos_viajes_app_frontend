@@ -15,7 +15,7 @@ import globalStyles from "@/styles/global";
 
 // Utility Imports
 import { Colors } from "@/constants/Colors";
-import { getCompletedChallengesSuggestions } from "@/services/completed_challenges_service";
+import { getSuggestedCompletedChallenges } from "@/services/completedChallengesService";
 
 // Icon Imports
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -39,7 +39,7 @@ export default function ActivityScreen() {
       if ((loading && currentPage > 1) || !hasMore) return;
       setLoading(true);
       try {
-          const response = await getCompletedChallengesSuggestions(currentPage);
+          const response = await getSuggestedCompletedChallenges(currentPage);
           setCompletedChallengesPosts((prevCompletedChallengesPosts: CompletedChallenge[]) =>
               currentPage === 1 ? response.completed_challenges : [...prevCompletedChallengesPosts, ...response.completed_challenges]
           );

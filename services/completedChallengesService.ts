@@ -1,21 +1,9 @@
-import { CompletedChallenge } from "@/models/completedChallenge";
-import User from "@/models/user";
-import { UserWithConnectionStatus } from "@/models/userConnections";
+import  {CompletedChallengesPostsResponse }from "@/models/completedChallenge";
 import useApi from "@/utils/api";
-import { handleApiError } from "@/utils/errorHandler";
 
 const api = useApi();
 
-export interface CompletedChallengesPostsResponse {
-  completed_challenges: CompletedChallenge[];
-  pagination: {
-    page: number;
-    per_page: number;
-    has_more: boolean;
-  };
-}
-
-export const getCompletedChallengesSuggestions = async (
+export const getSuggestedCompletedChallenges = async (
   page = 1,
   perPage = 10
 ): Promise<CompletedChallengesPostsResponse> => {

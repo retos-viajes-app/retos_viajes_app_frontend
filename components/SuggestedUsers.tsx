@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from "react-native";
 
 // Component Imports
-import UserCard from "./UserCard";
+import UserCard from "@/components/UserCard";
 
 // Style Imports
 import globalStyles from "@/styles/global";
@@ -15,7 +15,7 @@ import { Colors } from "@/constants/Colors";
 import { UserWithConnectionStatus } from "@/models/userConnections";
 
 // Service Imports
-import { cancelConnectionRequest, getUserSuggestions, sendConnectionRequest } from "@/services/user_connections_service";
+import { cancelConnectionRequest, getSuggestedUsers, sendConnectionRequest } from "@/services/suggestedUsersService";
 
 // Third-Party Imports
 import Toast from "react-native-toast-message";
@@ -26,7 +26,6 @@ const SuggestedUsers: React.FC = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
 
   const [connectingUserIds, setConnectingUserIds] = useState<number[]>([]);
@@ -54,19 +53,12 @@ const SuggestedUsers: React.FC = () => {
   const fetchSuggestedUsers = async (currentPage: number) => {
     if ((loading && currentPage > 1) || !hasMore) return;
     setLoading(true);
-    const response = await getUserSuggestions(currentPage);
+    const response = await getSuggestedUsers(currentPage);
 
-    const formattedUsers = response.users.map(
-      (user: UserWithConnectionStatus) => ({
-        ...user,
-        connection_status: "none" as "none",
-      })
-    );
     setSuggestedUsers((prevSuggestedUsers: UserWithConnectionStatus[]) =>
-      currentPage === 1 ? formattedUsers : [...prevSuggestedUsers, ...formattedUsers]
+      currentPage === 1 ? response.users : [...prevSuggestedUsers, ...response.users]
     );
     setHasMore(response.pagination.has_more);
-    setError(null);
     setLoading(false);
     setInitialLoading(false);
   };
@@ -83,7 +75,6 @@ const SuggestedUsers: React.FC = () => {
     }
   };
   
-
   const handleConnectRequest = async (userId: number) => {
     if (isUserConnecting(userId)) return;
     addConnectingUserId(userId);
@@ -109,6 +100,7 @@ const SuggestedUsers: React.FC = () => {
     removeConnectingUserId(userId);
    
   };
+
   const handleCancelRequest = async (userId: number) => {
     if (isUserConnecting(userId)) return;
     addConnectingUserId(userId);
@@ -134,12 +126,6 @@ const SuggestedUsers: React.FC = () => {
     removeConnectingUserId(userId);
   };
 
-  const handleRetry = () => {
-    setError(null);
-    setPage(1);
-    fetchSuggestedUsers(1);
-  };
-
   const renderItem = ({ item }: { item: UserWithConnectionStatus }) => (
     <UserCard
       user={item}
@@ -155,21 +141,6 @@ const SuggestedUsers: React.FC = () => {
         <Text style={styles.title}>Conecta con otros viajeros</Text>
         <View>
           <ActivityIndicator size="large" color="#0066CC" />
-        </View>
-      </View>
-    );
-  }
-
-  // Mostrar mensaje de error si ocurre
-  if (error) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Conecta con otros viajeros</Text>
-        <View>
-          <Text>{error}</Text>
-          <TouchableOpacity onPress={handleRetry}>
-            <Text>Reintentar</Text>
-          </TouchableOpacity>
         </View>
       </View>
     );
@@ -227,7 +198,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 29,
     ...globalStyles.title,
-    color: Colors.colors.gray[500],
     textAlign: "left",
     marginBottom: 16, // Gap de 16 entre título y cards
   },
