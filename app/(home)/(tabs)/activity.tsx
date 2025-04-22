@@ -18,7 +18,7 @@ import { Colors } from "@/constants/Colors";
 import { getSuggestedCompletedChallenges } from "@/services/completedChallengesService";
 
 // Icon Imports
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { BellDot } from 'lucide-react-native';
 
 // Model Imports
 import { CompletedChallenge } from "@/models/completedChallenge";
@@ -95,8 +95,8 @@ export default function ActivityScreen() {
               No te pierdas nada
             </Text>
             <TouchableOpacity style={styles.notificationButton}>
-              <MaterialCommunityIcons
-                name="bell-badge-outline"
+              <BellDot
+                strokeWidth={2}
                 size={24}
                 color={Colors.colors.primary[100]}
               />

@@ -9,8 +9,7 @@ import globalStyles from '@/styles/global';
 import { Colors } from '@/constants/Colors';
 
 // Icon Imports
-import { Feather } from '@expo/vector-icons';
-
+import { UserPlus,Clock } from 'lucide-react-native';
 interface ButtonProps {
     connectionStatus: string;
     onConnect: () => void;
@@ -27,7 +26,7 @@ const ConnectButton: React.FC<ButtonProps> = ({ connectionStatus, onConnect, onC
               onPress={onCancelRequest}
             >
               <>
-                <Feather name="clock" size={16} color={Colors.colors.gray[400]} />
+                <Clock  strokeWidth={3} size={16} color={Colors.colors.gray[400]} />
                 <Text
                   style={[
                     globalStyles.mediumBodySemiBold,,
@@ -42,18 +41,19 @@ const ConnectButton: React.FC<ButtonProps> = ({ connectionStatus, onConnect, onC
             <TouchableOpacity
               style={[
                 styles.button,
+                { backgroundColor: Colors.colors.primary[400] },
               ]}
               onPress={onConnect}
             >
                 <>
-                  <Feather
-                    name="user-plus"
+                  <UserPlus 
+                    strokeWidth={3}
                     size={16}
                     color={Colors.colors.primary[100]}
                   />
                   <Text
                     style={[
-                      globalStyles.mediumBodySemiBold,
+                      globalStyles.mediumBodySemiBold, {color: Colors.colors.primary[100]},
                     ]}
                   >
                     Conectar
