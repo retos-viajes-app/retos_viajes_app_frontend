@@ -1,7 +1,7 @@
-import { Category } from "./category"
-import { Destination } from "./destination";
+import Category from "@/models/category"
+import Destination from "@/models/destination";
 
-export interface Challenge {
+export default interface Challenge {
   id?: number;
   category?: Category;
   destination?: Destination;

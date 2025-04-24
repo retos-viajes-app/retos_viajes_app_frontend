@@ -1,28 +1,37 @@
+// React & React Native Imports
 import React, { createContext, useState, useEffect, ReactNode } from "react";
+
+// Expo & External Library Imports
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
 import { decode as decodeBase64 } from "base-64";
+
+// Model Imports
 import User from "@/models/user";
-import { 
-  saveAccessToken, 
-  saveRefreshToken, 
-  saveUser, 
-  getUser, 
-  saveEmail, 
+
+// Utility Imports
+import {
+  saveAccessToken,
+  saveRefreshToken,
+  saveUser,
+  getUser,
+  saveEmail,
   getEmail,
-  getAccessToken
+  getAccessToken,
 } from "@/utils/secureTokens";
 import useApi from "@/utils/api";
 import { handleApiError } from "@/utils/errorHandler";
 
-
 //Ahora mismo está usando backend cogido de constantes
 WebBrowser.maybeCompleteAuthSession();
 
-const webClientId = "441443892104-tjh14gkg69fa8ngea15cpau54mrdhbrj.apps.googleusercontent.com";
-const iosClientId = "441443892104-fu2htqbjkkf7gf84mm2f9em24.apps.googleusercontent.com";
-const androidClientId = "441443892104-q9e2hmjhrio3ukp1ed0m4edle1bhddut.apps.googleusercontent.com";
+const webClientId =
+  "441443892104-tjh14gkg69fa8ngea15cpau54mrdhbrj.apps.googleusercontent.com";
+const iosClientId =
+  "441443892104-fu2htqbjkkf7gf84mm2f9em24.apps.googleusercontent.com";
+const androidClientId =
+  "441443892104-q9e2hmjhrio3ukp1ed0m4edle1bhddut.apps.googleusercontent.com";
 
 const redirectUri = AuthSession.makeRedirectUri({ scheme: "myapp" });
 
@@ -59,9 +68,13 @@ interface AuthContextType {
   ) => Promise<{ success: boolean; error?: string }>;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const api = useApi();
@@ -104,8 +117,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           headers: { Authorization: `Bearer ${idToken}` },
         }
       );
-      
-      if(userTokens.access_token && userTokens.refresh_token) {
+
+      if (userTokens.access_token && userTokens.refresh_token) {
         await saveAccessToken(userTokens.access_token);
         await saveRefreshToken(userTokens.refresh_token);
         const email = decodeEmailJwt(idToken);
@@ -115,8 +128,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       } else {
         console.error("Tokens no válidos en la respuesta");
       }
-    }catch (error) {
-      console.error("Error en la verificación del token:", handleApiError(error, "No se pudo verificar el token"));
+    } catch (error) {
+      console.error(
+        "Error en la verificación del token:",
+        handleApiError(error, "No se pudo verificar el token")
+      );
     }
   };
 
@@ -125,8 +141,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const email = await getEmail();
       if (!email) return console.error("No se encontró el email");
 
-      const response = await api.get<User>(`/users/${email}`, {
-      });
+      const response = await api.get<User>(`/users/${email}`, {});
 
       const userData = response.data;
       userData.is_verified = true;
@@ -153,8 +168,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       await saveRefreshToken(userTokens.refresh_token);
 
       // Obtener datos del usuario tras login exitoso
-      const { data: userData } = await api.get<User>(`/users/${userid}`, {
-      });
+      const { data: userData } = await api.get<User>(`/users/${userid}`, {});
 
       await saveUser(userData);
       setUser(userData);
@@ -180,11 +194,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       await saveRefreshToken(userTokens.refresh_token);
 
       // Obtener datos del usuario tras el registro
-      const { data: userData } = await api.get<User>(`/users/${email}`, {
-      });
-      
+      const { data: userData } = await api.get<User>(`/users/${email}`, {});
+
       setUser(userData);
-  
+
       await saveUser(userData);
       return { success: true };
     } catch (error) {
@@ -196,14 +209,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = async () => {
-     await Promise.all([
-       saveUser(null),
-       saveAccessToken(""),
-       saveRefreshToken(""),
-     ]);
+    await Promise.all([
+      saveUser(null),
+      saveAccessToken(""),
+      saveRefreshToken(""),
+    ]);
     setUser(null);
   };
-
 
   const finishRegister = async (
     username: string,
@@ -216,18 +228,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       const updatedUserInfo = { ...user, username, bio, name };
 
-      await api.put(`/users/${user.email}`, updatedUserInfo, {
-      });
+      await api.put(`/users/${user.email}`, updatedUserInfo, {});
 
       setUser(updatedUserInfo);
-  
+
       await saveUser(updatedUserInfo);
 
       return { success: true };
     } catch (error) {
       return {
         success: false,
-        error: handleApiError( error, "Error inesperado al completar el perfil."),
+        error: handleApiError(
+          error,
+          "Error inesperado al completar el perfil."
+        ),
       };
     }
   };
@@ -237,53 +251,64 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const response = await api.post("/confirmation-code/request", { email });
       const savedUser = await getUser();
-      if(response.data.success){
-        const userData : User = {
+      if (response.data.success) {
+        const userData: User = {
           id: mode === "register" ? savedUser?.id : undefined,
           email: email,
           is_verified: false,
-          verification_type: mode ==="passwordReset" ? "passwordReset" : "register",
-        }; // Save only the email    
+          verification_type:
+            mode === "passwordReset" ? "passwordReset" : "register",
+        }; // Save only the email
         await saveUser(userData);
         setUser(userData);
       }
-      return { success: response.data.success,};
+      return { success: response.data.success };
     } catch (error: any) {
-      return{
+      return {
         success: false,
         error: handleApiError(error, "Error al solicitar el código"),
-      }
+      };
     }
   };
 
-  const verifyConfirmationCode = async (email: string, code: string, isRegistration = false) => {
+  const verifyConfirmationCode = async (
+    email: string,
+    code: string,
+    isRegistration = false
+  ) => {
     try {
-      const response = await api.post("/confirmation-code/verify", { email, code, is_registration: isRegistration });
-      if(response.data.success){
-        if(user){
-            const updatedUserInfo : User = {
-              ...user,
-              is_verified: true,
-              verification_type: isRegistration ? "register" : "passwordReset",
-            } ;
+      const response = await api.post("/confirmation-code/verify", {
+        email,
+        code,
+        is_registration: isRegistration,
+      });
+      if (response.data.success) {
+        if (user) {
+          const updatedUserInfo: User = {
+            ...user,
+            is_verified: true,
+            verification_type: isRegistration ? "register" : "passwordReset",
+          };
 
-            await saveUser(updatedUserInfo); // Guardar en el storage
-            setUser(updatedUserInfo);
+          await saveUser(updatedUserInfo); // Guardar en el storage
+          setUser(updatedUserInfo);
         }
       }
-      return { success: response.data.success, };
+      return { success: response.data.success };
     } catch (error: any) {
-      return{
+      return {
         success: false,
         error: handleApiError(error, "Error al verificar el código"),
-      }
+      };
     }
-  }
+  };
 
   const resetPassword = async (user: User, new_password: string) => {
     try {
-      const response = await api.post(`/users/reset-password/${user.email}`, {new_password });
-      if(response.data.success){
+      const response = await api.post(`/users/resetPassword/${user.email}`, {
+        new_password,
+      });
+      if (response.data.success) {
         await Promise.all([
           saveUser(null),
           saveAccessToken(""),
@@ -291,18 +316,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         ]);
         setUser(null);
       }
-      return { success: true,};
+      return { success: true };
     } catch (error: any) {
-      return{
+      return {
         success: false,
         error: handleApiError(error, "Error al solicitar el código"),
-      }
+      };
     }
-  }
+  };
   const decodeEmailJwt = (token: string): string | null => {
     try {
       const base64Url = token.split(".")[1];
-      const jsonPayload = JSON.parse(decodeBase64(base64Url.replace(/-/g, "+").replace(/_/g, "/")));
+      const jsonPayload = JSON.parse(
+        decodeBase64(base64Url.replace(/-/g, "+").replace(/_/g, "/"))
+      );
       return jsonPayload.email || null;
     } catch (error) {
       console.error("Error al decodificar el id_token:", error);

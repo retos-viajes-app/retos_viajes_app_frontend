@@ -8,9 +8,9 @@ import { AuthContext } from "@/context/AuthContext";
 import DividerWithText from "@/components/Divider";
 import StyledTextInput from "@/components/forms/StyledTextInput";
 import PaddingView from "@/components/views/PaddingView";
-import GoogleSignInButton from "@/components/botones/GoogleSignInButton";
-import PrimaryButton from "@/components/botones/Buttons";
-import ViewContentContinue from "@/components/views/ViewContentContinue";
+import GoogleSignInButton from "@/components/buttons/GoogleSignInButton";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
+import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import ViewForm from "@/components/views/ViewForm";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewInputs from "@/components/views/ViewInputs";
@@ -67,7 +67,7 @@ const RegisterScreen = () => {
       return;
     }
     setLoading(false); 
-    router.push(`/verify-confirmation-code?mode=register&&email=${email}`);
+    router.push(`/verifyConfirmationCode?mode=register&&email=${email}`);
     
   };
 

@@ -1,14 +1,13 @@
+// React & React Native Imports
 import React, { useState } from "react";
-import {
-  TextInput,
-  TextInputProps,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { TextInput, TextInputProps, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+
+// Utility Imports
+import { Colors } from "@/constants/Colors";
+
+// Icon Imports
 import { Eye, EyeOff } from "lucide-react-native";
-import { Colors } from "@/constants/ColoresPropios";
+
 
 interface CustomTextInputProps extends TextInputProps {
   errorMessage?: string;

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "@/constants/ColoresPropios";
+import { Colors } from "@/constants/Colors";
 const globalStyles = StyleSheet.create({
     
     mediumBodySemiBold: {

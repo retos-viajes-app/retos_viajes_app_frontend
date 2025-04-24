@@ -1,18 +1,16 @@
-
-import { Colors } from "@/constants/ColoresPropios";
-import { UserWithConnectionStatus } from "@/models/userConnections";
-import globalStyles from "@/styles/global";
-import { Feather } from '@expo/vector-icons';
+// React & React Native Imports
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 
+// Style Imports
+import globalStyles from "@/styles/global";
+
+// Utility Imports
+import { Colors } from "@/constants/Colors";
+
+// Model Imports
+import { UserWithConnectionStatus } from "@/models/userConnections";
+import ConnectButton from "./buttons/ConnectButton";
 
 interface UserCardProps {
   user: UserWithConnectionStatus;
@@ -59,53 +57,12 @@ const UserCard: React.FC<UserCardProps> = ({
           </Text>
         </View>
       </View>
-
-      {connection_status === "pending" ? (
-        <TouchableOpacity
-          style={[
-            styles.button,
-            { backgroundColor: Colors.colors.gray[100] },
-          ]}
-          onPress={onCancelRequest}
-        >
-          <>
-            <Feather name="clock" size={16} color={Colors.colors.gray[400]} />
-            <Text
-              style={[
-                globalStyles.mediumBodySemiBold,
-                { color: Colors.colors.gray[400] },
-              ]}
-            >
-              Pendiente
-            </Text>
-          </>
-          
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={[
-            styles.button,
-            { backgroundColor: Colors.colors.primary[400] },
-          ]}
-          onPress={onConnect}
-        >
-            <>
-              <Feather
-                name="user-plus"
-                size={16}
-                color={Colors.colors.primary[100]}
-              />
-              <Text
-                style={[
-                  globalStyles.mediumBodySemiBold,
-                  { color: Colors.colors.primary[100] },
-                ]}
-              >
-                Conectar
-              </Text>
-            </>
-        </TouchableOpacity>
-      )}
+      <ConnectButton
+        connectionStatus={connection_status} 
+        onConnect={onConnect}
+        onCancelRequest={onCancelRequest}
+      />
+      
     </View>
   );
 };

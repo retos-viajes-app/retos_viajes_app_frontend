@@ -1,7 +1,13 @@
+// React & React Native Imports
 import React from "react";
 import { View, TextInput, Text, StyleSheet } from "react-native";
+
+// Style Imports
 import globalStyles from "@/styles/global";
-import { Colors } from "@/constants/ColoresPropios";
+
+// Utility Imports
+import { Colors } from "@/constants/Colors";
+
 
 interface TextAreaWithCounterProps {
   bio: string;

@@ -1,22 +1,36 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack, useRouter, useSegments, Slot, useLocalSearchParams } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
+// React & React Native Imports
+import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
-import 'react-native-reanimated';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { AuthProvider } from "@/context/AuthContext";
-import { useAuth } from '@/hooks/useAuth';
-import { LoadingScreen } from '@/components/LoadingScreen';
-import Toast from 'react-native-toast-message';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+// Component Imports
+import { LoadingScreen } from '@/components/LoadingScreen';
+
+// Hook Imports
+import { useAuth } from '@/hooks/useAuth';
+import { useFonts } from 'expo-font';
+
+// Utility Imports
+import Toast from 'react-native-toast-message';
+
+
+// Navigation Imports
+import { Stack, useRouter, useSegments, useLocalSearchParams } from 'expo-router';
+
+// Context Imports
+import { AuthProvider } from "@/context/AuthContext";
+
+// Splash Screen Imports
+import * as SplashScreen from 'expo-splash-screen';
+
+// Reanimated Imports
+import 'react-native-reanimated';
+
 
 // Evita que la pantalla de carga desaparezca antes de tiempo
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   
   // Cargar fuentes personalizadas
   const [loaded] = useFonts({
@@ -39,13 +53,11 @@ export default function RootLayout() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <AuthProvider>
-          <RootLayoutWithAuth />
-          <Toast />
-          <StatusBar style="auto" />
-        </AuthProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <RootLayoutWithAuth />
+        <Toast />
+        <StatusBar style="auto" />
+      </AuthProvider>
     </SafeAreaView>  );
 }
 
@@ -61,16 +73,16 @@ function RootLayoutWithAuth() {
     const currentRoute = segments[1];
     
     // Rutas públicas que no requieren autenticación
-    const publicRoutes = ["login", "register", "request-password-reset"];
+    const publicRoutes = ["login", "register", "requestConfirmationCode"];
     
     // Ruta de verificación de código
-    const verifyCodeRoute = "verify-confirmation-code";
+    const verifyCodeRoute = "verifyConfirmationCode";
     
     // Ruta para completar registro
-    const endRegisterRoute = "endRegister";
+    const completeRegisterRoute = "completeRegister";
     
     // Ruta para resetear password
-    const resetPasswordRoute = "reset-password";
+    const resetPasswordRoute = "resetPassword";
 
     // CASO 1: Usuario no está autenticado (null)
     if (!user) {
@@ -85,8 +97,8 @@ function RootLayoutWithAuth() {
     if (user && !user.username) {
       // Caso 2.1: Verificado para registro - debe completar sus datos
       if (user.is_verified && user.verification_type === "register") {
-        if (currentRoute !== endRegisterRoute) {
-          router.replace("/endRegister");
+        if (currentRoute !== completeRegisterRoute) {
+          router.replace("/completeRegister");
         }
         return;
       }
@@ -94,7 +106,7 @@ function RootLayoutWithAuth() {
       // Caso 2.2: Verificado para reset de password
       if (user.is_verified && user.verification_type === "passwordReset") {
         if (currentRoute !== resetPasswordRoute) {
-          router.replace("/reset-password");
+          router.replace("/resetPassword");
         }
         return;
       }
@@ -103,7 +115,7 @@ function RootLayoutWithAuth() {
       if (currentRoute !== verifyCodeRoute) {
         // Verificar si es registro o reset de contraseña
         const mode = user.verification_type === "passwordReset" ? "passwordReset" : "register";
-        router.replace(`/verify-confirmation-code?mode=${mode}&email=${user.email}`);
+        router.replace(`/verifyConfirmationCode?mode=${mode}&email=${user.email}`);
       }
       return;
     }
@@ -113,7 +125,7 @@ function RootLayoutWithAuth() {
       // Si intenta acceder a rutas de auth, redirigirlo a home
       if (publicRoutes.includes(currentRoute!) || 
           currentRoute === verifyCodeRoute || 
-          currentRoute === endRegisterRoute || 
+          currentRoute === completeRegisterRoute || 
           currentRoute === resetPasswordRoute) {
         router.replace("/");
       }
