@@ -67,7 +67,7 @@ export default  function RegisterScreen() {
       return;
     }
 
-    const { success, error } = await finishRegister(username, bio, user!, name);
+    const { success, error } = await finishRegister(username, bio, name);
 
     if (!success) {
       setErrorMessage(error || "Hubo un problema al guardar el perfil.");
