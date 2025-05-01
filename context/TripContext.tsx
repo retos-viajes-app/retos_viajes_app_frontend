@@ -21,7 +21,7 @@ import {
 import { handleApiError } from "@/utils/errorHandler";
 import { getUser } from "@/utils/secureTokens";
 
-interface ViajeContextType {
+interface TripContextType {
   trip?: Trip | null;
   currentTrip: Trip | undefined;
   setTrip: (trip: Trip | null) => void;
@@ -32,7 +32,7 @@ interface ViajeContextType {
   postTrip: (trip: Trip) => Promise<{ success: boolean; error?: string }>;
 }
 
-const TripContext = createContext<ViajeContextType | undefined>(undefined);
+const TripContext = createContext<TripContextType | undefined>(undefined);
 
 export const TripProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -124,14 +124,10 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
   //Ahora mismo solo devuelve un viaje, el primero que encuentra
   const getTrips = async () => {
     try {
-      // const cachedTrip = await getCachedTrip();
-      // if (cachedTrip) {
-      //   setCurrentTrip(cachedTrip);
-      // }
 
       const user = await getUser();
 
-      const response = await api.get<Trip[]>(`trips/${user?.id}`);
+      const response = await api.get<Trip[]>(`users/${user?.id}/trips/`);
       if (response.data.length > 0) {
         setCurrentTrip(response.data[0]); // Guardar el primer viaje en el estado
         await saveTrip(response.data[0]);

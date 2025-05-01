@@ -57,12 +57,10 @@ interface AuthContextType {
     mode: string
   ) => Promise<{ success: boolean; error?: string }>;
   verifyConfirmationCode: (
-    email: string,
     code: string,
     isRegistration: boolean
   ) => Promise<{ success: boolean; error?: string }>;
   resetPassword: (
-    user: User,
     newPassword: string
   ) => Promise<{ success: boolean; error?: string }>;
 }
@@ -75,6 +73,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [resetEmail, setResetEmail] = useState<string | null>(null);
+  const [code, setCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const api = useApi();
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -136,8 +136,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     try {
       // Petición de login
       const { data: authResponse } = await api.post("/login", {
-        userid,
-        password,
+        "userid":userid,
+        "password": password,
       });
 
      await Promise.all([
@@ -218,8 +218,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   //Confirmation codes
   const requestConfirmationCode = async (email: string, mode: string) => {
     try {
+      if(mode == "register"){
+        email = user?.email! ;
+      }
       const response = await api.post(`/confirmation_codes/request?type=${mode}`, { email });
-      return { success: response.data.success };
+      if(mode == "passwordReset"){
+        setResetEmail(email);
+      }
+      return { success: true };
     } catch (error: any) {
       return {
         success: false,
@@ -229,26 +235,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const verifyConfirmationCode = async (
-    email: string,
     code: string,
     isRegistration = false
   ) => {
     try {
       const response = await api.post("/confirmation_codes/verify", {
-        email,
+        email: isRegistration ? user?.email : resetEmail,
         code,
         is_registration: isRegistration,
       });
-      if (response.data.success) {
-        if (isRegistration) {
+      if (isRegistration) {
           const updatedUserInfo: User = {
             ...user,
             is_verified: true,
           };
           await saveUser(updatedUserInfo); // Guardar en el storage
           setUser(updatedUserInfo);
-        }
+      }else {
+          setCode(code);
       }
+      
       return { success: true };
     } catch (error: any) {
       return {
@@ -258,30 +264,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const resetPassword = async (user: User, new_password: string) => {
+  const resetPassword = async ( new_password: string) => {
     try {
-      const response = await api.post(`/users/resetPassword/${user.email}`, {
+      console.log("resetEmail", resetEmail);
+      console.log("code", code);
+      const response = await api.post(`/users/reset-password/${resetEmail}`, {
         new_password,
+        code,
       });
       
+      setCode(null);
+      setResetEmail(null);
       return { success: true };
     } catch (error: any) {
       return {
         success: false,
         error: handleApiError(error, "Error al reestablecer la contraseña"),
       };
-    }
-  };
-  const decodeEmailJwt = (token: string): string | null => {
-    try {
-      const base64Url = token.split(".")[1];
-      const jsonPayload = JSON.parse(
-        decodeBase64(base64Url.replace(/-/g, "+").replace(/_/g, "/"))
-      );
-      return jsonPayload.email || null;
-    } catch (error) {
-      console.error("Error al decodificar el id_token:", error);
-      return null;
     }
   };
 

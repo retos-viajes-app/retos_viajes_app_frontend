@@ -1,7 +1,7 @@
 // React & React Native Imports
 import React, { useEffect, useState } from "react";
 import { ImageBackground } from "react-native";
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useRouter} from "expo-router";
 import Toast from "react-native-toast-message";
 
 // Component Imports
@@ -31,7 +31,6 @@ import { validations } from "@/utils/validations";
 export default function ResetPasswordScreen() {
   const router = useRouter();
   const { user } = useAuth();
-  const params = useLocalSearchParams();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -49,7 +48,6 @@ export default function ResetPasswordScreen() {
       });
     }
   }, []);
-  const code = params.code?.toString() || "";
   const { errors, validateForm } = useFormValidation({
     newPassword: validations.password,
     confirmPassword: (value: string) => {
@@ -67,7 +65,7 @@ export default function ResetPasswordScreen() {
       return;
     }
 
-    const {success,error} = await resetPassword(user!, newPassword);
+    const {success,error} = await resetPassword(newPassword);
 
     if (success) {
       setLoading(false);

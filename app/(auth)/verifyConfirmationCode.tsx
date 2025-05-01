@@ -53,7 +53,7 @@ export default function verifyConfirmationCodeScreen() {
       setLoading(false);
       return;
     }
-    const {success, error} = await verifyConfirmationCode(email, code, mode === "register");
+    const {success, error} = await verifyConfirmationCode(code, mode === "register");
 
     if(success){
       setLoading(false); 
@@ -61,12 +61,7 @@ export default function verifyConfirmationCodeScreen() {
         console.log("register");
         router.replace("/completeRegister");
       } else {
-        router.push({
-          pathname: "/resetPassword",
-          params: {
-            code: code
-          }
-        });
+        router.push("/resetPassword");
       }
        
     } else {
