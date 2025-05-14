@@ -27,7 +27,7 @@ export default function SummaryScreen() {
     const [error,setError] = useState<string | undefined>(undefined);
     const router = useRouter();
     const currenDestination = destinations.find((destination) => destination.id === trip?.destination_id);
-    const selectedCategories = categories.filter((category) => selectedCategoriesId.includes(category.id.toString()));
+    const selectedCategories = categories.filter((category) => selectedCategoriesId.includes(category.id!.toString()));
     const handleContinue = async () => {
         const {success,error} = await postTrip(trip!);
         if(success){

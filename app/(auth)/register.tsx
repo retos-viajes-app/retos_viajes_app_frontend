@@ -55,7 +55,8 @@ const RegisterScreen = () => {
     const { success, error } = await register(email, password);
 
     if (!success) {
-      setErrorMessage(error || "Hubo un problema con el registro.");
+      console.log("Error en el registro:", error);
+      setErrorMessage( "Hubo un problema con el registro.");
       setLoading(false); 
       return;
     }
@@ -67,7 +68,7 @@ const RegisterScreen = () => {
       return;
     }
     setLoading(false); 
-    router.push(`/verifyConfirmationCode?mode=register&&email=${email}`);
+    router.push("/verifyConfirmationCode?mode=register");
     
   };
 

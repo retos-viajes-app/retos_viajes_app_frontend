@@ -11,17 +11,6 @@ interface FormErrors {
 export const useFormValidation = (validationRules: ValidationRules) => {
   const [errors, setErrors] = useState<FormErrors>({});
 
-  /* Se podria usar para ir validando campo por campo conforme el usuario va escribiendo
-
-  const validateField = (field: string, value: string) => {
-    const error = validationRules[field](value);
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [field]: error || "",
-    }));
-    return !error; // Retorna true si no hay error
-  };*/
-
   const validateForm = (values: { [key: string]: string }) => {
     const newErrors: FormErrors = {};
     let isValid = true;

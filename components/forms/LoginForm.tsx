@@ -67,12 +67,13 @@ const LoginForm = () => {
 
 
     if (!success) {
-      setErrorMessage(error || "Hubo un problema con el login.");
+      console.log("Error en el login:", error);
+      setErrorMessage("Hubo un problema con el login.");
       setLoading(false); 
       return;
     }
     setLoading(false);
-    router.replace("/"); // Redirige después de iniciar sesión
+    router.replace("/"); 
   };
 
   return (

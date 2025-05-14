@@ -50,7 +50,6 @@ interface AuthContextType {
   finishRegister: (
     username: string,
     bio: string,
-    user: User,
     name: string
   ) => Promise<{ success: boolean; error?: string }>;
   requestConfirmationCode: (
@@ -58,12 +57,10 @@ interface AuthContextType {
     mode: string
   ) => Promise<{ success: boolean; error?: string }>;
   verifyConfirmationCode: (
-    email: string,
     code: string,
     isRegistration: boolean
   ) => Promise<{ success: boolean; error?: string }>;
   resetPassword: (
-    user: User,
     newPassword: string
   ) => Promise<{ success: boolean; error?: string }>;
 }
@@ -76,6 +73,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [resetEmail, setResetEmail] = useState<string | null>(null);
+  const [code, setCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const api = useApi();
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -99,35 +98,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     if (response?.type === "success") {
-      handleToken(response.params.id_token);
+      handleGoogleToken(response.params.id_token);
     }
   }, [response]);
 
-  const handleToken = async (idToken: string | undefined) => {
+  const handleGoogleToken = async (idToken: string | undefined) => {
     if (!idToken) {
       console.error("No se recibió ID token");
       return;
     }
 
     try {
-      const { data: userTokens } = await api.post(
+      const { data: authResponse } = await api.post(
         "/verify-google-token",
         {},
         {
           headers: { Authorization: `Bearer ${idToken}` },
         }
       );
-
-      if (userTokens.access_token && userTokens.refresh_token) {
-        await saveAccessToken(userTokens.access_token);
-        await saveRefreshToken(userTokens.refresh_token);
-        const email = decodeEmailJwt(idToken);
-        if (email) await saveEmail(email);
-
-        await fetchUserDetails(userTokens.access_token);
-      } else {
-        console.error("Tokens no válidos en la respuesta");
-      }
+      await Promise.all([
+        saveAccessToken(authResponse.tokens.access_token),
+        saveRefreshToken(authResponse.tokens.refresh_token),
+        saveUser(authResponse.user),
+      ]);
+       setUser(authResponse.user);
+       return { success: true };
     } catch (error) {
       console.error(
         "Error en la verificación del token:",
@@ -136,42 +131,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const fetchUserDetails = async (accessToken: string) => {
-    try {
-      const email = await getEmail();
-      if (!email) return console.error("No se encontró el email");
-
-      const response = await api.get<User>(`/users/${email}`, {});
-
-      const userData = response.data;
-      userData.is_verified = true;
-      userData.verification_type = "register";
-      await saveUser(userData);
-      setUser(userData);
-    } catch (error) {
-      console.error(
-        "Error al obtener los detalles del usuario:",
-        handleApiError(error, "No se pudo obtener el usuario")
-      );
-    }
-  };
 
   const login = async (userid: string, password: string) => {
     try {
       // Petición de login
-      const { data: userTokens } = await api.post("/login", {
-        userid,
-        password,
+      const { data: authResponse } = await api.post("/login", {
+        "userid":userid,
+        "password": password,
       });
 
-      await saveAccessToken(userTokens.access_token);
-      await saveRefreshToken(userTokens.refresh_token);
+     await Promise.all([
+       saveAccessToken(authResponse.tokens.access_token),
+       saveRefreshToken(authResponse.tokens.refresh_token),
+       saveUser(authResponse.user),
+     ]);
 
-      // Obtener datos del usuario tras login exitoso
-      const { data: userData } = await api.get<User>(`/users/${userid}`, {});
-
-      await saveUser(userData);
-      setUser(userData);
+      setUser(authResponse.user);
 
       return { success: true };
     } catch (error) {
@@ -185,20 +160,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const register = async (email: string, password: string) => {
     try {
       // Petición de registro
-      const { data: userTokens } = await api.post("/register", {
+      const { data: authResponse } = await api.post("/register", {
         email,
         password,
       });
 
-      await saveAccessToken(userTokens.access_token);
-      await saveRefreshToken(userTokens.refresh_token);
+      await Promise.all([
+        saveAccessToken(authResponse.tokens.access_token),
+        saveRefreshToken(authResponse.tokens.refresh_token),
+        saveUser(authResponse.user),
+      ]);
 
-      // Obtener datos del usuario tras el registro
-      const { data: userData } = await api.get<User>(`/users/${email}`, {});
-
-      setUser(userData);
-
-      await saveUser(userData);
+      setUser(authResponse.user);
+      
       return { success: true };
     } catch (error) {
       return {
@@ -220,19 +194,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const finishRegister = async (
     username: string,
     bio: string,
-    user: User,
     name: string
   ) => {
     try {
-      const accessToken = await getAccessToken();
-
       const updatedUserInfo = { ...user, username, bio, name };
 
-      await api.put(`/users/${user.email}`, updatedUserInfo, {});
-
-      setUser(updatedUserInfo);
-
+      const updatedUser = await api.put(`/users/${user!.id}`, updatedUserInfo, {});
       await saveUser(updatedUserInfo);
+      setUser(updatedUserInfo);
 
       return { success: true };
     } catch (error) {
@@ -249,72 +218,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   //Confirmation codes
   const requestConfirmationCode = async (email: string, mode: string) => {
     try {
-      const response = await api.post("/confirmation-code/request", { email });
-      const savedUser = await getUser();
-      if (response.data.success) {
-        const userData: User = {
-          id: mode === "register" ? savedUser?.id : undefined,
-          email: email,
-          is_verified: false,
-          verification_type:
-            mode === "passwordReset" ? "passwordReset" : "register",
-        }; // Save only the email
-        await saveUser(userData);
-        setUser(userData);
+      if(mode == "register"){
+        email = user?.email! ;
       }
-      return { success: response.data.success };
-    } catch (error: any) {
-      return {
-        success: false,
-        error: handleApiError(error, "Error al solicitar el código"),
-      };
-    }
-  };
-
-  const verifyConfirmationCode = async (
-    email: string,
-    code: string,
-    isRegistration = false
-  ) => {
-    try {
-      const response = await api.post("/confirmation-code/verify", {
-        email,
-        code,
-        is_registration: isRegistration,
-      });
-      if (response.data.success) {
-        if (user) {
-          const updatedUserInfo: User = {
-            ...user,
-            is_verified: true,
-            verification_type: isRegistration ? "register" : "passwordReset",
-          };
-
-          await saveUser(updatedUserInfo); // Guardar en el storage
-          setUser(updatedUserInfo);
-        }
-      }
-      return { success: response.data.success };
-    } catch (error: any) {
-      return {
-        success: false,
-        error: handleApiError(error, "Error al verificar el código"),
-      };
-    }
-  };
-
-  const resetPassword = async (user: User, new_password: string) => {
-    try {
-      const response = await api.post(`/users/resetPassword/${user.email}`, {
-        new_password,
-      });
-      if (response.data.success) {
-        await Promise.all([
-          saveUser(null),
-          saveAccessToken(""),
-          saveRefreshToken(""),
-        ]);
-        setUser(null);
+      const response = await api.post(`/confirmation_codes/request?type=${mode}`, { email });
+      if(mode == "passwordReset"){
+        setResetEmail(email);
       }
       return { success: true };
     } catch (error: any) {
@@ -324,16 +233,54 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       };
     }
   };
-  const decodeEmailJwt = (token: string): string | null => {
+
+  const verifyConfirmationCode = async (
+    code: string,
+    isRegistration = false
+  ) => {
     try {
-      const base64Url = token.split(".")[1];
-      const jsonPayload = JSON.parse(
-        decodeBase64(base64Url.replace(/-/g, "+").replace(/_/g, "/"))
-      );
-      return jsonPayload.email || null;
-    } catch (error) {
-      console.error("Error al decodificar el id_token:", error);
-      return null;
+      const response = await api.post("/confirmation_codes/verify", {
+        email: isRegistration ? user?.email : resetEmail,
+        code,
+        is_registration: isRegistration,
+      });
+      if (isRegistration) {
+          const updatedUserInfo: User = {
+            ...user,
+            is_verified: true,
+          };
+          await saveUser(updatedUserInfo); // Guardar en el storage
+          setUser(updatedUserInfo);
+      }else {
+          setCode(code);
+      }
+      
+      return { success: true };
+    } catch (error: any) {
+      return {
+        success: false,
+        error: handleApiError(error, "Error al verificar el código"),
+      };
+    }
+  };
+
+  const resetPassword = async ( new_password: string) => {
+    try {
+      console.log("resetEmail", resetEmail);
+      console.log("code", code);
+      const response = await api.post(`/users/reset-password/${resetEmail}`, {
+        new_password,
+        code,
+      });
+      
+      setCode(null);
+      setResetEmail(null);
+      return { success: true };
+    } catch (error: any) {
+      return {
+        success: false,
+        error: handleApiError(error, "Error al reestablecer la contraseña"),
+      };
     }
   };
 

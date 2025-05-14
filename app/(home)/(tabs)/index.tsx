@@ -1,5 +1,5 @@
 // React & React Native Imports
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
 // Component Imports
@@ -11,7 +11,9 @@ import ConnectUsers from '@/components/SuggestedUsers';
 // Hook Imports
 import { useAuth } from '@/hooks/useAuth';
 import { useTrip } from '@/hooks/useTrip';
-
+//Imports para borrar datos de expo-secure-store y localStorage
+import { useEffect } from 'react';
+ import * as SecureStore from 'expo-secure-store';
 
 export default function IndexScreen() {
   // Verificación de usuario

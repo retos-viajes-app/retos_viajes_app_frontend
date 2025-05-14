@@ -49,7 +49,7 @@ export default function RequestConfirmationCodeScreen() {
     const { success, error } = await requestConfirmationCode(email, "passwordReset");
        if (success) {
         setLoading(false);
-        router.push(`/verifyConfirmationCode?mode=passwordReset&email=${email}`);
+        router.push("/verifyConfirmationCode?mode=passwordReset");
        }else {
         setErrorMessage( error ||"No pudimos enviar el código. Por favor, verifica tu correo e intenta de nuevo." );
         setLoading(false); 
