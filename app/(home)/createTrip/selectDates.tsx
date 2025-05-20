@@ -1,6 +1,5 @@
 // React & React Native Imports
 import React, { useState } from "react";
-import { Text } from "react-native";
 import { useRouter } from "expo-router";
 
 // Component Imports
@@ -14,13 +13,16 @@ import StyledDateInput from "@/components/forms/DateInput";
 
 // Hook Imports
 import { useTrip } from "@/hooks/useTrip";
+import { useTranslation } from "react-i18next";
+import ErrorText from "@/components/text/ErrorText";
 
 
 export default function SelectDatesScreen() {
-    const [error,setError] = useState<string | undefined>(undefined);
+    const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
     const {trip,setTrip} = useTrip();
     const [startDate,setStartDate] = useState<Date | null>(trip?.start_date || null);
     const [endDate,setEndDate] = useState<Date | null>(trip?.end_date || null);
+    const { t } = useTranslation();
     const router = useRouter();
     //Comprovaciones de las fechas : 
     // startDate <= endDate
@@ -32,10 +34,10 @@ export default function SelectDatesScreen() {
           setTrip({...trip,start_date:startDate,end_date:endDate});
           router.push("/createTrip/selectCategories");
         }else{
-          setError("La fecha de inicio debe ser menor a la fecha de fin");
+          setErrorMessage(t("errorsFrontend.invalidDatesSelected"));
         }
       }else{
-        setError("Debes seleccionar ambas fechas");
+        setErrorMessage(t("errorsFrontend.noDatesSelected"));
       }
     };
     return  (
@@ -43,24 +45,24 @@ export default function SelectDatesScreen() {
         <ViewContentContinue>
         <ViewForm>
           <TitleParagraph
-            title="Selecciona las fechas de tu aventura"
-            paragraph="Define cuándo empezará y terminará tu viaje"
+            title={t("createTrip.selectDate.title")}
+            paragraph={t("createTrip.selectDate.paragraph")}
           />
           <ViewInputs>
             <StyledDateInput
               date={startDate}
-              title="Fecha de inicio"
+              title={t("createTrip.selectDate.startDate")}
               setDate = {setStartDate}
             />
             <StyledDateInput
             date={endDate}
-              title="Fecha de fin"
+              title={t("createTrip.selectDate.endDate")}
               setDate={setEndDate}
             />
           </ViewInputs>
-            {error && <Text style={{ color: "red", padding:20 }}>{error}</Text> } 
+          {errorMessage ? <ErrorText text={errorMessage} /> : null}
         </ViewForm>
-        <PrimaryButton title="continuar" onPress={handleContinue}/>
+        <PrimaryButton title={t("continue")} onPress={handleContinue}/>
         </ViewContentContinue>
       </PaddingView>
     );

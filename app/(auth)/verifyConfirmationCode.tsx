@@ -1,12 +1,11 @@
 // React & React Native Imports
-import React, { useContext, useState } from "react";
+import { useState } from "react";
 import { Text, TouchableOpacity, ImageBackground } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import Toast from "react-native-toast-message";
 // Component Imports
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import StyledTextInput from "@/components/forms/StyledTextInput";
-import { LoadingScreen } from "@/components/LoadingScreen";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import PaddingView from "@/components/views/PaddingView";
@@ -15,28 +14,26 @@ import ViewForm from "@/components/views/ViewForm";
 
 // Hook Imports
 import { useFormValidation } from "@/hooks/useFormValidation";
-import { AuthContext } from "@/context/AuthContext";
 
 // Style Imports
 import globalStyles from "@/styles/global";
 
 // Utility Imports
 import { validations } from "@/utils/validations";
+import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 
-
-
-export default function verifyConfirmationCodeScreen() {
+export default function VerifyConfirmationCodeScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const {verifyConfirmationCode, requestConfirmationCode} = useContext(AuthContext)!;
+  const {verifyConfirmationCode, requestConfirmationCode} = useAuth();
   const [resendLoading, setResendLoading] = useState(false);
-  
-  // Obtener el email  y mode de los parámetros
-  const email = params.email?.toString() || "";
+  const { t } = useTranslation();
+  const { user } = useAuth();
   const mode = params.mode?.toString() || "";
   
   const { errors, validateForm } = useFormValidation({
@@ -45,40 +42,37 @@ export default function verifyConfirmationCodeScreen() {
 
   const handleVerifyCode = async () => {
     setErrorMessage("");
-    setLoading(true);
 
     const isValid = validateForm({ code });
 
-    if (!isValid) {
+    if (!isValid) return;
+    setLoading(true);
+    const {success, error} = await verifyConfirmationCode(code, mode === "register");
+    
+    if (!success) {
+      setErrorMessage(error);
       setLoading(false);
       return;
     }
-    const {success, error} = await verifyConfirmationCode(code, mode === "register");
 
-    if(success){
-      setLoading(false); 
-      if (mode === "register") {
-        console.log("register");
-        router.replace("/completeRegister");
-      } else {
-        router.push("/resetPassword");
-      }
-       
+    if (mode === "register") {
+      router.replace("/completeRegister");
     } else {
-      setErrorMessage(typeof error === "string" ? error : "Hubo un problema al verificar el código. Por favor, intenta de nuevo.");
-      setLoading(false);
-      return;
-    } 
+      router.push("/resetPassword");
+    }
+    setLoading(false);
   };
 
   const handleResendCode = async () => {
     if (resendLoading) return;
+    
+    if (!user?.email) {
+      return;
+    }
     setResendLoading(true);
-
-    const response = await requestConfirmationCode(email, mode);
+    const response = await requestConfirmationCode(user!.email, mode);
     if (response.success) {
       setErrorMessage("")
-      console.log("COdigo")
       Toast.show({
         type: "success",
         text1: "Código enviado",
@@ -95,14 +89,11 @@ export default function verifyConfirmationCodeScreen() {
         bottomOffset: 80,
       });
     }
-
     setResendLoading(false);
   };
 
 
-  return loading ? (
-    <LoadingScreen />
-  ) : (
+  return (
     <>
       <ImageBackground
         source={require("@/assets/images/loginImage.png")}
@@ -119,17 +110,16 @@ export default function verifyConfirmationCodeScreen() {
         <ViewContentContinue>
           <ViewForm>
             <TitleParagraph
-              title="Verificar código"
-              paragraph="Ingresa el código de 6 dígitos que enviamos a tu correo."
+              title={t("auth.verifyCode.title")}
+              paragraph={`${t(
+                      "auth.verifyCode.paragraph"
+                    )}${user!.email}`}
             />
 
-            {errorMessage && typeof errorMessage === "string" ? (
-              <ErrorText text={errorMessage} />
-            ) : null}
-
+            {errorMessage ? <ErrorText text={errorMessage} /> : null}
             <StyledTextInput
               style={globalStyles.largeBodyMedium}
-              placeholder="Código de 6 dígitos"
+              placeholder={t("auth.verifyCode.codePlaceholder")}
               keyboardType="number-pad"
               maxLength={6}
               value={code}
@@ -141,25 +131,27 @@ export default function verifyConfirmationCodeScreen() {
               onPress={handleResendCode}
               disabled={resendLoading}
             >
-              <Text
-                style={{
-                  color: resendLoading ? "gray" : "#0066CC",
-                  textAlign: "center",
-                  marginTop: 16,
-                  marginBottom: 16,
-                }}
-              >
-                {resendLoading
-                  ? "Enviando..."
-                  : "¿No recibiste el código? Solicitar otro"}
-              </Text>
+              {resendLoading ? (
+                      <Text style={[globalStyles.mediumBodyMedium, { marginVertical: 16 }]}>
+                        {t("auth.verifyCode.sending")}
+                      </Text>
+                    ) : (
+                      <Text style={[globalStyles.mediumBodyMedium, { marginVertical: 16 }]}>
+                        {t("auth.verifyCode.noCode")}
+                        <Text style={globalStyles.link}>
+                          {t("auth.verifyCode.sendOtherCodeLink")}
+                        </Text>
+                      </Text>
+                    )}
             </TouchableOpacity>
           </ViewForm>
 
           <PrimaryButton
-            title="Verificar código"
+            title={t("auth.verifyCode.verify")}
             onPress={handleVerifyCode}
+            disabled={code.length !== 6}
             style={[globalStyles.title, { width: "100%" }]}
+            loading={loading}
           />
         </ViewContentContinue>
       </PaddingView>

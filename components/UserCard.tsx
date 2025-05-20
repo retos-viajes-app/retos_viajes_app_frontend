@@ -1,6 +1,6 @@
 // React & React Native Imports
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, Image} from "react-native";
 
 // Style Imports
 import globalStyles from "@/styles/global";
@@ -92,16 +92,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-  },
-  button: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 16,
-    gap: 4, // Espacio entre el icono y el texto
   },
 });
 

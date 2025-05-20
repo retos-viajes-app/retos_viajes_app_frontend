@@ -20,12 +20,15 @@ import globalStyles from "@/styles/global";
 
 // Utility Imports
 import Destination from "@/models/destination";
+import { useTranslation } from "react-i18next";
+import ErrorText from "@/components/text/ErrorText";
 
 export default function SelectDestinationScreen() {
   const [search, setSearch] = useState<string>("");
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
   const router = useRouter();
+  const { t } = useTranslation();
   const {destinations,setTrip,trip } = useTrip();
 
 
@@ -37,7 +40,7 @@ export default function SelectDestinationScreen() {
         });
       router.push("/createTrip/selectDates");
     } else {
-      setError("Debes seleccionar un destino para continuar.");
+      setErrorMessage(t("errosFrontend.selectDestination"));
     }
   }
 
@@ -77,18 +80,18 @@ export default function SelectDestinationScreen() {
       <ViewContentContinue>
         <ViewForm>
           <TitleParagraph
-            title="¿A dónde quieres ir?"
-            paragraph="Escribe el nombre del destino o elige entre nuestras recomendaciones."
+            title={t("createTrip.selectDestination.title")}
+            paragraph={t("createTrip.selectDestination.paragraph")}
           />
           <ViewInputs>
             <StyledTextInputLabelText
-              placeholder="Buscar por ciudad o país"
+              placeholder={t("createTrip.selectDestination.searchPlaceholder")}
               value={search}
               onChangeText={setSearch}
             />
           </ViewInputs>
        
-            {error && <Text style={{ color: "red", padding:20 }}>{error}</Text> } 
+            {errorMessage ? <ErrorText text={errorMessage} /> : null}
             <FlatList
                 style={{ width: "100%" }}
                 data={filteredData}
@@ -99,7 +102,7 @@ export default function SelectDestinationScreen() {
                 contentContainerStyle={{ gap: 16 }}
             />
         </ViewForm>
-        <PrimaryButton title="continuar" onPress={handleContinue}/>
+        <PrimaryButton title={t("continue")} onPress={handleContinue}/>
       </ViewContentContinue>
     </PaddingView>
   );

@@ -7,13 +7,16 @@ import globalStyles from "@/styles/global";
 
 // Utility Imports
 import { Colors } from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
 
 
-const Divider = ({ text = "o si lo prefieres", full = false }) => {
+const Divider = ({ text = "", full = false }) => {
+  const { t } = useTranslation();
+  const dividerText = text || t("dividerText");
   return (
     <View style={styles.container}>
       <View style={[styles.line,{backgroundColor: Colors.colors.gray[200]}]} />
-      {!full && <Text style={globalStyles.largeBodyMedium}>{text}</Text>}
+      {!full && <Text style={globalStyles.largeBodyMedium}>{dividerText}</Text>}
       <View style={[styles.line,{backgroundColor: Colors.colors.gray[200]}]} />
     </View>
   );

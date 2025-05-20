@@ -6,10 +6,12 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
 
 // Icon Imports
-import { Calendar } from "lucide-react-native";
+//import { Calendar } from "lucide-react-native";
+import { Feather } from "@expo/vector-icons";
 
 // Third-Party Imports
 import DateTimePicker from "@react-native-community/datetimepicker";
+
 
 
 interface CustomDateInputProps {
@@ -47,7 +49,8 @@ export const  DateInput: React.FC<CustomDateInputProps> = ({
       >
       <View style={styles.inputContent}>
         <Text style={styles.dateText}>{date ? date.toLocaleDateString() : title}</Text>
-        <Calendar size={20} color={Colors.colors.gray[400]} />
+        {/* <Calendar size={20} color={Colors.colors.gray[400]} /> */}
+        <Feather name="calendar" size={20} color={Colors.colors.gray[400]} />
       </View>
       </TouchableOpacity>
       {isPickerVisible && (

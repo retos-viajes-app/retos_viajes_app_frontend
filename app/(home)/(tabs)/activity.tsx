@@ -18,7 +18,8 @@ import { Colors } from "@/constants/Colors";
 import { getSuggestedCompletedChallenges } from "@/services/completedChallengesService";
 
 // Icon Imports
-import { BellDot } from 'lucide-react-native';
+//import { BellDot } from 'lucide-react-native';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Model Imports
 import { CompletedChallenge } from "@/models/completedChallenge";
@@ -31,7 +32,6 @@ export default function ActivityScreen() {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const flatListRef = useRef<FlatList>(null);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
 
@@ -95,8 +95,8 @@ export default function ActivityScreen() {
               No te pierdas nada
             </Text>
             <TouchableOpacity style={styles.notificationButton}>
-              <BellDot
-                strokeWidth={2}
+              <MaterialCommunityIcons
+                name="bell-alert"
                 size={24}
                 color={Colors.colors.primary[100]}
               />

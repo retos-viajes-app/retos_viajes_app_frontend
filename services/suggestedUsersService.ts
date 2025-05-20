@@ -1,9 +1,8 @@
 
 import User from "@/models/user";
 import { SuggestedUsersResponse, UserWithConnectionStatus } from "@/models/userConnections";
-import useApi from "@/utils/api";
+import api from "@/utils/api";
 import { handleApiError } from "@/utils/errorHandler";
-const api = useApi();
 export interface UserSuggestionsResponse {
   users: User[];
   pagination: {
@@ -15,23 +14,17 @@ export interface UserSuggestionsResponse {
 export const sendConnectionRequest = async (userId : number) => {
   try {
     const response = await api.post(`/connections/request/${userId}`);
-    return response.data;
+    return { success: true, error: "" };
   } catch (error) {
-    return {
-      success: false,
-      error: handleApiError(error, "Error al enviar la solicitud"),
-    };
+    return { success: false, error: handleApiError(error) };
   }
 };
 export const cancelConnectionRequest = async (userId: number) => {
   try{
     const response = await api.delete(`/connections/request/cancel/${userId}`);
-    return response.data;
+    return { success: true, error: "" };
   }catch (error){
-    return {
-      success: false,
-      error: handleApiError(error, "Error al cancelar la solicitud"),
-    };
+    return { success: false, error: handleApiError(error) };
   }
   
 };
@@ -41,7 +34,7 @@ export const getSuggestedUsers = async (
   perPage = 10
 ): Promise<SuggestedUsersResponse> => {
   try {
-    const response = await api.get("/connections/suggested", {
+    const response = await api.get("/users/suggested", {
       params: {
         page,
         per_page: perPage

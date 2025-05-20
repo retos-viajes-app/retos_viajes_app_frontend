@@ -12,11 +12,13 @@ import { useAuth } from '@/hooks/useAuth';
 
 // Style Imports
 import globalStyles from '@/styles/global';
+import { useTranslation } from 'react-i18next';
 
 
 const NoCurrentTripIndex = () => {
   const router = useRouter();
   const { user} = useAuth();
+  const { t } = useTranslation();
 
   return (
     //273 no queda bien
@@ -24,8 +26,8 @@ const NoCurrentTripIndex = () => {
       <PaddingView>
         <View style={{flex: 1, justifyContent: 'center', gap: 16}}>  
           <View style={{ gap: 8, alignItems: 'center'}}>
-            <Text style={globalStyles.diplaySemiBold}>¡Hola, {user?.name}!👋</Text> 
-            <Text style={globalStyles.subtitle}>Prepárate para una nueva aventura</Text> 
+            <Text style={globalStyles.diplaySemiBold}>{t('index.noTrip.title', { name: user?.name})}</Text> 
+            <Text style={globalStyles.subtitle}>{t("index.noTrip.subtitle")}</Text> 
           </View>
           <PrimaryButton 
             title='Crear mi primer viaje' 

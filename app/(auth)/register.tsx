@@ -1,10 +1,9 @@
 // React & React Native Imports
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, ImageBackground } from "react-native";
 import { useRouter } from "expo-router";
 
 // Component Imports
-import { AuthContext } from "@/context/AuthContext";
 import DividerWithText from "@/components/Divider";
 import StyledTextInput from "@/components/forms/StyledTextInput";
 import PaddingView from "@/components/views/PaddingView";
@@ -14,7 +13,6 @@ import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import ViewForm from "@/components/views/ViewForm";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewInputs from "@/components/views/ViewInputs";
-import { LoadingScreen } from "@/components/LoadingScreen";
 
 // Hook Imports
 import { useAuth } from "@/hooks/useAuth";
@@ -25,17 +23,20 @@ import globalStyles from "@/styles/global";
 
 // Utility Imports
 import { validations } from "@/utils/validations";
+import PasswordInput from "@/components/forms/PasswordInput";
+import { useTranslation } from "react-i18next";
+import ErrorText from "@/components/text/ErrorText";
 
 
 const RegisterScreen = () => {
-  const {user} = useAuth();
+  const {register, requestConfirmationCode} = useAuth();
   const router = useRouter();
-  const { register, requestConfirmationCode } = useContext(AuthContext)!;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
   const { errors, validateForm } = useFormValidation({
     email: validations.email,
     password: validations.password,
@@ -44,36 +45,30 @@ const RegisterScreen = () => {
 
   const handleRegister = async () => {
     setErrorMessage(""); 
-    setLoading(true);
 
     const isValid = validateForm({ email, password, passwordCheck });
-    if (!isValid) {
-      setLoading(false); 
-      return;
-    }
-
+    if (!isValid) return;
+    setLoading(true);
     const { success, error } = await register(email, password);
 
     if (!success) {
-      console.log("Error en el registro:", error);
-      setErrorMessage( "Hubo un problema con el registro.");
+      setErrorMessage(error);
       setLoading(false); 
       return;
     }
     
     const { success: successCC, error: errorCC } = await requestConfirmationCode(email, "register");
     if(!successCC){
-      setErrorMessage(error || "Hubo un problema con el registro.");
+      setErrorMessage(errorCC);
       setLoading(false); 
       return;
     }
-    setLoading(false); 
-    router.push("/verifyConfirmationCode?mode=register");
     
+    router.push("/verifyConfirmationCode?mode=register");
+    setLoading(false); 
   };
 
-  return user ? <LoadingScreen /> : (
-    loading?<LoadingScreen />:
+  return (
     <>
 
       <ImageBackground
@@ -94,30 +89,29 @@ const RegisterScreen = () => {
         <ViewContentContinue>
           <ViewForm>
             <TitleParagraph 
-            title="Regístrate gratis" 
-            paragraph="Crea tu cuenta para transformar tus viajes en aventuras inolvidables." />
-            {errorMessage ? <Text>{errorMessage}</Text> : null}
+            title={t("auth.register.title")}
+            paragraph={t("auth.register.paragraph")}
+            />
+            {errorMessage ? <ErrorText text={errorMessage} /> : null}
             <ViewInputs>
               <StyledTextInput
                 style={globalStyles.largeBodyMedium}
-                placeholder="Correo electrónico"
+                placeholder={t("auth.register.email")}
                 autoCapitalize="none"
                 value={email}
                 onChangeText={setEmail}
                 errorMessage={errors.email}
               />
-              <StyledTextInput
+              <PasswordInput
                 style={globalStyles.largeBodyMedium}
-                placeholder="Contraseña"
-                secureTextEntry
+                placeholder={t("auth.register.password")}
                 value={password}
                 onChangeText={setPassword}
                 errorMessage={errors.password}
               />
-              <StyledTextInput
+              <PasswordInput
                 style={globalStyles.largeBodyMedium}
-                placeholder="Repite tu contraseña"
-                secureTextEntry
+                placeholder={t("auth.register.repeatPassword")}
                 value={passwordCheck}
                 onChangeText={setPasswordCheck}
                 errorMessage={errors.passwordCheck}
@@ -126,23 +120,26 @@ const RegisterScreen = () => {
                 style={{ paddingHorizontal: 16, marginTop: 4, width: "100%" }}
               >
                 <Text style={globalStyles.smallBodyRegular}>
-                  Tu contraseña debe tener al menos 8 caracteres e incluir una
-                  mayúscula, una minúscula, un número y un carácter especial.
-                  Evita usar datos personales o contraseñas comunes.
+                  {t("auth.register.passwordDetails")}
                 </Text>
               </View>
             </ViewInputs>
             <DividerWithText />
 
             <GoogleSignInButton />
-
-            <TouchableOpacity onPress={() => router.push("/login")}>
-              <Text style={globalStyles.largeBodyMedium}>
-                ¿Ya tienes cuenta? Inicia sesión
-              </Text>
+            <TouchableOpacity onPress={() => router.replace("/login")}>
+            <Text style={globalStyles.mediumBodyMedium}>
+              {t("auth.register.alreadyAccount")}
+              <Text style={globalStyles.link}>{t("auth.register.loginLink")}</Text>
+            </Text>
             </TouchableOpacity>
           </ViewForm>
-          < PrimaryButton title="Continuar" onPress={handleRegister} style={[globalStyles.title, { width: "100%"}]} />
+          < PrimaryButton 
+            title={t("continue")}
+            onPress={handleRegister}
+            loading={loading}
+            style={[globalStyles.title, { width: "100%"}]} 
+          />
         </ViewContentContinue>
       </PaddingView>
     </>

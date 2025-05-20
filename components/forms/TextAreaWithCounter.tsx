@@ -7,6 +7,7 @@ import globalStyles from "@/styles/global";
 
 // Utility Imports
 import { Colors } from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
 
 
 interface TextAreaWithCounterProps {
@@ -21,7 +22,7 @@ const TextAreaWithCounter: React.FC<TextAreaWithCounterProps> = ({
   errorMessage,
 }) => {
   const maxChars = 120;
-
+  const { t } = useTranslation();
   const handleChange = (inputText: string) => {
     if (inputText.length <= maxChars) {
       setBio(inputText);
@@ -33,17 +34,17 @@ const TextAreaWithCounter: React.FC<TextAreaWithCounterProps> = ({
       <TextInput
         style={[
           styles.textArea,
-          errorMessage && styles.error, // Aplicar estilo de error si hay un mensaje
+          errorMessage && styles.error,
         ]}
         multiline
         numberOfLines={5}
-        placeholder="Sobre mi (opcional)"
+        placeholder={t("auth.completeRegister.bioPlaceholder")}
         value={bio}
         onChangeText={handleChange}
       />
       <View style={styles.infoContainer}>
         <Text style={[styles.charCounter, globalStyles.smallBodyRegular]}>
-          {bio.length}/{maxChars} caracteres
+          {bio.length}/{maxChars} {t("auth.completeRegister.characters")}
         </Text>
         {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
       </View>

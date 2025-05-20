@@ -7,9 +7,12 @@ import globalStyles from '@/styles/global';
 
 // Utility Imports
 import { Colors } from '@/constants/Colors';
+import { Feather } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 // Icon Imports
-import { UserPlus,Clock } from 'lucide-react-native';
+//import { UserPlus,Clock } from 'lucide-react-native';
+
 interface ButtonProps {
     connectionStatus: string;
     onConnect: () => void;
@@ -17,6 +20,7 @@ interface ButtonProps {
 }
 
 const ConnectButton: React.FC<ButtonProps> = ({ connectionStatus, onConnect, onCancelRequest}) => {
+  const  { t } = useTranslation();
   return connectionStatus === "pending" ? (
             <TouchableOpacity
               style={[
@@ -26,13 +30,14 @@ const ConnectButton: React.FC<ButtonProps> = ({ connectionStatus, onConnect, onC
               onPress={onCancelRequest}
             >
               <>
-                <Clock  strokeWidth={3} size={16} color={Colors.colors.gray[400]} />
+                {/* <Clock  strokeWidth={3} size={16} color={Colors.colors.gray[400]} /> */}
+                <Feather name="clock" size={16} color={Colors.colors.gray[400]} />
                 <Text
                   style={[
-                    globalStyles.mediumBodySemiBold,,
+                    globalStyles.mediumBodySemiBold,
                   ]}
                 >
-                  Pendiente
+                  {t("suggestedUsers.pending")}
                 </Text>
               </>
               
@@ -46,17 +51,18 @@ const ConnectButton: React.FC<ButtonProps> = ({ connectionStatus, onConnect, onC
               onPress={onConnect}
             >
                 <>
-                  <UserPlus 
+                  {/* <UserPlus 
                     strokeWidth={3}
                     size={16}
                     color={Colors.colors.primary[100]}
-                  />
+                  /> */}
+                  <Feather name="user-plus" size={16} color={Colors.colors.primary[100]} />
                   <Text
                     style={[
                       globalStyles.mediumBodySemiBold, {color: Colors.colors.primary[100]},
                     ]}
                   >
-                    Conectar
+                    {t("suggestedUsers.connect")}
                   </Text>
                 </>
             </TouchableOpacity>

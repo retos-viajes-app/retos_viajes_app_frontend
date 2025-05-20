@@ -1,5 +1,5 @@
 // React & React Native Imports
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Image,
@@ -9,7 +9,6 @@ import Toast from "react-native-toast-message";
 import { useRouter } from "expo-router";
 
 // Component Imports
-import { LoadingScreen } from "@/components/LoadingScreen";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import TextAreaWithCounter from "@/components/forms/TextAreaWithCounter";
 import StyledTextInput from "@/components/forms/StyledTextInput";
@@ -27,18 +26,18 @@ import { useFormValidation } from "@/hooks/useFormValidation";
 
 // Utility Imports
 import { validations } from "@/utils/validations";
-import { AuthContext } from "@/context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 
 export default  function RegisterScreen() {
-  const { user } = useAuth();
-  const { finishRegister } = useContext(AuthContext)!;
+  const { user, finishRegister } = useAuth();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
   const { errors, validateForm } = useFormValidation({
     name: validations.name,
     username: validations.username,
@@ -60,36 +59,29 @@ export default  function RegisterScreen() {
 
   const handleSaveProfile = async () => {
     setErrorMessage("");
-    setLoading(true);
     const isValid = validateForm({ name, username, bio });
-    if (!isValid){
-      setLoading(false);
-      return;
-    }
+    if (!isValid) return;
 
     const { success, error } = await finishRegister(username, bio, name);
 
     if (!success) {
-      setErrorMessage(error || "Hubo un problema al guardar el perfil.");
+      setErrorMessage(error);
       setLoading(false);
       return;
     }
 
-    router.replace("/"); // Redirige después de un registro exitoso
+    router.replace("/");
     setLoading(false);
   };
 
-  
-
-  return user ? (
-    loading?<LoadingScreen />:
+  return (
     <>
       <PaddingView>
         <ViewContentContinue>
           <ViewForm>
             <TitleParagraph
-              title="!Dale personalidad a tu perfil"
-              paragraph="Completa tu información para personalizar tu experiencia y contectarte con otros viajeros."
+              title={t("auth.completeRegister.title")}
+              paragraph={t("auth.completeRegister.paragraph")}
             />
 
             {/* Profile Picture Section */}
@@ -99,12 +91,12 @@ export default  function RegisterScreen() {
                 source={require("@/assets/images/profile-placeholder.png")}
               />
             </TouchableOpacity>
+            {errorMessage ? <ErrorText text={errorMessage} /> : null}
             <ViewInputs>
               {/* Nombre Input */}
               <StyledTextInput
                 style={styles.input}
-                autoCapitalize="none"
-                placeholder="Nombre Completo"
+                placeholder={t("auth.completeRegister.name")}
                 value={name}
                 onChangeText={setName}
                 errorMessage={errors.name}
@@ -112,8 +104,9 @@ export default  function RegisterScreen() {
               <StyledTextInput
                 style={styles.input}
                 value={username}
+                autoCapitalize="none"
                 onChangeText={setUsername}
-                placeholder="Nombre de usuario"
+                placeholder={t("auth.completeRegister.username")}
                 errorMessage={errors.username}
               />
               <TextAreaWithCounter
@@ -121,27 +114,20 @@ export default  function RegisterScreen() {
                 setBio={setBio}
                 errorMessage={errors.bio}
               />
-
-              {errorMessage ? <ErrorText text={errorMessage} /> : null}
             </ViewInputs>
           </ViewForm>
           {/* Save Button */}
-          <PrimaryButton title="Continuar" onPress={handleSaveProfile} />
+          <PrimaryButton 
+            title={t("continue")}
+            onPress={handleSaveProfile}
+            loading={loading}
+          />
         </ViewContentContinue>
       </PaddingView>
     </>
-  ) : <LoadingScreen />;
+  );
 };
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: "center",
-  },
   imagePickerButton: {
     alignSelf: "center",
     marginBottom: 20,
@@ -151,33 +137,12 @@ const styles = StyleSheet.create({
     height: 96,
     borderRadius: 60,
   },
-  profileImagePlaceholder: {
-    width: 120,
-    height: 120,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#e0e0e0",
-    borderRadius: 60,
-  },
-  inputContainer: {
-    marginBottom: 16,
-  },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 8,
     borderRadius: 4,
   },
-  bioInput: {
-    height: 80,
-  },
-  saveButton: {
-    backgroundColor: "#007bff",
-    padding: 12,
-    borderRadius: 4,
-    alignItems: "center",
-  },
-  error: { color: "red", marginBottom: 10 },
 });
 
 

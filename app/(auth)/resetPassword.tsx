@@ -1,13 +1,11 @@
 // React & React Native Imports
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ImageBackground } from "react-native";
 import { useRouter} from "expo-router";
 import Toast from "react-native-toast-message";
 
 // Component Imports
 import PrimaryButton from "@/components/buttons/PrimaryButton";
-import StyledTextInput from "@/components/forms/StyledTextInput";
-import { LoadingScreen } from "@/components/LoadingScreen";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewInputs from "@/components/views/ViewInputs";
@@ -24,18 +22,18 @@ import globalStyles from "@/styles/global";
 
 // Utility Imports
 import { validations } from "@/utils/validations";
-
-
+import { useTranslation } from "react-i18next";
+import PasswordInput from "@/components/forms/PasswordInput";
 
 
 export default function ResetPasswordScreen() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, resetPassword } = useAuth();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const {resetPassword,} = useAuth();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (user?.is_verified && user.verification_type == "passwordReset") {
@@ -57,29 +55,24 @@ export default function ResetPasswordScreen() {
 
   const handleResetPassword = async () => {
     setErrorMessage("");
-    setLoading(true);
 
     const isValid = validateForm({ newPassword, confirmPassword });
-    if (!isValid) {
+    if (!isValid) return;
+    setLoading(true);
+    const {success,error} = await resetPassword(newPassword);
+
+    if(!success) {
+      setErrorMessage(error);
       setLoading(false);
       return;
     }
-
-    const {success,error} = await resetPassword(newPassword);
-
-    if (success) {
-      setLoading(false);
-      router.replace("/login");
-    }else{
-      setErrorMessage(
-        error ||
-          "No pudimos actualizar tu contraseña. Por favor, intenta de nuevo."
-      );
-    }
+    router.dismissAll();
+    router.replace("/login");
+    setLoading(false);
+    
   };
 
   return (
-    loading?<LoadingScreen />:
     <>
       <ImageBackground
         source={require("@/assets/images/loginImage.png")}
@@ -96,25 +89,23 @@ export default function ResetPasswordScreen() {
         <ViewContentContinue>
           <ViewForm>
             <TitleParagraph
-              title="Nueva contraseña"
-              paragraph="Establece una nueva contraseña para tu cuenta."
+              title={t("auth.resetPassword.title")}
+              paragraph={t("auth.resetPassword.paragraph")}
             />
 
             {errorMessage ? <ErrorText text={errorMessage} /> : null}
             <ViewInputs>
-              <StyledTextInput
+              <PasswordInput
                 style={globalStyles.largeBodyMedium}
-                placeholder="Nueva contraseña"
-                secureTextEntry
+                placeholder={t("auth.resetPassword.newPassword")}
                 value={newPassword}
                 onChangeText={setNewPassword}
                 errorMessage={errors.newPassword}
               />
 
-              <StyledTextInput
+              <PasswordInput
                 style={globalStyles.largeBodyMedium}
-                placeholder="Confirmar contraseña"
-                secureTextEntry
+                placeholder={t("auth.resetPassword.confirmPassword")}
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
                 errorMessage={errors.confirmPassword}
@@ -123,8 +114,9 @@ export default function ResetPasswordScreen() {
           </ViewForm>
 
           <PrimaryButton
-            title="Actualizar contraseña"
+            title={t("auth.resetPassword.updateassword")}
             onPress={handleResetPassword}
+            loading={loading}
             style={[globalStyles.title, { width: "100%" }]}
           />
         </ViewContentContinue>
