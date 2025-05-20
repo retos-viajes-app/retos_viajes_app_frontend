@@ -1,5 +1,4 @@
 // React & React Native Imports
-import { Text } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 
@@ -14,16 +13,19 @@ import PrimaryButton from "@/components/buttons/PrimaryButton";
 
 // Hook Imports
 import { useTrip } from "@/hooks/useTrip";
+import { useTranslation } from "react-i18next";
+import ErrorText from "@/components/text/ErrorText";
 
 
 export default function SelectCategoriesScreen() {
     const {selectedCategoriesId,setSelectedCategoriesId} = useTrip();
-    const [error,setError] = useState<string | undefined>(undefined);
+    const [errorMessage,setErrorMessage] = useState<string | undefined>(undefined);
     const {categories} = useTrip();
+    const { t } = useTranslation();
     const router = useRouter();
     const handleContinue = () => {
         if(selectedCategoriesId.length < 2){
-            setError("Selecciona al menos dos categoría");
+            setErrorMessage(t("errosFrontend.selectCategories"));
             return;
         }
         router.push("/createTrip/summary");
@@ -43,8 +45,8 @@ export default function SelectCategoriesScreen() {
         <ViewContentContinue>
             <ViewForm>
             <TitleParagraph
-                title="Elige tus misiones"
-                paragraph="Personaliza tu aventura con desafíos culturales, gastonómicos y más."
+                title={t("createTrip.selectCategories.title")}
+                paragraph={t("createTrip.selectCategories.paragraph")}
             />
             <ViewInputs>
                 
@@ -54,9 +56,9 @@ export default function SelectCategoriesScreen() {
                 onSelect={handleSelect}
             />
             </ViewInputs>
-                {error && <Text style={{ color: "red", padding:20 }}>{error}</Text> } 
+            {errorMessage ? <ErrorText text={errorMessage} /> : null}
             </ViewForm>
-            <PrimaryButton title="continuar" onPress={handleContinue}/>
+            <PrimaryButton title={t("continue")} onPress={handleContinue}/>
         </ViewContentContinue>
       </PaddingView>
     );

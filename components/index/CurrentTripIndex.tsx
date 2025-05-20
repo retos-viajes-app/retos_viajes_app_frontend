@@ -8,6 +8,7 @@ import PaddingView from "@/components/views/PaddingView";
 
 // Hook Imports
 import { useTrip } from "@/hooks/useTrip";
+import { useTranslation } from "react-i18next";
 
 // Style Imports
 // (No hay estilos personalizados en este caso)
@@ -16,6 +17,7 @@ const CurrentTripIndex = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const { currentTrip,destinations } = useTrip();
   const currentDestination = destinations.find((destination) => destination.id === currentTrip?.destination_id);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -25,7 +27,6 @@ const CurrentTripIndex = () => {
     return () => clearInterval(interval); // Limpia el intervalo al desmontar
   }, []);
   return (
-    
     <ImageBackground 
       style={{
       height: 180, 
@@ -43,7 +44,7 @@ const CurrentTripIndex = () => {
         <TripProgressCircle startDate={currentTrip.start_date} endDate={currentTrip.end_date} />
           )}
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
-        <Text>Descubriendo</Text>
+        <Text>{t("index.trip.title")}</Text>
         <Text >{currentDestination?.city }</Text>
           </View>
           {currentTrip?.start_date && currentTrip?.end_date && (

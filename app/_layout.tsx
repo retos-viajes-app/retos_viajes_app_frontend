@@ -1,5 +1,5 @@
 // React & React Native Imports
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -7,7 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LoadingScreen } from '@/components/LoadingScreen';
 
 // Hook Imports
-import { useAuth } from '@/hooks/useAuth';
 import { useFonts } from 'expo-font';
 
 // Utility Imports
@@ -15,7 +14,7 @@ import Toast from 'react-native-toast-message';
 
 
 // Navigation Imports
-import { Stack, useRouter, useSegments, useLocalSearchParams } from 'expo-router';
+import { Slot } from 'expo-router';
 
 // Context Imports
 import { AuthProvider } from "@/context/AuthContext";
@@ -23,8 +22,7 @@ import { AuthProvider } from "@/context/AuthContext";
 // Splash Screen Imports
 import * as SplashScreen from 'expo-splash-screen';
 
-// Reanimated Imports
-import 'react-native-reanimated';
+import { initI18n } from '@/i18n';
 
 
 // Evita que la pantalla de carga desaparezca antes de tiempo
@@ -41,101 +39,29 @@ export default function RootLayout() {
     InterMedium: require('@/assets/fonts/Inter_18pt-Medium.ttf'),
   });
 
+  const [i18nReady, setI18nReady] = useState(false);
+  
   useEffect(() => {
-    if (loaded) {
+    initI18n().then(() => setI18nReady(true));
+  }, []);
+
+  useEffect(() => {
+    if (loaded ) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, i18nReady]);
 
-  if (!loaded) {
+  if (!loaded || !i18nReady) {
     return <LoadingScreen/>;
   }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <AuthProvider>
-        <RootLayoutWithAuth />
+        <Slot />
         <Toast />
         <StatusBar style="auto" />
       </AuthProvider>
-    </SafeAreaView>  );
-}
-
-function RootLayoutWithAuth() {
-  const { user } = useAuth();
-  const router = useRouter();
-  const params = useLocalSearchParams();
-  const segments = useSegments();
-   
-
-  useEffect(() => {
-  //   console.log("user:", user);
-    const currentRoute = segments[1];
-    
-  //   // Rutas públicas que no requieren autenticación
-    const publicRoutes = ["login", "register", "requestConfirmationCode"];
-    
-  //   // Ruta de verificación de código
-  //   const verifyCodeRoute = "verifyConfirmationCode";
-    
-  //   // Ruta para completar registro
-    const completeRegisterRoute = "completeRegister";
-    
-  //   // Ruta para resetear password
-  //   const resetPasswordRoute = "resetPassword";
-
-  //   // CASO 1: Usuario no está autenticado (null)
-    if (!user) {
-      // Si está en una ruta que no es pública ni de verificación, redirigir a login
-      if (!publicRoutes.includes(currentRoute!)) {
-        router.replace("/login");
-      }
-      return;
-    }
-    
-    // CASO 2: Usuario autenticado pero sin username (registro incompleto)
-    if (user && !user.username) {
-      // Caso 2.1: Verificado para registro - debe completar sus datos
-      if (user.is_verified && user.verification_type === "register") {
-        if (currentRoute !== completeRegisterRoute) {
-          router.replace("/completeRegister");
-        }
-        return;
-      }
-      
-  //     // Caso 2.2: Verificado para reset de password
-  //     if (user.is_verified && user.verification_type === "passwordReset") {
-  //       if (currentRoute !== resetPasswordRoute) {
-  //         router.replace("/resetPassword");
-  //       }
-  //       return;
-  //     }
-      
-  //     // Caso 2.3: No verificado - debe verificar su código
-  //     if (currentRoute !== verifyCodeRoute) {
-  //       // Verificar si es registro o reset de contraseña
-  //       const mode = user.verification_type === "passwordReset" ? "passwordReset" : "register";
-  //       router.replace(`/verifyConfirmationCode?mode=${mode}&email=${user.email}`);
-  //     }
-  //     return;
-    }
-    
-  //   // CASO 3: Usuario completamente registrado (con username)
-  //   if (user && user.username) {
-  //     // Si intenta acceder a rutas de auth, redirigirlo a home
-  //     if (publicRoutes.includes(currentRoute!) || 
-  //         currentRoute === verifyCodeRoute || 
-  //         currentRoute === completeRegisterRoute || 
-  //         currentRoute === resetPasswordRoute) {
-  //       router.replace("/");
-  //     }
-  //   }
-  }, [user]);
-  return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(auth)" options={{headerShown:false}}/>
-      <Stack.Screen name="(home)" options={{ headerShown: false }} />
-      <Stack.Screen name="+not-found" />
-    </Stack>
+    </SafeAreaView> 
   );
 }

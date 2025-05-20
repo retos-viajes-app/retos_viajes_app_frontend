@@ -5,7 +5,6 @@ import React, { createContext, useState, useEffect, ReactNode } from "react";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
-import { decode as decodeBase64 } from "base-64";
 
 // Model Imports
 import User from "@/models/user";
@@ -16,12 +15,10 @@ import {
   saveRefreshToken,
   saveUser,
   getUser,
-  saveEmail,
-  getEmail,
-  getAccessToken,
 } from "@/utils/secureTokens";
-import useApi from "@/utils/api";
+import api from "@/utils/api";
 import { handleApiError } from "@/utils/errorHandler";
+import { saveCategories, saveDestinations, saveTrip } from "@/utils/asyncStorage";
 
 //Ahora mismo está usando backend cogido de constantes
 WebBrowser.maybeCompleteAuthSession();
@@ -35,6 +32,12 @@ const androidClientId =
 
 const redirectUri = AuthSession.makeRedirectUri({ scheme: "myapp" });
 
+export type ApiResponse<T = never> = {
+  success: boolean;
+  error: string;
+  data?: T; 
+};
+
 interface AuthContextType {
   user: User | null;
   promptAsync: () => void;
@@ -42,27 +45,27 @@ interface AuthContextType {
   login: (
     username: string,
     password: string
-  ) => Promise<{ success: boolean; error?: string }>; // Añade login propio
+  ) => Promise<ApiResponse>; // Añade login propio
   register: (
     email: string,
     password: string
-  ) => Promise<{ success: boolean; error?: string }>;
+  ) => Promise<ApiResponse>;
   finishRegister: (
     username: string,
     bio: string,
     name: string
-  ) => Promise<{ success: boolean; error?: string }>;
+  ) => Promise<ApiResponse>;
   requestConfirmationCode: (
     email: string,
     mode: string
-  ) => Promise<{ success: boolean; error?: string }>;
+  ) => Promise<ApiResponse>;
   verifyConfirmationCode: (
     code: string,
     isRegistration: boolean
-  ) => Promise<{ success: boolean; error?: string }>;
+  ) => Promise<ApiResponse>;
   resetPassword: (
     newPassword: string
-  ) => Promise<{ success: boolean; error?: string }>;
+  ) => Promise<ApiResponse>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -76,7 +79,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [resetEmail, setResetEmail] = useState<string | null>(null);
   const [code, setCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const api = useApi();
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId,
     iosClientId,
@@ -122,12 +124,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         saveUser(authResponse.user),
       ]);
        setUser(authResponse.user);
-       return { success: true };
+       return { success: true, error: "" };
     } catch (error) {
-      console.error(
-        "Error en la verificación del token:",
-        handleApiError(error, "No se pudo verificar el token")
-      );
+      return { success: false, error: handleApiError(error) };
     }
   };
 
@@ -135,10 +134,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const login = async (userid: string, password: string) => {
     try {
       // Petición de login
-      const { data: authResponse } = await api.post("/login", {
-        "userid":userid,
-        "password": password,
-      });
+      const { data: authResponse } = await api.post(
+        "/login",
+        new URLSearchParams({ username: userid, password })
+      );
 
      await Promise.all([
        saveAccessToken(authResponse.tokens.access_token),
@@ -148,47 +147,38 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
       setUser(authResponse.user);
 
-      return { success: true };
+      return { success: true, error: "" };
     } catch (error) {
-      return {
-        success: false,
-        error: handleApiError(error, "Hubo un problema con el login."),
-      };
+      return { success: false, error: handleApiError(error) };
     }
   };
 
   const register = async (email: string, password: string) => {
     try {
-      // Petición de registro
-      const { data: authResponse } = await api.post("/register", {
+      const { data: userData } = await api.post("/register", {
         email,
         password,
       });
-
-      await Promise.all([
-        saveAccessToken(authResponse.tokens.access_token),
-        saveRefreshToken(authResponse.tokens.refresh_token),
-        saveUser(authResponse.user),
-      ]);
-
-      setUser(authResponse.user);
-      
-      return { success: true };
+      await saveUser(userData);
+      setUser(userData);
+      return { success: true, error: "" };
     } catch (error) {
-      return {
-        success: false,
-        error: handleApiError(error, "Hubo un problema con el registro."),
-      };
+      return { success: false, error: handleApiError(error) };
     }
   };
+
 
   const logout = async () => {
     await Promise.all([
       saveUser(null),
       saveAccessToken(""),
       saveRefreshToken(""),
+      saveTrip(null),
+      saveCategories([]),
+      saveDestinations([]),
     ]);
     setUser(null);
+    
   };
 
   const finishRegister = async (
@@ -203,34 +193,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       await saveUser(updatedUserInfo);
       setUser(updatedUserInfo);
 
-      return { success: true };
+      return { success: true, error: "" };
     } catch (error) {
-      return {
-        success: false,
-        error: handleApiError(
-          error,
-          "Error inesperado al completar el perfil."
-        ),
-      };
+      return { success: false, error: handleApiError(error) };
     }
   };
 
   //Confirmation codes
   const requestConfirmationCode = async (email: string, mode: string) => {
     try {
-      if(mode == "register"){
-        email = user?.email! ;
-      }
       const response = await api.post(`/confirmation_codes/request?type=${mode}`, { email });
       if(mode == "passwordReset"){
         setResetEmail(email);
       }
-      return { success: true };
-    } catch (error: any) {
-      return {
-        success: false,
-        error: handleApiError(error, "Error al solicitar el código"),
-      };
+      return { success: true, error: "" };
+    } catch (error) {
+      return { success: false, error: handleApiError(error) };
     }
   };
 
@@ -239,28 +217,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     isRegistration = false
   ) => {
     try {
-      const response = await api.post("/confirmation_codes/verify", {
+      const {data: authResponse} = await api.post("/confirmation_codes/verify", {
         email: isRegistration ? user?.email : resetEmail,
         code,
         is_registration: isRegistration,
       });
       if (isRegistration) {
-          const updatedUserInfo: User = {
-            ...user,
-            is_verified: true,
-          };
-          await saveUser(updatedUserInfo); // Guardar en el storage
-          setUser(updatedUserInfo);
+         await Promise.all([
+          saveAccessToken(authResponse.tokens.access_token),
+          saveRefreshToken(authResponse.tokens.refresh_token),
+          saveUser(authResponse.user),
+        ]);
+
+        setUser(authResponse.user);
       }else {
           setCode(code);
       }
-      
-      return { success: true };
-    } catch (error: any) {
-      return {
-        success: false,
-        error: handleApiError(error, "Error al verificar el código"),
-      };
+      return { success: true, error: "" };
+    } catch (error) {
+      return { success: false, error: handleApiError(error) };
     }
   };
 
@@ -275,12 +250,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       
       setCode(null);
       setResetEmail(null);
-      return { success: true };
-    } catch (error: any) {
-      return {
-        success: false,
-        error: handleApiError(error, "Error al reestablecer la contraseña"),
-      };
+      return { success: true, error: ""};
+    } catch (error) {
+      return { success: false, error: handleApiError(error) };
     }
   };
 

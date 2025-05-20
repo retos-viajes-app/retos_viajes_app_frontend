@@ -10,7 +10,7 @@ import Destination from "@/models/destination";
 import Trip from "@/models/trip";
 
 // Utility Imports
-import useApi from "@/utils/api";
+import api from "@/utils/api";
 import {
   getCachedCategories,
   getCachedDestinations,
@@ -20,6 +20,7 @@ import {
 } from "@/utils/asyncStorage";
 import { handleApiError } from "@/utils/errorHandler";
 import { getUser } from "@/utils/secureTokens";
+import { ApiResponse } from "./AuthContext";
 
 interface TripContextType {
   trip?: Trip | null;
@@ -29,7 +30,7 @@ interface TripContextType {
   categories: Category[];
   selectedCategoriesId: string[];
   setSelectedCategoriesId: (categoriesId: string[]) => void;
-  postTrip: (trip: Trip) => Promise<{ success: boolean; error?: string }>;
+  postTrip: (trip: Trip) => Promise<ApiResponse>;
 }
 
 const TripContext = createContext<TripContextType | undefined>(undefined);
@@ -44,7 +45,6 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
   const [trip, setTrip] = useState<Trip | null>(null);
   const [currentTrip, setCurrentTrip] = useState<Trip | undefined>(undefined);
   const [categories, setCategories] = useState<Category[]>([]);
-  const api = useApi();
   const { user } = useAuth();
   const getDestinations = async () => {
     try {
@@ -53,16 +53,12 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
       if (cachedDestinations) {
         setDestinations(cachedDestinations);
       }
-      const response = await api.get<Destination[]>("destinations");
+      const response = await api.get("/destinations/");
       setDestinations(response.data);
       await saveDestinations(response.data); // Guardar en cache
       return { destinations: response.data, error: undefined };
     } catch (error) {
-      console.error(error);
-      return {
-        destinations: [],
-        error: handleApiError(error, "Error al solicitar los destinos"),
-      };
+      return { success: false, error: handleApiError(error), destinations: [] };
     }
   };
 
@@ -75,16 +71,12 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
       }
 
       // Hacer petición a la API para actualizar los datos
-      const response = await api.get<Category[]>("categories");
+      const response = await api.get("/categories/");
       setCategories(response.data);
       await saveCategories(response.data); // Guardar en cache
       return { categories: response.data, error: undefined };
     } catch (error) {
-      console.error(error);
-      return {
-        categories: [],
-        error: handleApiError(error, "Error al solicitar las categorías"),
-      };
+      return { success: false, error: handleApiError(error), categories: [] };
     }
   };
 
@@ -94,26 +86,20 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
       //Asociar a selectedCategoriesId
       const user = await getUser();
       trip.user_id = user?.id;
-      const response = await api.post<{ trip_id: string }>("trips", trip);
-      trip.id = parseInt(response.data.trip_id);
+      const response = await api.post("/trips/", trip);
+      trip.id = response.data.id;
       selectedCategoriesId.forEach(async (categoryId) => {
         await postTripCategory(trip.id!, parseInt(categoryId));
       });
       setCurrentTrip(trip);
-      return { success: true };
+      return { success: true, error: ""};
     } catch (error) {
-      return {
-        success: false,
-        error: handleApiError(
-          error,
-          "Error inesperado al completar el perfil."
-        ),
-      };
+      return { success: false, error: handleApiError(error)};
     }
   };
   const postTripCategory = async (tripId: number, categoryId: number) => {
     try {
-      await api.post("trips-categories", {
+      await api.post("/trips-categories/", {
         trip_id: tripId,
         category_id: categoryId,
       });
@@ -127,7 +113,7 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
 
       const user = await getUser();
 
-      const response = await api.get<Trip[]>(`users/${user?.id}/trips/`);
+      const response = await api.get(`users/${user?.id}/trips`);
       if (response.data.length > 0) {
         setCurrentTrip(response.data[0]); // Guardar el primer viaje en el estado
         await saveTrip(response.data[0]);
@@ -135,11 +121,7 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
 
       return { trips: response.data, error: undefined };
     } catch (error) {
-      console.error(error);
-      return {
-        trips: [],
-        error: handleApiError(error, "Error al obtener los viajes"),
-      };
+      return { success: false, error: handleApiError(error), trips: [] };
     }
   };
   useEffect(() => {

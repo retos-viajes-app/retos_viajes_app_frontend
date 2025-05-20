@@ -14,14 +14,12 @@ export default function ProfileScreen() {
   const {logout, user} = useAuth();
 
   const handleLogout = async () => {
-    await logout();
-    //No se debe añadir la redireccione en el context
+    logout();
     router.replace("/login"); 
   };
 
 
   return user? (
-    
     <View>
       <Text>Hola</Text>
       <Button title="Cerrar sesión de Google" onPress={handleLogout} />

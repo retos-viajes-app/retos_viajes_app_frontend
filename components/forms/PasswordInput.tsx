@@ -6,7 +6,8 @@ import { TextInput, TextInputProps, StyleSheet, View, Text, TouchableOpacity } f
 import { Colors } from "@/constants/Colors";
 
 // Icon Imports
-import { Eye, EyeOff } from "lucide-react-native";
+//import { Eye, EyeOff } from "lucide-react-native";
+import { Feather } from "@expo/vector-icons";
 
 
 interface CustomTextInputProps extends TextInputProps {
@@ -20,6 +21,10 @@ const PasswordInput: React.FC<CustomTextInputProps> = ({
   ...props
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isFocused, setIsFocused] = useState(false); // Estado para manejar el foco
+  // Manejar los cambios de foco
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -27,6 +32,7 @@ const PasswordInput: React.FC<CustomTextInputProps> = ({
 
   const inputStyles = [
     styles.input,
+    isFocused && !disabled && styles.focused,
     errorMessage && styles.error,
     disabled && styles.disabled,
   ];
@@ -39,15 +45,17 @@ const PasswordInput: React.FC<CustomTextInputProps> = ({
           style={inputStyles}
           editable={!disabled}
           secureTextEntry={!isPasswordVisible}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
         <TouchableOpacity
           style={styles.iconContainer}
           onPress={togglePasswordVisibility}
         >
           {isPasswordVisible ? (
-            <EyeOff size={24} color={Colors.colors.gray[400]} />
+            <Feather name="eye" size={24} color={Colors.colors.gray[400]} />
           ) : (
-            <Eye size={24} color={Colors.colors.gray[400]} />
+            <Feather name="eye-off" size={24} color={Colors.colors.gray[400]} />
           )}
         </TouchableOpacity>
       </View>
@@ -87,6 +95,10 @@ const styles = StyleSheet.create({
     right: 10,
     top: "50%",
     transform: [{ translateY: -12 }],
+  },
+  focused: {
+    borderColor: Colors.colors.gray[400], // Color cuando tiene el foco (puedes ajustarlo)
+    backgroundColor: Colors.colors.neutral[100], // Fondo suave azul cuando tiene el foco
   },
   errorText: {
     color: Colors.colors.error[100],

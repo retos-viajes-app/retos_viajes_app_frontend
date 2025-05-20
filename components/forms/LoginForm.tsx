@@ -1,5 +1,5 @@
 // React & React Native Imports
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Text, TouchableOpacity, ImageBackground } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -8,7 +8,6 @@ import globalStyles from "@/styles/global";
 import StyledTextInput from "@/components/forms/StyledTextInput";
 import PaddingView from "@/components/views/PaddingView";
 import DividerWithText from "@/components/Divider";
-import { AuthContext } from "@/context/AuthContext";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import GoogleSignInButton from "@/components/buttons/GoogleSignInButton";
 import ErrorText from "@/components/text/ErrorText";
@@ -23,7 +22,8 @@ import { useFormValidation } from "@/hooks/useFormValidation";
 
 // Utility Imports
 import { validations } from "@/utils/validations";
-import { LoadingScreen } from "@/components/LoadingScreen";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "@/hooks/useAuth";
 
 
 const LoginForm = () => {
@@ -31,19 +31,14 @@ const LoginForm = () => {
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const authContext = useContext(AuthContext);
+  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
   
-
-  if (!authContext) {
-    throw new Error("AuthContext must be used within an AuthProvider");
-  }
-
-  const { login } = authContext;
 
   const { errors, validateForm } = useFormValidation({
     userid: (value) => {
-      if (!value.trim()) return "Por favor, ingresa tu usuario o correo.";
+      if (!value.trim()) return t("errorsFrontend.validations.emptyUserid");
       if (value.includes("@")) {
         return validations.email(value);
       } else {
@@ -55,29 +50,22 @@ const LoginForm = () => {
 
   const handleLogin = async () => {
     setErrorMessage("");
-    setLoading(true);
     const isValid = validateForm({ userid, password });
 
-    if (!isValid) {
-      setLoading(false); 
-      return;
-    }
-
+    if (!isValid) return;
+    setLoading(true);
     const { success, error } = await login(userid, password);
 
-
     if (!success) {
-      console.log("Error en el login:", error);
-      setErrorMessage("Hubo un problema con el login.");
+      setErrorMessage(error);
       setLoading(false); 
       return;
     }
-    setLoading(false);
+
     router.replace("/"); 
   };
 
   return (
-    loading ?<LoadingScreen />:
     <>
       <ImageBackground
         source={require("@/assets/images/loginImage.png")}
@@ -88,24 +76,23 @@ const LoginForm = () => {
           alignItems: "center",
           marginBottom: 24,
         }}
-        resizeMode="cover" // Cubre todo el espacio sin distorsión
+        resizeMode="cover"
       >
         {/* Puedes agregar un logo aquí si quieres */}
       </ImageBackground>
-      {/* Com ponente con padding a los lados */}
       <PaddingView>
         <ViewContentContinue>
           <ViewForm>
             <TitleParagraph
-              title="Iniciar sesión"
-              paragraph="Continúa tu aventura y conquista nuevos destinos."
+              title={t("auth.login.title")}
+              paragraph={t("auth.login.paragraph")}
             />
 
             {errorMessage ? <ErrorText text={errorMessage} /> : null}
             <ViewInputs>
               <StyledTextInput
                 style={globalStyles.largeBodyMedium}
-                placeholder="Usuario o correo"
+                placeholder={t("auth.login.username")}
                 autoCapitalize="none"
                 value={userid}
                 onChangeText={setUserid}
@@ -113,7 +100,7 @@ const LoginForm = () => {
               />
               <PasswordInput
                 style={globalStyles.largeBodyMedium}
-                placeholder="Contraseña"
+                placeholder={t("auth.login.password")}
                 value={password}
                 onChangeText={setPassword}
                 errorMessage={errors.password}
@@ -123,23 +110,25 @@ const LoginForm = () => {
               onPress={() => router.push("/requestConfirmationCode")}
             >
               <Text style={globalStyles.mediumBodyMedium}>
-                ¿Has olvidado tu contraseña? <Text style={globalStyles.link}>Recuperar</Text>
+                {t("auth.login.forgotPassword")}
+                <Text style={globalStyles.link}>{t("auth.login.recoverLink")}</Text>
               </Text>
             </TouchableOpacity>
             <DividerWithText />
 
             <GoogleSignInButton />
 
-            <TouchableOpacity onPress={() => router.push("/register")}>
+            <TouchableOpacity onPress={() => router.replace("/register")}>
             <Text style={globalStyles.mediumBodyMedium}>
-              ¿No tienes una cuenta? <Text style={globalStyles.link}>Regístrate gratis</Text>
+              {t("auth.login.notAccount")} <Text style={globalStyles.link}>{t("auth.login.registerLink")}</Text>
             </Text>
             </TouchableOpacity>
           </ViewForm>
           <PrimaryButton
-            title="Continuar"
+            title={t("continue")}
             onPress={handleLogin}
             style={[globalStyles.title, { width: "100%" }]}
+            loading={loading}
           />
         </ViewContentContinue>
       </PaddingView>

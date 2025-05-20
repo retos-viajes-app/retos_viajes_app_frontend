@@ -38,19 +38,17 @@ export default function IndexScreen() {
   //     }
   //   }
   // }, []);
-  const { user} = useAuth();
+  
   const router = useRouter();
   const {currentTrip} = useTrip();
-  return  user ? (
-    currentTrip?  <CurrentTripIndex/>  :(
+  return currentTrip?  <CurrentTripIndex/>  :(
       <>
       <NoCurrentTripIndex />
       <View>
         <ConnectUsers />
       </View>
       </>
-    )
-  ) :  <LoadingScreen/>;
+    );
 }
 
 const styles = StyleSheet.create({

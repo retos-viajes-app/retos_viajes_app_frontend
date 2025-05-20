@@ -1,6 +1,6 @@
 // React & React Native Imports
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, FlatList, ActivityIndicator} from "react-native";
 
 // Component Imports
 import UserCard from "@/components/UserCard";
@@ -19,6 +19,7 @@ import { cancelConnectionRequest, getSuggestedUsers, sendConnectionRequest } fro
 
 // Third-Party Imports
 import Toast from "react-native-toast-message";
+import { useTranslation } from "react-i18next";
 
 
 const SuggestedUsers: React.FC = () => {
@@ -27,6 +28,7 @@ const SuggestedUsers: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
+  const { t } = useTranslation();
 
   const [connectingUserIds, setConnectingUserIds] = useState<number[]>([]);
   const flatListRef = useRef<FlatList>(null);
@@ -85,7 +87,7 @@ const SuggestedUsers: React.FC = () => {
        Toast.show({
          type: "error",
          text1: "Error",
-         text2: error.message,
+         text2: error,
          position: "bottom",
          bottomOffset: 80,
        });
@@ -111,7 +113,7 @@ const SuggestedUsers: React.FC = () => {
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: error.message,
+        text2: error,
         position: "bottom",
         bottomOffset: 80,
       });
@@ -138,7 +140,7 @@ const SuggestedUsers: React.FC = () => {
   if (initialLoading) {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Conecta con otros viajeros</Text>
+        <Text style={styles.title}>{t("suggestedUsers.title")}</Text>
         <View>
           <ActivityIndicator size="large" color="#0066CC" />
         </View>
@@ -150,10 +152,10 @@ const SuggestedUsers: React.FC = () => {
   if (suggestedUsers.length === 0 && !loading) {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Conecta con otros viajeros</Text>
+        <Text style={styles.title}>{t("suggestedUsers.title")}</Text>
         <View>
           <Text>
-            No hay usuarios sugeridos disponibles
+            {t("suggestedUsers.noUsers")}
           </Text>
         </View>
       </View>
@@ -162,7 +164,7 @@ const SuggestedUsers: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Conecta con otros viajeros</Text>
+      <Text style={styles.title}>{t("suggestedUsers.title")}</Text>
 
       <FlatList
         ref={flatListRef}

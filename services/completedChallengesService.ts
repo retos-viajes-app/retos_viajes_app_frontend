@@ -1,7 +1,5 @@
 import  {CompletedChallengesPostsResponse }from "@/models/completedChallenge";
-import useApi from "@/utils/api";
-
-const api = useApi();
+import api from "@/utils/api";
 
 export const getSuggestedCompletedChallenges = async (
   page = 1,

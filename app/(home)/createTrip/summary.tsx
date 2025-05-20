@@ -18,40 +18,53 @@ import globalStyles from "@/styles/global";
 
 // Utility Imports
 import { Colors } from "@/constants/Colors";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
+import ErrorText from "@/components/text/ErrorText";
 
 // Icon Imports
-import { Map, CalendarMinus2, Star } from 'lucide-react-native';
+//import { Map, CalendarMinus2, Star } from 'lucide-react-native';
 
 export default function SummaryScreen() {
     const {destinations, trip, selectedCategoriesId,categories,postTrip} = useTrip();
-    const [error,setError] = useState<string | undefined>(undefined);
+    const [errorMessage,setErrorMessage] = useState<string | undefined>(undefined);
     const router = useRouter();
     const currenDestination = destinations.find((destination) => destination.id === trip?.destination_id);
     const selectedCategories = categories.filter((category) => selectedCategoriesId.includes(category.id!.toString()));
+    const { t } = useTranslation();
+    const [loading, setLoading] = useState(false);
+    
     const handleContinue = async () => {
+        setLoading(true);
         const {success,error} = await postTrip(trip!);
-        if(success){
-            router.replace("/");
-        }else{
-            setError(error);
+
+        if(!success){
+            setErrorMessage(error);
+            setLoading(false);
+            return;
         }
+        router.dismissAll();
+        router.replace("/");
+        setLoading(false);
+        
     }
     return  (
         <PaddingView >
         <ViewContentContinue>
         <View style={{gap:30}}>
             <TitleParagraph
-                title="¡Todo listo para tu aventura!"
-                paragraph="Este es el summary de tu viaje:"
+                title={t("createTrip.summary.title")}
+                paragraph={t("createTrip.summary.paragraph")}
             />
-            {error && <Text style={{ color: "red", padding:20 }}>{error}</Text> } 
+            {errorMessage ? <ErrorText text={errorMessage} /> : null}
             <View style={{gap:20}}>
                 <View style={{ display: "flex", flexDirection: "row", alignItems:"center", gap:10 }}>
                 {/* Destino */}
-                    <Map color={Colors.colors.primary[200]} strokeWidth={1.6} size={35}/> 
+                    {/* <Map color={Colors.colors.primary[200]} strokeWidth={1.6} size={35}/>  */}
+                    <MaterialCommunityIcons name="map" size={35} color={Colors.colors.primary[200]} />
                     <View >
                         {/* No hay mediumbodymedium */}
-                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.gray[500]}]}>Destino</Text>
+                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.gray[500]}]}>{t("createTrip.summary.destination")}</Text>
                         <Text style={[globalStyles.largeBodyMedium, {color: Colors.colors.gray[400]}]}>{currenDestination?.city}, {currenDestination?.country}</Text>  
                     </View> 
                 </View>
@@ -60,9 +73,10 @@ export default function SummaryScreen() {
 
                 <View style={{ display: "flex", flexDirection: "row", alignItems:"center", gap:10 }}>
                 {/* Fechas*/}
-                    <CalendarMinus2 color={Colors.colors.primary[200]} strokeWidth={1.6} size={35}/> 
+                    {/* <CalendarMinus2 color={Colors.colors.primary[200]} strokeWidth={1.6} size={35}/> */}
+                    <MaterialCommunityIcons name="calendar-remove" size={35} color={Colors.colors.primary[200]} />
                     <View >
-                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.gray[500]}]}>Fechas</Text>
+                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.gray[500]}]}>{t("createTrip.summary.dates")}</Text>
                         <Text style={[globalStyles.largeBodyMedium, {color: Colors.colors.gray[400]}]}>{trip?.start_date?.toDateString()} - {trip?.start_date?.toDateString()}</Text>  
                     </View> 
                 </View>
@@ -71,13 +85,14 @@ export default function SummaryScreen() {
 
                 <View style={{ display: "flex", flexDirection: "row", alignItems:"center", gap:10 }}>
                 {/* Misiones */}
-                    <Star color={Colors.colors.primary[200]} strokeWidth={1.6} size={35}/> 
+                    {/* <Star color={Colors.colors.primary[200]} strokeWidth={1.6} size={35}/>  */}
+                    <Feather name="star" size={35} color={Colors.colors.primary[200]} />
                     <View >
                         {/* No hay mediumbodymedium */}
-                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.gray[500]}]}>Misiones</Text>
+                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.gray[500]}]}>{t("createTrip.summary.missions")}</Text>
                         <FlatList
                             data={selectedCategories}
-                            keyExtractor={(item) => item.id.toString()}
+                            keyExtractor={(item) => item.id!.toString()}
                             renderItem={({ item }) => (
                                 <View >
                                 <Text style={[globalStyles.largeBodyMedium, {color: Colors.colors.gray[400]}]} >• {item.name}</Text>
@@ -88,7 +103,11 @@ export default function SummaryScreen() {
                 </View>
             </View>
         </View>
-            <PrimaryButton title="Confirmar y empezar aventura" onPress={handleContinue}/>
+            <PrimaryButton 
+                title={t("createTrip.summary.confirm")}
+                onPress={handleContinue}
+                loading={loading}
+            />
         </ViewContentContinue>
       </PaddingView>
     );
