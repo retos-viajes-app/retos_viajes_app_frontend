@@ -14,66 +14,49 @@ import { Colors } from "@/constants/Colors";
 // Model Imports
 import { UserWithConnectionStatus } from "@/models/userConnections";
 
-// Service Imports
-import { cancelConnectionRequest, getSuggestedUsers, sendConnectionRequest } from "@/services/suggestedUsersService";
 
 // Third-Party Imports
 import Toast from "react-native-toast-message";
 import { useTranslation } from "react-i18next";
+import { useSuggestedUsers } from "@/hooks/useSuggestedUsers";
 
 
 const SuggestedUsers: React.FC = () => {
-  const [suggestedUsers, setSuggestedUsers] = useState<UserWithConnectionStatus[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const {
+  suggestedUsers,
+  updateUserStatus,
+  addConnectingUserId,
+  removeConnectingUserId,
+  isUserConnecting,
+  sendConnectionRequest,
+  cancelConnectionRequest,
+  getSuggestedUsers,
+  hasMore,
+  loading,
+  page,
+  setPage
+} = useSuggestedUsers();
+
   const [initialLoading, setInitialLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
   const { t } = useTranslation();
 
-  const [connectingUserIds, setConnectingUserIds] = useState<number[]>([]);
   const flatListRef = useRef<FlatList>(null);
 
-  const addConnectingUserId = (userId: number) =>
-    setConnectingUserIds((prev) => [...prev, userId]);
-
-  const removeConnectingUserId = (userId: number) =>
-    setConnectingUserIds((prev) => prev.filter((id) => id !== userId));
-
-  const isUserConnecting = (userId: number) => connectingUserIds.includes(userId);
-
-  const updateUserStatus = (
-    userId: number,
-    newStatus: UserWithConnectionStatus["connection_status"]
-  ) => {
-    setSuggestedUsers((prevSuggestedUsers) =>
-      prevSuggestedUsers.map((u) =>
-        u.id === userId ? { ...u, connection_status: newStatus } : u
-      )
-    );
-  };
-
-  const fetchSuggestedUsers = async (currentPage: number) => {
-    if ((loading && currentPage > 1) || !hasMore) return;
-    setLoading(true);
-    const response = await getSuggestedUsers(currentPage);
-
-    setSuggestedUsers((prevSuggestedUsers: UserWithConnectionStatus[]) =>
-      currentPage === 1 ? response.users : [...prevSuggestedUsers, ...response.users]
-    );
-    setHasMore(response.pagination.has_more);
-    setLoading(false);
-    setInitialLoading(false);
-  };
 
   useEffect(() => {
-    fetchSuggestedUsers(1);
+    getSuggestedUsers(1).then((res) => {
+      if (res.success) setPage(1);
+      setInitialLoading(false);
+    });
   }, []);
 
-  const handleLoadMore = () => {
+ const handleLoadMore = async () => {
     if (!loading && hasMore) {
       const nextPage = page + 1;
-      setPage(nextPage);
-      fetchSuggestedUsers(nextPage);
+      const result = await getSuggestedUsers(nextPage);
+      if (result.success) {
+        setPage(nextPage);
+      }
     }
   };
   
