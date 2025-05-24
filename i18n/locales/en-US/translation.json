@@ -94,6 +94,9 @@
       "confirm": "Confirmar y empezar la aventura"
     }
   },
+  "destinations": {
+    "tittle": "Popular destinations"
+  },
   "tabs": {
     "trip": "Viaje",
     "activity": "Actividad",

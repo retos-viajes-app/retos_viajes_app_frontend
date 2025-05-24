@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 // Model Imports
 import Category from "@/models/category";
-import Destination from "@/models/destination";
+import {Destination} from "@/models/destination";
 import Trip from "@/models/trip";
 
 // Utility Imports

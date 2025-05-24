@@ -19,7 +19,7 @@ import { useTrip } from "@/hooks/useTrip";
 import globalStyles from "@/styles/global";
 
 // Utility Imports
-import Destination from "@/models/destination";
+import {Destination} from "@/models/destination";
 import { useTranslation } from "react-i18next";
 import ErrorText from "@/components/text/ErrorText";
 

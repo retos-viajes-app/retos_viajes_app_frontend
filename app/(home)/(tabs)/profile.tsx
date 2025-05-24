@@ -7,6 +7,7 @@ import { LoadingScreen } from '@/components/LoadingScreen';
 
 // Hook Imports
 import { useAuth } from '@/hooks/useAuth';
+import DestinationsFlatList from '@/components/destination/DestinationsFlatList';
 
 
 export default function ProfileScreen() {
@@ -23,6 +24,7 @@ export default function ProfileScreen() {
     <View>
       <Text>Hola</Text>
       <Button title="Cerrar sesión de Google" onPress={handleLogout} />
+      
     </View>
   ): <LoadingScreen />;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import Destination from "@/models/destination"; // Importa el objeto de destino
+import {Destination} from "@/models/destination"; // Importa el objeto de destino
 import { getDestinationById } from "@/services/destinationService";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 

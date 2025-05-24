@@ -14,6 +14,7 @@ import { useTrip } from '@/hooks/useTrip';
 //Imports para borrar datos de expo-secure-store y localStorage
 import { useEffect } from 'react';
  import * as SecureStore from 'expo-secure-store';
+import DestinationsFlatList from '@/components/destination/DestinationsFlatList';
 
 export default function IndexScreen() {
   // Verificación de usuario
@@ -46,13 +47,15 @@ export default function IndexScreen() {
       <>
      
       <NoCurrentTripIndex />
+      
       <View>
+        <DestinationsFlatList />
         <ConnectUsers />
       </View>
-       <Button
+       {/* <Button
         title="Malaga"
         onPress={() => router.push("/inicio/destination/1")}
-      />
+      /> */}
       </>
     );
 }

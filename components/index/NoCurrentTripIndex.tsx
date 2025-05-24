@@ -22,7 +22,6 @@ const NoCurrentTripIndex = () => {
 
   return (
     //273 no queda bien
-    <ImageBackground style={{height: 400}} source={require('@/assets/images/trip-header.png') }resizeMode="cover">
       <PaddingView>
         <View style={{flex: 1, justifyContent: 'center', gap: 16}}>  
           <View style={{ gap: 8, alignItems: 'center'}}>
@@ -35,7 +34,6 @@ const NoCurrentTripIndex = () => {
           />
         </View>
       </PaddingView>
-    </ImageBackground>
   );
 };
 

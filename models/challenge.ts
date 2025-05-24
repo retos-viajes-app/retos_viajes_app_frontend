@@ -1,5 +1,5 @@
 import Category from "@/models/category"
-import Destination from "@/models/destination";
+import {Destination} from "@/models/destination";
 
 export default interface Challenge {
   id?: number;
