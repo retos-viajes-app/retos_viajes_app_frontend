@@ -8,10 +8,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Destination } from '@/models/destination';
-import { Colors } from '@/constants/Colors';
-import globalStyles from '@/styles/global';
 import DestinationCard from '@/components/destination/DestinationCard';
-import { t } from 'i18next';
+import { useTranslation } from "react-i18next";
 type ItemProps = { country: string };
 
 
@@ -22,6 +20,7 @@ const DestinationsFlatList = () => {
   const [loading, setLoading] = useState(false);
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const flatListRef = useRef<FlatList>(null);
+  const { t } = useTranslation();
   const fetchDestinations = async (currentPage: number) => {
     if (loading || !hasMore) return;
 

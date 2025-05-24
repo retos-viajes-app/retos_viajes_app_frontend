@@ -23,7 +23,7 @@ import {Destination} from "@/models/destination";
 import { useTranslation } from "react-i18next";
 import ErrorText from "@/components/text/ErrorText";
 
-export default function SelectDestinationScreen() {
+const SelectDestination =()=> {
   const [search, setSearch] = useState<string>("");
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
@@ -110,7 +110,7 @@ export default function SelectDestinationScreen() {
 
 
 
-  
+
 
 
 
@@ -144,5 +144,4 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
-
-// export default GridList;
+export default SelectDestination;

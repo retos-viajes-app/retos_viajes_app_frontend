@@ -92,6 +92,10 @@
       "dates": "Fechas",
       "missions": "Misiones",
       "confirm": "Confirmar y empezar la aventura"
+    },
+    "button":{
+      "create": "Crear nuevo viaje",
+      "addPast": "Añadir viaje pasado"
     }
   },
   "destinations": {
