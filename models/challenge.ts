@@ -13,3 +13,12 @@ export default interface Challenge {
   difficulty?: number;
   active?: boolean;
 }
+
+export interface ChallengesPaginationResponse {
+  challenges: Challenge[];
+  pagination: {
+    page: number;
+    per_page: number;
+    has_more: boolean;
+  };
+}
