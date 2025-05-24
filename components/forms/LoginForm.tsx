@@ -62,7 +62,7 @@ const LoginForm = () => {
       return;
     }
 
-    router.replace("/"); 
+    router.replace("/inicio"); 
   };
 
   return (

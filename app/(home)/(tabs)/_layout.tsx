@@ -36,9 +36,9 @@ export default function TabLayout() {
         }),
       }}>
       <Tabs.Screen
-        name="index"
+        name="inicio"
         options={{
-          title: t("tabs.trip"),
+          title: t("tabs.home"),
           tabBarIcon: ({ focused }) => (
             // <House
             //   color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]} // Cambia color según estado

@@ -1,5 +1,5 @@
 // React & React Native Imports
-import { Platform, StyleSheet, View } from 'react-native';
+import { Button, Platform, StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
 // Component Imports
@@ -42,11 +42,17 @@ export default function IndexScreen() {
   const router = useRouter();
   const {currentTrip} = useTrip();
   return currentTrip?  <CurrentTripIndex/>  :(
+   
       <>
+     
       <NoCurrentTripIndex />
       <View>
         <ConnectUsers />
       </View>
+       <Button
+        title="Malaga"
+        onPress={() => router.push("/inicio/destination/1")}
+      />
       </>
     );
 }

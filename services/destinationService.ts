@@ -27,3 +27,13 @@ export const getChallengesForDestination = async (
     };
   }
 };
+
+export const getDestinationById = async (destination_id: number) => {
+  try {
+    const response = await api.get(`/destinations/${destination_id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching destination by ID:", error);
+    throw error;
+  }
+}

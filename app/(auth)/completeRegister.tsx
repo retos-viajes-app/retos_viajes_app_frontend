@@ -70,7 +70,7 @@ export default  function RegisterScreen() {
       return;
     }
 
-    router.replace("/");
+    router.replace("/inicio");
     setLoading(false);
   };
 
