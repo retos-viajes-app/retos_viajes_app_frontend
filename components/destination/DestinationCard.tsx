@@ -3,6 +3,8 @@ import {StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { Destination } from "@/models/destination";
 import { Feather } from "@expo/vector-icons";
 import {  useRouter } from "expo-router";
+import { ArrowRight } from "lucide-react-native";
+import { Colors } from "@/constants/Colors";
 
 const DestinationCard = ({ destination }: { destination: Destination }) => {
     const router = useRouter();
@@ -18,7 +20,7 @@ const DestinationCard = ({ destination }: { destination: Destination }) => {
                     <Text>{destination.country}</Text>
                 </View>
                 <TouchableOpacity style={styles.circle} onPress={handlePress}>
-                     <Feather name="arrow-right" size={20} color="#333" />
+                     <ArrowRight size={18} color={Colors.colors.primary[500]}/>
                 </TouchableOpacity>
             </View>
         </View>

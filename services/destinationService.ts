@@ -10,7 +10,7 @@ export const getChallengesForDestination = async (
   destination_id: number
 ): Promise<ChallengesPaginationResponse> => {
   try {
-    const response = await api.get(`/destination/${destination_id}/challenges`, {
+    const response = await api.get(`/destinations/${destination_id}/challenges`, {
       params: {
         page,
         per_page: perPage,

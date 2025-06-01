@@ -4,6 +4,8 @@ import { useLocalSearchParams } from "expo-router";
 import {Destination} from "@/models/destination"; // Importa el objeto de destino
 import { getDestinationById } from "@/services/destinationService";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import ChallengesFlatList from "@/components/challenge/ChallengeFlatList";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Destino() {
   const { destination_id } = useLocalSearchParams();
@@ -22,10 +24,11 @@ export default function Destino() {
     
   }, [destination_id]);
   return (
-    <View>
+    <SafeAreaView style={{ flex: 1,paddingHorizontal: 16, }}>
       <Text>{destination?.city}</Text>
        <Text>{destination?.country}</Text>
        <Text>{destination?.description}</Text>
-    </View>
+       <ChallengesFlatList destination_id={Number(destination_id)} />
+    </SafeAreaView>
   );
 }

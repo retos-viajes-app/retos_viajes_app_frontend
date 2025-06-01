@@ -1,6 +1,6 @@
 import Category from "@/models/category"
 import {Destination} from "@/models/destination";
-
+import {Details} from "@/models/details";
 export default interface Challenge {
   id?: number;
   category?: Category;
@@ -12,6 +12,7 @@ export default interface Challenge {
   points?: number;
   difficulty?: number;
   active?: boolean;
+  details?: Details[];
 }
 
 export interface ChallengesPaginationResponse {
