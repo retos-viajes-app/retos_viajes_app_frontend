@@ -3,6 +3,9 @@ import {Destination} from "@/models/destination";
 import {Details} from "@/models/details";
 export default interface Challenge {
   id?: number;
+  longitude?: number;
+  latitude?: number;
+  distance_from_challenge_to_city_center?: number;
   category?: Category;
   destination?: Destination;
   title?: string;

@@ -18,6 +18,10 @@ const ChallengeCard = ({ challenge}: { challenge: Challenge}) => {
             <Text>{challenge.title}</Text>
             <Text>{challenge.short_description}</Text>
             <View style={{flexDirection: 'row', gap: 10, alignItems: 'center', justifyContent: 'space-between', width: '70%'}}>
+                {challenge.distance_from_challenge_to_city_center?
+                <Text>A {challenge.distance_from_challenge_to_city_center.toFixed(2)}km del centro </Text>
+                : null}
+                
                 <Text>{challenge.details?.[0]?.price ? `${challenge.details[0].price} $` : ""}</Text>
                 <Text>{challenge.details?.[0]?.xp ? `${challenge.details[0].xp} pts` : ""}</Text>
                 <Text>{challenge.details?.[0]?.duration ? `${challenge.details[0].duration} h` : ""}</Text>
