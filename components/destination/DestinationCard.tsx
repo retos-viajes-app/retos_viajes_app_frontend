@@ -10,7 +10,7 @@ const DestinationCard = ({ destination }: { destination: Destination }) => {
     const router = useRouter();
 
     const handlePress = () => {
-        router.push(`/inicio/destination/${destination.id}`);
+        router.push(`/main/destination/${destination.id}`);
     };
     return (
         <View style={styles.card}>

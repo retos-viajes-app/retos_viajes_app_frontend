@@ -34,7 +34,7 @@ export default function CreateTripLayout() {
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={() => router.replace("/inicio")} >
+            <TouchableOpacity onPress={() => router.replace("/main")} >
               {/* <X size={24} color="black" /> */}
               <Feather name="x" size={24} color="black" />
             </TouchableOpacity>
