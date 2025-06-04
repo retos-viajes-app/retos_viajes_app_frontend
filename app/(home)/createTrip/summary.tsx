@@ -44,7 +44,7 @@ export default function SummaryScreen() {
             return;
         }
         router.dismissAll();
-        router.replace("/");
+        router.replace("/main");
         setLoading(false);
         
     }

@@ -1,0 +1,8 @@
+export interface Details {
+    id?: number;
+    price?: number;
+    duration?: string;
+    xp?: number;
+    is_active?: boolean;
+    challenge_id?: number;
+ }

@@ -13,6 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 // Style Imports
 import globalStyles from '@/styles/global';
 import { useTranslation } from 'react-i18next';
+import { Colors } from '@/constants/Colors';
 
 
 const NoCurrentTripIndex = () => {
@@ -22,12 +23,11 @@ const NoCurrentTripIndex = () => {
 
   return (
     //273 no queda bien
-    <ImageBackground style={{height: 400}} source={require('@/assets/images/trip-header.png') }resizeMode="cover">
       <PaddingView>
         <View style={{flex: 1, justifyContent: 'center', gap: 16}}>  
           <View style={{ gap: 8, alignItems: 'center'}}>
-            <Text style={globalStyles.diplaySemiBold}>{t('index.noTrip.title', { name: user?.name})}</Text> 
-            <Text style={globalStyles.subtitle}>{t("index.noTrip.subtitle")}</Text> 
+            <Text style={[globalStyles.largeBodySemiBold, {color:Colors.colors.primary[900]}]}>{t('index.noTrip.title', { name: user?.name})}</Text> 
+            <Text style={[globalStyles.largeBodyMedium,{color:Colors.colors.text.secondary}]}>{t("index.noTrip.subtitle")}</Text> 
           </View>
           <PrimaryButton 
             title='Crear mi primer viaje' 
@@ -35,7 +35,6 @@ const NoCurrentTripIndex = () => {
           />
         </View>
       </PaddingView>
-    </ImageBackground>
   );
 };
 

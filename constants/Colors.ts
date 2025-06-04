@@ -1,23 +1,70 @@
 export const Colors = {
   colors: {
     primary: {
-      100: "#0072FF",
-      200: "#66AAFF",
-      300: "#B2D5FF",
-      400: "#E5F1FF",
-      500: "#F5F9FF",
+      50: "#e6f2ff",
+      100: "#b0d6ff",
+      200: "#8ac2ff",
+      300: "#54a6ff",
+      400: "#3395ff",
+      500: "#007aff",
+      600: "#006fe8",
+      700: "#0057b5",
+      800: "#00438c",
+      900: "#00336b"
+    },
+    secondary: {
+    50: "#ebfbf6",
+    100: "#bff2e3",
+    200: "#a1ecd6",
+    300: "#76e4c3",
+    400: "#5bdeb8",
+    500: "#32d6a6",
+    600: "#2ec397",
+    700: "#249876",
+    800: "#1c765b",
+    900: "#155a46"
     },
     success: {
-      100: "#4BD395",
-      200: "#84E1B7",
-      300: "#C2F0DB",
-      400: "#EBFAF3",
+    50: "#ebf9ee",
+    100: "#c0eecc",
+    200: "#a2e5b3",
+    300: "#77d990",
+    400: "#5dd27a",
+    500: "#34c759",
+    600: "#2fb551",
+    700: "#258d3f",
+    800: "#1d6d31",
+    900: "#165425"
     },
     error: {
-      100: "#FF5733",
-      200: "#FF704D",
-      300: "#FF8A66",
-      400: "#FFEFEB",
+      50: "#fffeea",
+      100: "#ffc2bf",
+      200: "#ffa5a0",
+      300: "#ff7c74",
+      400: "#ff6259",
+      500: "#ff3b30",
+      600: "#e8362c",
+      700: "#b52a22",
+      800: "#8c201a",
+      900: "#6b1914"
+    },
+    text: {
+      tittle: "#1c1c1e",
+      secondary: "#6e6e73",
+      tertiary: "#a1a5ac"
+    },
+    background: {
+      default: "#F8F9FA",
+      subtle: "#F9FAF9",
+      input: "#F2F3F5",
+      card: "#ffffff",
+      hover: "#F2F3F5",
+      disabled: "#F2F3F5",
+      overlay: "#F2F3F5"
+    },
+    border: {
+      default: "#E5E7EA",
+      strong: "#D1D4D9"
     },
     accent: {
       100: "#FFC300",

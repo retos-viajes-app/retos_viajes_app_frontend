@@ -1,5 +1,5 @@
 // React & React Native Imports
-import { Platform, StyleSheet, View } from 'react-native';
+import { Button, Platform, StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
 // Component Imports
@@ -14,6 +14,7 @@ import { useTrip } from '@/hooks/useTrip';
 //Imports para borrar datos de expo-secure-store y localStorage
 import { useEffect } from 'react';
  import * as SecureStore from 'expo-secure-store';
+import DestinationsFlatList from '@/components/destination/DestinationsFlatList';
 
 export default function IndexScreen() {
   // Verificación de usuario
@@ -42,11 +43,19 @@ export default function IndexScreen() {
   const router = useRouter();
   const {currentTrip} = useTrip();
   return currentTrip?  <CurrentTripIndex/>  :(
+   
       <>
+     
       <NoCurrentTripIndex />
+      
       <View>
+        <DestinationsFlatList />
         <ConnectUsers />
       </View>
+       {/* <Button
+        title="Malaga"
+        onPress={() => router.push("/inicio/destination/1")}
+      /> */}
       </>
     );
 }

@@ -92,10 +92,17 @@
       "dates": "Fechas",
       "missions": "Misiones",
       "confirm": "Confirmar y empezar la aventura"
+    },
+    "button":{
+      "create": "Create new trip",
+      "addPast": "Add past trip"
     }
   },
+  "destinations": {
+    "tittle": "Popular destinations"
+  },
   "tabs": {
-    "trip": "Viaje",
+    "home": "home",
     "activity": "Actividad",
     "ranking": "Ranking",
     "profile": "Perfil"
