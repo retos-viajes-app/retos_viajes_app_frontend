@@ -31,10 +31,9 @@ const SuggestedUsers: React.FC = () => {
   sendConnectionRequest,
   cancelConnectionRequest,
   getSuggestedUsers,
-  hasMore,
-  loading,
-  page,
-  setPage
+  loadingSuggested,
+  isInitialized,
+  handleLoadMoreSuggestedUsers
 } = useSuggestedUsers();
 
   const [initialLoading, setInitialLoading] = useState(true);
@@ -44,21 +43,16 @@ const SuggestedUsers: React.FC = () => {
 
 
   useEffect(() => {
-    getSuggestedUsers(1).then((res) => {
-      if (res.success) setPage(1);
-      setInitialLoading(false);
-    });
-  }, []);
-
- const handleLoadMore = async () => {
-    if (!loading && hasMore) {
-      const nextPage = page + 1;
-      const result = await getSuggestedUsers(nextPage);
-      if (result.success) {
-        setPage(nextPage);
+    const initializeUsers = async () => {
+      if (!isInitialized && initialLoading) {
+        await getSuggestedUsers(1);
       }
-    }
-  };
+      setInitialLoading(false);
+    };
+
+    initializeUsers();
+  }, [initialLoading, isInitialized, getSuggestedUsers]);
+
   
   const handleConnectRequest = async (userId: number) => {
     if (isUserConnecting(userId)) return;
@@ -132,7 +126,7 @@ const SuggestedUsers: React.FC = () => {
   }
 
   // Si no hay usuarios, mostrar mensaje
-  if (suggestedUsers.length === 0 && !loading) {
+  if (suggestedUsers.length === 0 && !loadingSuggested) {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{t("suggestedUsers.title")}</Text>
@@ -156,12 +150,12 @@ const SuggestedUsers: React.FC = () => {
         keyExtractor={(item) => item.id!.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
-        onEndReached={handleLoadMore}
+        onEndReached={handleLoadMoreSuggestedUsers}
         onEndReachedThreshold={0.5}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         contentContainerStyle={styles.listContentContainer}
         ListFooterComponent={
-          loading && !initialLoading ? (
+          loadingSuggested && !initialLoading ? (
             <View style={styles.loaderContainer}>
               <ActivityIndicator size="large" color={"#0066CC"} />
             </View>
