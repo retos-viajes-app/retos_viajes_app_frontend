@@ -62,6 +62,15 @@
       "subtitle": "Prepárate para una nueva aventura"
     }
   },
+  "activity": {
+      "notificationsTitle": "No te pierdas nada",
+      "loadingPosts": "Cargando publicaciones...",
+      "loadingMore": "Cargando más...",
+      "noMorePosts": "Has llegado al final 👋",
+      "errorLoadingPosts": "Error al cargar publicaciones.",
+      "noPostsYet": "Aún no hay actividad para mostrar. ¡Explora y participa!"
+  },
+  
   "suggestedUsers": {
     "title": "Conecta con otros viajeros",
     "noUsers": "No hay usuarios sugeridos disponibles",
@@ -175,5 +184,6 @@
     "selectDestination": "Debes seleccionar un destino para continuar."
   },
   "continue": "Continuar",
-  "dividerText": "o si lo prefieres"
+  "dividerText": "o si lo prefieres",
+  "retry": "Reintentar"
 }

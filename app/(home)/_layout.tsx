@@ -4,6 +4,7 @@ import { Redirect, Stack } from "expo-router";
 // Context Imports
 import { TripProvider } from "@/context/TripContext";
 import { useAuth } from "@/hooks/useAuth";
+import { SuggestedUsersProvider } from "@/context/SuggestedUsersContext";
 
 
 export default function HomeLayout() {
@@ -12,11 +13,13 @@ export default function HomeLayout() {
   if (!user) return <Redirect href="/login"/>
   return (
     <TripProvider>
+      <SuggestedUsersProvider>
       <Stack screenOptions={{ headerShown: false,
       }}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="createTrip" />
       </Stack>
+      </SuggestedUsersProvider>
     </TripProvider>
   );
 }
