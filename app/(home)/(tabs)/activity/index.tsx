@@ -1,6 +1,9 @@
 // React & React Native Imports
-import { useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, ActivityIndicator, RefreshControl } from "react-native";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, RefreshControl } from "react-native";
+import { useTranslation } from "react-i18next";
+import { FlatList } from "react-native-gesture-handler";
+import { useRouter } from "expo-router";
 
 // Component Imports
 import ConnectUsers from "@/components/SuggestedUsers";
@@ -9,13 +12,14 @@ import CompletedChallengePost from "@/components/activity/CompletedChallengePost
 
 // Hook Imports
 import { useAuth } from "@/hooks/useAuth";
+import { useSuggestedUsers } from "@/hooks/useSuggestedUsers";
 
 // Style Imports
 import globalStyles from "@/styles/global";
 
 // Utility Imports
 import { Colors } from "@/constants/Colors";
-import { getSuggestedCompletedChallenges } from "@/services/completedChallengesService";
+import { getSuggestedCompletedChallenges, likeCompletedChallenge, unlikeCompletedChallenge } from "@/services/completedChallengesService";
 
 // Icon Imports
 //import { BellDot } from 'lucide-react-native';
@@ -23,11 +27,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Model Imports
 import { CompletedChallenge } from "@/models/completedChallenge";
-import { useRouter } from "expo-router";
-import { useSuggestedUsers } from "@/hooks/useSuggestedUsers";
-import { useTranslation } from "react-i18next";
-import ErrorText from "@/components/text/ErrorText";
-
 
 
 export default function ActivityScreen() {
@@ -41,8 +40,6 @@ export default function ActivityScreen() {
   const [initialLoading, setInitialLoading] = useState(true);
   const [isPaginating, setIsPaginating] = useState(false);
 
-  
-  
   const [paginationError, setPaginationError] = useState<string | null>(null);
   const [initialError, setInitialError] = useState<string | null>(null);
 
@@ -96,18 +93,40 @@ export default function ActivityScreen() {
     }
   };
 
-  const handleLike = async (completedChallengeId : number) => {
-      console.log("Like");
-  }
+  const handleLike = async (post : CompletedChallenge) => {
+    const isNowLiked = !post.is_liked_by_me;
+    const updatedPost = {
+      ...post,
+      is_liked_by_me: isNowLiked,
+      likes_count: isNowLiked
+        ? (post.likes_count || 0) + 1
+        : Math.max((post.likes_count || 0) - 1, 0),
+    };
+
+    setCompletedChallengesPosts(prev =>
+      prev.map(p => (p.id === post.id ? updatedPost : p))
+    );
+
+    try {
+      if (isNowLiked && post.id) {
+        await likeCompletedChallenge(post.id);
+      } else if (post.id) {
+        await unlikeCompletedChallenge(post.id);
+      }
+    } catch (error) {
+      console.error("Failed to update like status:", error);
+      setCompletedChallengesPosts(prev =>
+        prev.map(p => (p.id === post.id ? post : p))
+      );
+    }
+  };
 
   const renderItem = ({ item }: { item: CompletedChallenge}) => (
       <View style={{paddingHorizontal: 16}}>
-          <CompletedChallengePost
-              completedChallenge={item}
-              onLikePress={() => item.id && handleLike(item.id)}
-          /> 
+          <CompletedChallengePost completedChallenge={item} onLikePress={() => handleLike(item)} /> 
       </View>
   );
+
   const onRefresh = async () => {
     setRefreshing(true);
     setPage(1);
@@ -119,12 +138,6 @@ export default function ActivityScreen() {
       refreshSuggestedUsers(),
     ]);
   };
-
-   const handleRetryInitialLoad = () => {
-    setInitialError(null);
-    setHasMore(true);
-    fetchCompletedChallengesPosts(1);
-  }
 
    const renderListFooter = () => {
     if(initialLoading || initialError) return null;
@@ -187,11 +200,6 @@ export default function ActivityScreen() {
     return null;
   };
 
-  if (initialLoading && !refreshing) {
-    return <LoadingScreen />;
-  }
-
-
   return user ? (
     <FlatList
       data={completedChallengesPosts}
@@ -208,15 +216,13 @@ export default function ActivityScreen() {
           refreshing={refreshing} 
           onRefresh={onRefresh}
           colors={[Colors.colors.primary[300]]} // Android
-          tintColor={Colors.colors.primary[300]} // iOS
+          tintColor={Colors.colors.primary[300]} // IOS
         />
       }
       ListHeaderComponent={
         <>
           <View style={styles.headerContainer}>
-            <Text
-              style={[globalStyles.title, { color: Colors.colors.gray[500] }]}
-            >
+            <Text style={[globalStyles.title, { color: Colors.colors.gray[500] }]}>
              {t("activity.notificationsTitle")}
             </Text>
             <TouchableOpacity style={styles.notificationButton} onPress={() => router.push('/(tabs)/activity/notifications' as any)}>
@@ -225,9 +231,7 @@ export default function ActivityScreen() {
                 size={24}
                 color={Colors.colors.primary[100]}
               />
-               {pendingConnectionRequests.length > 0 && (
-                <View style={styles.notificationDot} />
-              )}
+               {pendingConnectionRequests.length > 0 && ( <View style={styles.notificationDot} /> )}
             </TouchableOpacity>
           </View>
           <ConnectUsers />
@@ -320,9 +324,9 @@ const styles = StyleSheet.create({
   initialContentFeedbackContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 40, // More padding as it takes significant space
+    paddingVertical: 40,
     paddingHorizontal: 16,
-    minHeight: 150, // Ensure it has some visible height
+    minHeight: 150,
   },
   initialContentFeedbackText: {
     fontSize: 16,
@@ -330,8 +334,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 12,
   },
-  errorText: { // General error text styling
-    color: Colors.colors.error[100], // Darker error color for text
+  errorText: {
+    color: Colors.colors.error[100],
     fontWeight: '500',
   },
 

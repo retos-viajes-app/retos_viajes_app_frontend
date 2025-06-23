@@ -14,14 +14,14 @@ import ViewForm from "@/components/views/ViewForm";
 
 // Hook Imports
 import { useFormValidation } from "@/hooks/useFormValidation";
+import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "react-i18next";
+import { useValidations } from "@/hooks/useValidations";
+
 
 // Style Imports
 import globalStyles from "@/styles/global";
 
-// Utility Imports
-import { validations } from "@/utils/validations";
-import { useAuth } from "@/hooks/useAuth";
-import { useTranslation } from "react-i18next";
 
 
 export default function RequestConfirmationCodeScreen() {
@@ -31,7 +31,7 @@ export default function RequestConfirmationCodeScreen() {
   const [errorMessage, setErrorMessage] = useState("");
   const {requestConfirmationCode} = useAuth();
   const { t } = useTranslation();
-
+  const validations = useValidations();
   const { errors, validateForm } = useFormValidation({
     email: validations.email,
   });

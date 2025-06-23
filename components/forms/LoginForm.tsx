@@ -19,11 +19,11 @@ import PasswordInput from "@/components/forms/PasswordInput";
 
 // Hook Imports
 import { useFormValidation } from "@/hooks/useFormValidation";
-
-// Utility Imports
-import { validations } from "@/utils/validations";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
+import { useValidations } from "@/hooks/useValidations";
+
+
 
 
 const LoginForm = () => {
@@ -34,6 +34,7 @@ const LoginForm = () => {
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+  const validations = useValidations();
   
 
   const { errors, validateForm } = useFormValidation({
