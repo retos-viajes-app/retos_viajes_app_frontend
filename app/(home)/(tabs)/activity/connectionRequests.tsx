@@ -10,6 +10,7 @@ import { LoadingScreen } from '@/components/LoadingScreen';
 import PaddingView from '@/components/views/PaddingView'; // Asumo que tienes este componente
 import { useSuggestedUsers } from '@/hooks/useSuggestedUsers';
 import { ConnectionRequestUser } from '@/context/SuggestedUsersContext';
+import { useTranslation } from 'react-i18next';
 
 
 // Usaremos la imagen de perfil de tus MOCK_NOTIFICATIONS como ejemplo
@@ -21,6 +22,7 @@ export default function ConnectionRequestsScreen() {
   const { pendingConnectionRequests, loadingPendingRequests, getPendingConnectionRequests, acceptConnectionRequest, denyConnectionRequest} = useSuggestedUsers();
   const [actionLoading, setActionLoading] = useState<Record<number, boolean>>({});
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { t } = useTranslation();
   const router = useRouter();
 
   const handleAcceptRequest = async (userId: number) => {
@@ -91,7 +93,7 @@ export default function ConnectionRequestsScreen() {
   if (pendingConnectionRequests.length === 0 && !loadingPendingRequests) {
     return (
       <View style={[styles.screenContainer, styles.centered]}>
-        <Text style={styles.noRequestsText}>No tienes solicitudes de amistad pendientes.</Text>
+        <Text style={styles.noRequestsText}>{t("notifications.noNotifications")}</Text>
       </View>
     );
   }

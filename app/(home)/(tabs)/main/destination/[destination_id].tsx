@@ -41,7 +41,7 @@ export default function Destino() {
           <View style={[buttonStyles.circle30,{backgroundColor: Colors.colors.secondary[100]}]}>
               <Check color={Colors.colors.success[800]}/>
           </View>
-          <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.success[800], padding: 8}]}>Visitado</Text>
+          <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.success[800], padding: 8}]}>{t("destination.visited")}</Text>
         </View>
        
       </View>
@@ -55,7 +55,7 @@ export default function Destino() {
               <Map size={24} color={Colors.colors.primary[900]} strokeWidth={1} />
             </View>
             <View style={styles.countryTripInfoText}>
-              <Text style={[globalStyles.smallBodyRegular, {color: Colors.colors.text.secondary}]}>IDIOMA(S)</Text>
+              <Text style={[globalStyles.smallBodyRegular, {color: Colors.colors.text.secondary}]}>{t("destination.languages")}</Text>
               <Text style={[globalStyles.largeBodySemiBold, {color: Colors.colors.text.tittle}]}>{t("language."+ destination?.language!)}</Text>
             </View>
           </View>
@@ -65,7 +65,7 @@ export default function Destino() {
               <Map size={24} color={Colors.colors.primary[900]} strokeWidth={1} />
             </View>
             <View style={styles.countryTripInfoText}>
-              <Text style={[globalStyles.smallBodyRegular, {color: Colors.colors.text.secondary}]}>MONEDA</Text>
+              <Text style={[globalStyles.smallBodyRegular, {color: Colors.colors.text.secondary}]}>{t("destination.currency")}</Text>
               <Text style={[globalStyles.largeBodySemiBold, {color: Colors.colors.text.tittle}]}>{destination?.currency}</Text>
             </View>
           </View>

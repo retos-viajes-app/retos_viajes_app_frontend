@@ -169,7 +169,7 @@ const SuggestedUsers: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: Colors.colors.primary[500],
+    backgroundColor: Colors.colors.background.hover,
     paddingHorizontal: 16, 
     paddingVertical: 20,
   },

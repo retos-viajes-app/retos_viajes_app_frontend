@@ -10,6 +10,7 @@ import ErrorText from '@/components/text/ErrorText';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import PaddingView from '@/components/views/PaddingView';
 import { useSuggestedUsers } from '@/hooks/useSuggestedUsers';
+import { useTranslation } from 'react-i18next';
 
 export interface NotificationUser {
   id: string;
@@ -78,7 +79,7 @@ export default function NotificationsScreen() {
   const { pendingConnectionRequests, getPendingConnectionRequests, loadingPendingRequests} = useSuggestedUsers();
   const [refreshing, setRefreshing] = useState(false);
   const pollingRef = useRef<number | null>(null);
-
+  const { t } = useTranslation(); 
   const router = useRouter();
 
   useEffect(() => {
@@ -190,13 +191,13 @@ export default function NotificationsScreen() {
         <Feather name="users" size={24} color={Colors.colors.neutral[500]} />
       </View>
       <View style={styles.friendRequestTextContainer}>
-        <Text style={styles.connectionRequestsTitle}>Solicitudes de amistad</Text>
+        <Text style={styles.connectionRequestsTitle}>{t("notifications.connectionNotifications")}</Text>
         { pendingConnectionRequests.length > 0 ? (
           <Text style={styles.connectionRequestsSubtitle}>
             {`${pendingConnectionRequests.length} Pendiente${pendingConnectionRequests.length > 1 ? 's' : ''}`}
           </Text>
         ) : (
-            <Text style={styles.connectionRequestsSubtitle}>No tienes solicitudes</Text>
+            <Text style={styles.connectionRequestsSubtitle}>{t("notifications.noNotifications")}</Text>
         )}
       </View>
       <MaterialCommunityIcons name="chevron-right" size={28} color={Colors.colors.gray[500]} />

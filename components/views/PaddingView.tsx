@@ -1,4 +1,5 @@
 // React & React Native Imports
+import { Colors } from '@/constants/Colors';
 import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 
@@ -9,7 +10,7 @@ interface PaddingViewProps {
 }
 
 const PaddingView: React.FC<PaddingViewProps> = ({ children }) => {
-  return <View style={[styles.container]}>{children}</View>;
+  return <View style={[styles.container, {backgroundColor: Colors.colors.background.card}]}>{children}</View>;
 };
 
 const styles = StyleSheet.create({

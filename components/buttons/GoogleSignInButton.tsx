@@ -13,11 +13,12 @@ import Svg, { Path } from "react-native-svg";
 
 // Context Imports
 import { AuthContext } from "@/context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 
 const GoogleSignInButton: React.FC = () => {
   const auth = useContext(AuthContext);
-
+  const { t } = useTranslation();
   if (!auth) {
     return null;
   }
@@ -33,7 +34,7 @@ const GoogleSignInButton: React.FC = () => {
           <Path d="M1 1h22v22H1z" fill="none"/>
         </Svg>
       </View>
-      <Text style={[globalStyles.mediumBodyMedium, {color:Colors.colors.gray[500]}]}>Inicia sesión con Google</Text>
+      <Text style={[globalStyles.mediumBodyMedium, {color:Colors.colors.gray[500]}]}>{t('auth.login.google')}</Text>
     </TouchableOpacity>
   );
 };

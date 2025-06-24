@@ -30,7 +30,7 @@ const NoCurrentTripIndex = () => {
             <Text style={[globalStyles.largeBodyMedium,{color:Colors.colors.text.secondary}]}>{t("index.noTrip.subtitle")}</Text> 
           </View>
           <PrimaryButton 
-            title='Crear mi primer viaje' 
+            title={t("createTrip.button.create")} 
             onPress={() => router.push('/createTrip/selectDestination')}
           />
         </View>
