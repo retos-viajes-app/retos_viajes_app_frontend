@@ -4,5 +4,7 @@ export  interface Destination {
   country?: string;
   description?: string;
   image_url?: string;
-  active?: boolean; 
+  active?: boolean;
+  currency?: string;
+  language?: string; 
 }
