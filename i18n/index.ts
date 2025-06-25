@@ -5,9 +5,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import translationEn from "@/i18n/locales/en-US/translation.json";
 import translationEs from "@/i18n/locales/es-ES/translation.json";
 
+
 const resources = {
-  "es-ES": { translation: translationEs },
-  "en-US": { translation: translationEn },
+  "es-ES": { translation: translationEs},
+  "en-US": { translation: translationEn},
 };
 
 const normalizeLanguageCode = (locale: string): string => {

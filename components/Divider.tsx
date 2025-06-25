@@ -16,7 +16,7 @@ const Divider = ({ text = "", full = false }) => {
   return (
     <View style={styles.container}>
       <View style={[styles.line,{backgroundColor: Colors.colors.gray[200]}]} />
-      {!full && <Text style={globalStyles.largeBodyMedium}>{dividerText}</Text>}
+      {!full && <Text style={{...globalStyles.largeBodyMedium, marginLeft: 4, marginRight: 4}}>{dividerText}</Text>}
       <View style={[styles.line,{backgroundColor: Colors.colors.gray[200]}]} />
     </View>
   );
@@ -25,7 +25,6 @@ const Divider = ({ text = "", full = false }) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%", // Ocupa todo el ancho
-    gap:20,
     flexDirection: "row", // Alinea en fila
     alignItems: "center", // Centra verticalmente
 
