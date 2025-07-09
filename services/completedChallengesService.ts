@@ -13,3 +13,11 @@ export const getSuggestedCompletedChallenges = async (
   });
   return response.data;
 };
+
+export const likeCompletedChallenge = async (completedChallengeId: number): Promise<void> => {
+  await api.post(`/completed_challenges/${completedChallengeId}/like`);
+};
+
+export const unlikeCompletedChallenge = async (completedChallengeId: number): Promise<void> => {
+  await api.delete(`/completed_challenges/${completedChallengeId}/like`);
+};

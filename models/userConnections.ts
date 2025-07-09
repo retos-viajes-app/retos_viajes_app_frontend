@@ -12,3 +12,5 @@ export interface SuggestedUsersResponse {
     has_more: boolean;
   };
 }
+
+

@@ -3,6 +3,7 @@ import { UserWithConnectionStatus } from '@/models/userConnections';
 import api from '@/utils/api';
 import { ApiResponse } from './AuthContext';
 import { handleApiError } from '@/utils/errorHandler';
+import User from '@/models/user';
 
 interface SuggestedUsersContextType {
   suggestedUsers: UserWithConnectionStatus[];
@@ -21,18 +22,11 @@ interface SuggestedUsersContextType {
   page: number;
   setPage: (page: number) => void;
 
-  pendingConnectionRequests: ConnectionRequestUser[];
+  pendingConnectionRequests: User[];
   loadingPendingRequests: boolean;
   getPendingConnectionRequests: () => Promise<void>;
   acceptConnectionRequest: (userId: number) => Promise<ApiResponse>;
   denyConnectionRequest: (userId: number) => Promise<ApiResponse>;
-}
-
-export interface ConnectionRequestUser {
-  id: number;
-  username: string;
-  name: string;
-  profile_photo_url?: string;
 }
 
 export const SuggestedUsersContext = createContext<SuggestedUsersContextType | undefined>(undefined);
@@ -45,9 +39,8 @@ export const SuggestedUsersProvider: React.FC<{ children: ReactNode }> = ({ chil
   const [hasMore, setHasMore] = useState(true);
   const [loadingSuggested, setLoadingSuggested] = useState(false);
 
-  const [pendingConnectionRequests, setPendingConnectionRequests] = useState<ConnectionRequestUser[]>([]);
+  const [pendingConnectionRequests, setPendingConnectionRequests] = useState<User[]>([]);
   const [loadingPendingRequests, setLoadingPendingRequests] = useState(false);
-  const [errorPendingRequests, setErrorPendingRequests] = useState<string | null>(null);
 
   const addConnectingUserId = (userId: number) =>
     setConnectingUserIds((prev) => [...prev, userId]);
@@ -70,18 +63,16 @@ export const SuggestedUsersProvider: React.FC<{ children: ReactNode }> = ({ chil
  
 
   const getSuggestedUsers = useCallback(async (page = 1, force?: boolean): Promise<{ success: boolean }> => {
-    if (loadingSuggested){
-      return { success: false };
-    }
-    if (!force && page === 1 && isInitialized && !loadingSuggested){
-      return { success: true };
-    } 
+
+    if (loadingSuggested) return { success: false };
+
+    if (!force && page === 1 && isInitialized && !loadingSuggested) return { success: true };
+  
     if(page > 1 && !hasMore) return { success: false}
+
     setLoadingSuggested(true);
     try {
-      const response = await api.get("/users/suggested", {
-        params: { page, per_page: 10 },
-      });
+      const response = await api.get("/users/suggested", { params: { page, per_page: 10 },});
 
       const usersWithStatus = response.data.users.map((user: any) => ({
         ...user,
@@ -89,14 +80,14 @@ export const SuggestedUsersProvider: React.FC<{ children: ReactNode }> = ({ chil
       }));
 
       setSuggestedUsers((prev) => {
-      if (page === 1) {
-        return usersWithStatus;
-      } else {
-        const existingIds = new Set(prev.map((user : any) => user.id));
-        const newUsers = usersWithStatus.filter((user: any) => !existingIds.has(user.id));
-        return [...prev, ...newUsers];
-      }
-    });
+        if (page === 1) {
+          return usersWithStatus;
+        } else {
+          const existingIds = new Set(prev.map((user : any) => user.id));
+          const newUsers = usersWithStatus.filter((user: any) => !existingIds.has(user.id));
+          return [...prev, ...newUsers];
+        }
+      });
 
       setHasMore(response.data.pagination.has_more);
       if (page === 1) setIsInitialized(true);
@@ -139,14 +130,13 @@ export const SuggestedUsersProvider: React.FC<{ children: ReactNode }> = ({ chil
 
   const cancelConnectionRequest = async (userId: number) => {
     try {
-      await api.delete(`/connections/request/cancel/${userId}`);
+      await api.delete(`/connections/${userId}`);
       return { success: true, error: "" };
     } catch (error) {
       return { success: false, error: handleApiError(error) };
     }
   };
    
-
   useEffect(() => {
     getPendingConnectionRequests();
   }, []);
@@ -154,15 +144,13 @@ export const SuggestedUsersProvider: React.FC<{ children: ReactNode }> = ({ chil
   const getPendingConnectionRequests = useCallback(async (): Promise<void> => {
     if (loadingPendingRequests) return;
     setLoadingPendingRequests(true);
-    setErrorPendingRequests(null);
     try {
-      const response = await api.get<ConnectionRequestUser[]>('/connections/pending');
+      const response = await api.get<User[]>('/connections/pending');
 
       setPendingConnectionRequests(response.data);
 
     } catch (error) {
       console.error("Error fetching pending friend requests:", error);
-      setErrorPendingRequests(handleApiError(error));
       setPendingConnectionRequests([]);
     } finally {
       setLoadingPendingRequests(false);
@@ -171,7 +159,7 @@ export const SuggestedUsersProvider: React.FC<{ children: ReactNode }> = ({ chil
 
   const acceptConnectionRequest = async (userId: number): Promise<ApiResponse> => {
     try {
-      await api.post(`/connections/accept/${userId}`);
+      await api.patch(`/connections/accept/${userId}`);
       setPendingConnectionRequests(prev => prev.filter(req => req.id !== userId));
 
       return { success: true, error: "" };
@@ -182,7 +170,7 @@ export const SuggestedUsersProvider: React.FC<{ children: ReactNode }> = ({ chil
 
   const denyConnectionRequest = async (userId: number): Promise<ApiResponse> => {
     try {
-      await api.delete(`/connections/deny/${userId}`);
+      await api.delete(`/connections/${userId}`);
       setPendingConnectionRequests(prev => prev.filter(req => req.id !== userId));
       return { success: true, error: "" };
     } catch (error) {

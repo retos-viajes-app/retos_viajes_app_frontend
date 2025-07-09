@@ -11,6 +11,7 @@ import { LoadingScreen } from '@/components/LoadingScreen';
 import PaddingView from '@/components/views/PaddingView';
 import { useSuggestedUsers } from '@/hooks/useSuggestedUsers';
 import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 export interface NotificationUser {
   id: string;
@@ -76,54 +77,54 @@ export default function NotificationsScreen() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loadingNotifications, setLoadingNotifications] = useState(true);
   const [errorNotifications, setErrorNotifications] = useState<string | null>(null);
-  const { pendingConnectionRequests, getPendingConnectionRequests, loadingPendingRequests} = useSuggestedUsers();
+  const { pendingConnectionRequests, getPendingConnectionRequests} = useSuggestedUsers();
   const [refreshing, setRefreshing] = useState(false);
   const pollingRef = useRef<number | null>(null);
   const { t } = useTranslation(); 
   const router = useRouter();
 
-  useEffect(() => {
-    // Simulate fetching data
-    const fetchNotifications = async () => {
-      setLoadingNotifications(true);
-      try {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setNotifications(MOCK_NOTIFICATIONS);
-        setErrorNotifications(null);
-      } catch (e) {
-        setErrorNotifications('No se pudieron cargar las notificaciones.');
-      } finally {
-        setLoadingNotifications(false);
-      }
-    };
-
-    fetchNotifications();
+  const fetchNotifications = useCallback(async () => {
+    setLoadingNotifications(true);
+    setErrorNotifications(null);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setNotifications(MOCK_NOTIFICATIONS);
+    } catch (e) {
+      console.error("Error fetching notifications:", e);
+      setErrorNotifications('No se pudieron cargar las notificaciones.');
+    } finally {
+      setLoadingNotifications(false);
+    }
   }, []);
 
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
+
   useFocusEffect(
-  useCallback(() => {
-    getPendingConnectionRequests();
+    useCallback(() => {
+      getPendingConnectionRequests();
 
-    const startPolling = () => {
-      if (pollingRef.current) clearInterval(pollingRef.current);
-      pollingRef.current = setInterval(getPendingConnectionRequests, 60000);
-    };
+      const startPolling = () => {
+        if (pollingRef.current) clearInterval(pollingRef.current);
+        pollingRef.current = setInterval(getPendingConnectionRequests, 60000);
+      };
 
-    const stopPolling = () => {
-      if (pollingRef.current) clearInterval(pollingRef.current);
-    };
+      const stopPolling = () => {
+        if (pollingRef.current) clearInterval(pollingRef.current);
+      };
 
-    startPolling();
-    const subscription = AppState.addEventListener('change', (state) => {
-      if (state === 'active') startPolling();
-      else stopPolling();
-    });
+      startPolling();
+      const subscription = AppState.addEventListener('change', (state) => {
+        if (state === 'active') startPolling();
+        else stopPolling();
+      });
 
-    return () => {
-      stopPolling();
-      subscription.remove();
-    };
-  }, [getPendingConnectionRequests])
+      return () => {
+        stopPolling();
+        subscription.remove();
+      };
+    }, [getPendingConnectionRequests])
 );
 
   const onRefresh = useCallback(async () => {
@@ -140,8 +141,7 @@ export default function NotificationsScreen() {
     let iconName: React.ComponentProps<typeof MaterialCommunityIcons>['name'] | null = null;
     let iconColor = Colors.colors.error[400];
     let textContent: React.ReactNode;
-    let profileImage = item.user?.profileImageUrl 
-    || 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg';
+    let profileImage = item.user?.profileImageUrl || MOCK_PROFILE_IMAGE_PERSON;
 
     switch (item.type) {
       case 'like':
@@ -185,24 +185,35 @@ export default function NotificationsScreen() {
     );
   };
 
-  const ListHeader = useCallback(() => (
-    <TouchableOpacity style={styles.connectionRequestsContainer} onPress={handleFriendRequestPress} activeOpacity={0.8}>
-      <View style={styles.connectionRequestsIconWrapper}>
-        <Feather name="users" size={24} color={Colors.colors.neutral[500]} />
-      </View>
-      <View style={styles.friendRequestTextContainer}>
-        <Text style={styles.connectionRequestsTitle}>{t("notifications.connectionNotifications")}</Text>
-        { pendingConnectionRequests.length > 0 ? (
-          <Text style={styles.connectionRequestsSubtitle}>
-            {`${pendingConnectionRequests.length} Pendiente${pendingConnectionRequests.length > 1 ? 's' : ''}`}
-          </Text>
-        ) : (
-            <Text style={styles.connectionRequestsSubtitle}>{t("notifications.noNotifications")}</Text>
-        )}
-      </View>
-      <MaterialCommunityIcons name="chevron-right" size={28} color={Colors.colors.gray[500]} />
-    </TouchableOpacity>
- ), [pendingConnectionRequests, handleFriendRequestPress]);
+  const ListHeader = useCallback(() => {
+    const pendingCount = pendingConnectionRequests.length;
+    return(
+      <TouchableOpacity 
+        style={styles.connectionRequestsContainer} 
+        onPress={pendingCount > 0 ? handleFriendRequestPress : undefined}
+        activeOpacity={pendingCount> 0 ? 0.8 : 1}
+      >
+        <View style={styles.connectionRequestsIconWrapper}>
+          <Feather name="users" size={24} color={Colors.colors.neutral[500]} />
+        </View>
+        <View style={styles.friendRequestTextContainer}>
+          <Text style={styles.connectionRequestsTitle}>{t("activity.notifications.requestsButton")}</Text>
+          {pendingCount > 0 ? (
+            <Text style={styles.connectionRequestsSubtitle}>
+              {t("activity.notifications.pendingRequest", { count: pendingCount })}
+            </Text>
+          ) : (
+            <Text style={styles.connectionRequestsSubtitle}>
+              {t("activity.notifications.noPendingRequests")}
+            </Text>
+          )}
+        </View>
+        {pendingCount > 0 ? (
+          <MaterialCommunityIcons name="chevron-right" size={28} color={Colors.colors.gray[500]} />
+        ) : null}
+      </TouchableOpacity>
+    )
+  }, [pendingConnectionRequests, handleFriendRequestPress, t]);
 
   if (loadingNotifications && !refreshing) return <LoadingScreen />
   

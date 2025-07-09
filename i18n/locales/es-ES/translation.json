@@ -68,7 +68,24 @@
       "loadingMore": "Cargando más...",
       "noMorePosts": "Has llegado al final 👋",
       "errorLoadingPosts": "Error al cargar publicaciones.",
-      "noPostsYet": "Aún no hay actividad para mostrar. ¡Explora y participa!"
+      "noPostsYet": "Aún no hay actividad para mostrar. ¡Explora y participa!",
+      "posts": {
+        "completedAMission": "ha completado una misión",
+        "likesText_zero": "Sé el primero en dar me gusta",
+        "likesText_one": "Le gusta a <bold>1 viajero</bold>",
+        "likesText_other": "Le gusta a <bold>{{count}} viajeros</bold>"
+      },
+      "connections": {
+        "accept": "Aceptar",
+        "deny": "Rechazar",
+        "noPending": "No tienes solicitudes pendientes"
+      },
+      "notifications": {
+        "requestsButton": "Solicitudes de amistad",
+        "pendingRequest_one": "{{count}} Solicitud pendiente",
+        "pendingRequest_other": "{{count}} Solicitudes pendientes",
+        "noPendingRequests": "No tienes solicitudes"
+      }
   },
   "notifications":{
     "title": "Notificaciones",
@@ -168,24 +185,34 @@
       "passwordCheckRequired": "Confirma tu contraseña.",
       "passwordsDontMatch": "Las contraseñas no coinciden.",
 
-      "confirmationCodeRequired": "Por favor, ingresa el código de verificación.",
-      "confirmationCodeInvalid": "El código debe tener 6 dígitos.",
+      "resetCodeRequired": "Por favor, ingresa el código de verificación.",
+      "resetCodeInvalid": "El código debe tener 6 dígitos.",
 
       "nameRequired": "El nombre es obligatorio.",
       "nameLength": "El nombre debe tener entre 3 y 50 caracteres.",
-
-      "ageRequired": "La edad es obligatoria.",
-      "ageInvalid": "Introduce una edad válida",
-      "weightRequired": "El peso es obligatorio.",
-      "weightInvalid": "Introduce un peso válido",
-      "heightRequired": "La altura es obligatoria.",
-      "heightInvalid": "Introduce una altura válida en cm",
-      "genderRequired": "Selecciona un sexo."
+      "bioLength": "La biografía no puede exceder de los 120 caracteres"
+      
     },
     "selectCategories": "Selecciona al menos dos categorías",
     "invalidDateSelected": "La fecha de inicio debe ser menor a la fecha de fin",
     "noDatesSelected": "Debes seleccionar ambas fechas",
     "selectDestination": "Debes seleccionar un destino para continuar."
+  },
+  "errors": {
+    "genericError": "Ocurrió un error inesperado"
+  },
+  "timeAgo": {
+    "moment": "hace un momento",
+    "minute_one": "hace {{count}} minuto",
+    "minute_other": "hace {{count}} minutos",
+    "hour_one": "hace {{count}} hora",
+    "hour_other": "hace {{count}} horas",
+    "day_one": "hace {{count}} día",
+    "day_other": "hace {{count}} días",
+    "month_one": "hace {{count}} mes",
+    "month_other": "hace {{count}} meses",
+    "year_one": "hace {{count}} año",
+    "year_other": "hace {{count}} años"
   },
   "continue": "Continuar",
   "dividerText": "o si lo prefieres",
@@ -280,7 +307,4 @@
     "MY": "Malasia",
     "IR": "Irán"
   }
-
-
-
 }

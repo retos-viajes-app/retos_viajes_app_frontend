@@ -41,7 +41,6 @@ const SuggestedUsers: React.FC = () => {
 
   const flatListRef = useRef<FlatList>(null);
 
-
   useEffect(() => {
     const initializeUsers = async () => {
       if (!isInitialized && initialLoading) {
@@ -68,13 +67,6 @@ const SuggestedUsers: React.FC = () => {
          position: "bottom",
          bottomOffset: 80,
        });
-       
-       /* Creo que solo funciona en móvil
-       Alert.alert(
-         "Error",
-         "No se pudo completar la acción. Revisa tu conexión"
-       );
-       */
     }
     removeConnectingUserId(userId);
    
@@ -94,13 +86,6 @@ const SuggestedUsers: React.FC = () => {
         position: "bottom",
         bottomOffset: 80,
       });
-
-      /* Solo funciona en móvil
-      Alert.alert(
-        "Error",
-        error.message
-      );
-      */
     }
     removeConnectingUserId(userId);
   };
@@ -178,13 +163,13 @@ const styles = StyleSheet.create({
     height: 29,
     ...globalStyles.title,
     textAlign: "left",
-    marginBottom: 16, // Gap de 16 entre título y cards
+    marginBottom: 16,
   },
   separator: {
-    width: 10, // Gap de 10 entre cada tarjeta
+    width: 10,
   },
   listContentContainer: {
-    paddingVertical: 4, // Pequeño padding vertical para las cards
+    paddingVertical: 4,
   },
   loaderContainer: {
     width: 100,
