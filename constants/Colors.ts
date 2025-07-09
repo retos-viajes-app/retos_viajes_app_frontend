@@ -37,7 +37,7 @@ export const Colors = {
     900: "#165425"
     },
     error: {
-      50: "#fffeea",
+      50: "#ffebea",
       100: "#ffc2bf",
       200: "#ffa5a0",
       300: "#ff7c74",
@@ -49,34 +49,36 @@ export const Colors = {
       900: "#6b1914"
     },
     text: {
-      tittle: "#1c1c1e",
+      primary: "#1c1c1e",
       secondary: "#6e6e73",
       tertiary: "#a1a5ac"
+    },
+    textWhite: {
+      primary: "#FFFFFF",
+      secondary: "#D9D9D9",
     },
     background: {
       default: "#F8F9FA",
       subtle: "#F9FAF9",
-      input: "#F2F3F5",
+      input: "#FDFDFD",
+      inputFocused: "#FFFFFF",
       card: "#ffffff",
       hover: "#F2F3F5",
       disabled: "#F2F3F5",
       overlay: "#F2F3F5"
     },
+    backgroundButton: {
+      white: "#FFFFFF",
+      secondary: "#E6F1FE",
+    },
     border: {
       default: "#E5E7EA",
       strong: "#D1D4D9"
-    },
-    accent: {
-      100: "#FFC300",
-      200: "#FFD54F",
-      300: "#FFE680",
-      400: "#FFFAE5",
     },
     gray: {
       100: "#F4F4F4",
       200: "#D9D9D9",
       300: "#B3B3B3",
-      400: "#808080",
       500: "#2C3E50",
     },
     neutral: {

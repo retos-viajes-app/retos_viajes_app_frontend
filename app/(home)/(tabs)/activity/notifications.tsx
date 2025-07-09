@@ -11,7 +11,7 @@ import { LoadingScreen } from '@/components/LoadingScreen';
 import PaddingView from '@/components/views/PaddingView';
 import { useSuggestedUsers } from '@/hooks/useSuggestedUsers';
 import { useTranslation } from 'react-i18next';
-import { useTranslation } from 'react-i18next';
+
 
 export interface NotificationUser {
   id: string;
@@ -172,7 +172,7 @@ export default function NotificationsScreen() {
         <View>
           <Image source={{ uri: profileImage }} style={styles.profileImage} />
           {iconName && (
-            <View style={[styles.notificationIconOverlay, { backgroundColor: Colors.colors.neutral[100]}]}>
+            <View style={[styles.notificationIconOverlay, { backgroundColor: Colors.colors.textWhite.primary}]}>
               <MaterialCommunityIcons name={iconName} size={16} color={iconColor} />
             </View>
           )}
@@ -209,7 +209,7 @@ export default function NotificationsScreen() {
           )}
         </View>
         {pendingCount > 0 ? (
-          <MaterialCommunityIcons name="chevron-right" size={28} color={Colors.colors.gray[500]} />
+          <MaterialCommunityIcons name="chevron-right" size={28} color={Colors.colors.text.primary} />
         ) : null}
       </TouchableOpacity>
     )
@@ -275,12 +275,12 @@ const styles = StyleSheet.create({
   },
   noDataText: { // Para ListEmptyComponent
     ...globalStyles.mediumBodyRegular,
-    color: Colors.colors.gray[400],
+    color: Colors.colors.text.secondary,
   },
   connectionRequestsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.colors.neutral[100],
+    backgroundColor: Colors.colors.textWhite.primary,
     padding: 16,
     gap: 8,
     marginTop: 24,
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 50,
-    backgroundColor: Colors.colors.gray[100],
+    backgroundColor: Colors.colors.background.default,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 8,
-    backgroundColor: Colors.colors.gray[200],
+    backgroundColor: Colors.colors.border.default,
   },
   notificationIconOverlay: {
     position: 'absolute',
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1.5,
-    borderColor: Colors.colors.neutral[100],
+    borderColor: Colors.colors.textWhite.primary,
   },
   notificationTextContent: {
     flex: 1,
@@ -350,11 +350,11 @@ const styles = StyleSheet.create({
   },
   notificationTimestamp: {
     ...globalStyles.smallBodyRegular,
-    color: Colors.colors.gray[500],
+    color: Colors.colors.text.primary,
     marginTop: 2,
   },
   container: { // For loading/error states
     flex: 1,
-    backgroundColor: Colors.colors.neutral[100],
+    backgroundColor: Colors.colors.textWhite.primary,
   }
 });

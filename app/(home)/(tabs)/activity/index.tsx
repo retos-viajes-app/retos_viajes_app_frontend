@@ -192,7 +192,7 @@ export default function ActivityScreen() {
     if (!initialLoading && !initialError && completedChallengesPosts.length === 0) {
       return (
         <View style={styles.initialContentFeedbackContainer}>
-           <MaterialCommunityIcons name="format-list-bulleted" size={48} color={Colors.colors.gray[400]} />
+           <MaterialCommunityIcons name="format-list-bulleted" size={48} color={Colors.colors.text.secondary} />
           <Text style={styles.initialContentFeedbackText}>{t("activity.noPostsYet")}</Text>
         </View>
       );
@@ -222,7 +222,7 @@ export default function ActivityScreen() {
       ListHeaderComponent={
         <>
           <View style={styles.headerContainer}>
-            <Text style={[globalStyles.title, { color: Colors.colors.gray[500] }]}>
+            <Text style={[globalStyles.title, { color: Colors.colors.text.primary }]}>
              {t("activity.notificationsTitle")}
             </Text>
             <TouchableOpacity style={styles.notificationButton} onPress={() => router.push('/(tabs)/activity/notifications' as any)}>
@@ -249,7 +249,7 @@ export default function ActivityScreen() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: Colors.colors.neutral[100],
+    backgroundColor: Colors.colors.textWhite.primary,
   },
   headerContainer: {
     flexDirection: "row",
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: Colors.colors.error[200],
     borderWidth: 1,
-    borderColor: Colors.colors.neutral[100],
+    borderColor: Colors.colors.textWhite.primary,
   },
   footerLoaderContainer: {
     flexDirection: 'row',
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
   footerText: {
     marginLeft: 10,
     fontSize: 14,
-    color: Colors.colors.gray[400],
+    color: Colors.colors.text.secondary,
   },
   footerMessageContainer: {
     justifyContent: 'center',
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   retryButtonText: {
-    color: Colors.colors.neutral[100],
+    color: Colors.colors.textWhite.primary,
     fontWeight: 'bold',
     fontSize: 14
   },
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
   },
   initialContentFeedbackText: {
     fontSize: 16,
-    color: Colors.colors.gray[500],
+    color: Colors.colors.text.primary,
     textAlign: 'center',
     marginTop: 12,
   },

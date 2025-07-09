@@ -56,7 +56,7 @@ export default function Destino() {
             </View>
             <View style={styles.countryTripInfoText}>
               <Text style={[globalStyles.smallBodyRegular, {color: Colors.colors.text.secondary}]}>{t("destination.languages")}</Text>
-              <Text style={[globalStyles.largeBodySemiBold, {color: Colors.colors.text.tittle}]}>{t("language."+ destination?.language!)}</Text>
+              <Text style={[globalStyles.largeBodySemiBold, {color: Colors.colors.text.primary}]}>{t("language."+ destination?.language!)}</Text>
             </View>
           </View>
           <Divider full={true}></Divider>
@@ -66,7 +66,7 @@ export default function Destino() {
             </View>
             <View style={styles.countryTripInfoText}>
               <Text style={[globalStyles.smallBodyRegular, {color: Colors.colors.text.secondary}]}>{t("destination.currency")}</Text>
-              <Text style={[globalStyles.largeBodySemiBold, {color: Colors.colors.text.tittle}]}>{destination?.currency}</Text>
+              <Text style={[globalStyles.largeBodySemiBold, {color: Colors.colors.text.primary}]}>{destination?.currency}</Text>
             </View>
           </View>
         </View>

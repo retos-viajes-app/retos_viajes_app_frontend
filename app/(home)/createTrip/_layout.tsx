@@ -24,7 +24,7 @@ export default function CreateTripLayout() {
           headerTitleAlign: "center",
           //Aplica esos estilos para todo el contenido de las pantallas
           contentStyle: { 
-            backgroundColor: Colors.colors.neutral[100],
+            backgroundColor: Colors.colors.textWhite.primary,
            },
          
           headerLeft: () => (

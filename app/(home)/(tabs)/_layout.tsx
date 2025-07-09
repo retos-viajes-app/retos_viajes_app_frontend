@@ -41,13 +41,13 @@ export default function TabLayout() {
           title: t("tabs.home"),
           tabBarIcon: ({ focused }) => (
             <House
-              color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]} // Cambia color según estado
+              color={focused ? Colors.colors.primary[200] : Colors.colors.border.strong} // Cambia color según estado
               strokeWidth={1}
               size={35}
             />
             // <Feather
             //   name="home"
-            //   color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]}
+            //   color={focused ? Colors.colors.primary[200] : Colors.colors.border.strong}
             //   size={35}
             // />
           ),
@@ -59,13 +59,13 @@ export default function TabLayout() {
           title: t("tabs.activity"),
           tabBarIcon: ({ focused }) => (
             <MessageCircleHeart
-              color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]} // Cambia color según estado
+              color={focused ? Colors.colors.primary[200] : Colors.colors.border.strong} // Cambia color según estado
               strokeWidth={1}
               size={35}
             />
             // <Feather
             //   name="message-circle"
-            //   color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]}
+            //   color={focused ? Colors.colors.primary[200] : Colors.colors.border.strong}
             //   size={35}
             // />
           ),
@@ -77,13 +77,13 @@ export default function TabLayout() {
           title: t("tabs.ranking"),
           tabBarIcon: ({ focused }) => (
             <Hash
-              color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]} // Cambia color según estado
+              color={focused ? Colors.colors.primary[200] : Colors.colors.border.strong} // Cambia color según estado
               strokeWidth={1}
               size={35}
             />
             // <Feather
             //   name="hash"
-            //   color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]}
+            //   color={focused ? Colors.colors.primary[200] : Colors.colors.border.strong}
             //   size={35}
             // />
           ),
@@ -95,13 +95,13 @@ export default function TabLayout() {
           title: t("tabs.profile"),
           tabBarIcon: ({ focused }) => (
             <UserRound
-              color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]} // Cambia color según estado
+              color={focused ? Colors.colors.primary[200] : Colors.colors.border.strong} // Cambia color según estado
               strokeWidth={1}
               size={35}
             />
             // <Feather
             //   name="user"
-            //   color={focused ? Colors.colors.primary[200] : Colors.colors.gray[300]}
+            //   color={focused ? Colors.colors.primary[200] : Colors.colors.border.strong}
             //   size={35}
             // />
           ),

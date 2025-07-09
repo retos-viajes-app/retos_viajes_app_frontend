@@ -9,6 +9,9 @@ import { Colors } from "@/constants/Colors";
 //import { Eye, EyeOff } from "lucide-react-native";
 import { Feather } from "@expo/vector-icons";
 
+//Styles Imports
+import inputStyles from "@/styles/inputs";
+
 
 interface CustomTextInputProps extends TextInputProps {
   errorMessage?: string;
@@ -30,11 +33,11 @@ const PasswordInput: React.FC<CustomTextInputProps> = ({
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  const inputStyles = [
-    styles.input,
-    isFocused && !disabled && styles.focused,
-    errorMessage && styles.error,
-    disabled && styles.disabled,
+  const inputStateStyles = [
+    inputStyles.default,
+    isFocused && !disabled && inputStyles.focused,
+    errorMessage && inputStyles.error,
+    disabled && inputStyles.disabled,
   ];
 
   return (
@@ -42,24 +45,25 @@ const PasswordInput: React.FC<CustomTextInputProps> = ({
       <View style={styles.inputContainer}>
         <TextInput
           {...props}
-          style={inputStyles}
+          style={inputStateStyles}
           editable={!disabled}
           secureTextEntry={!isPasswordVisible}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          placeholderTextColor={Colors.colors.text.primary}
         />
         <TouchableOpacity
           style={styles.iconContainer}
           onPress={togglePasswordVisibility}
         >
           {isPasswordVisible ? (
-            <Feather name="eye" size={24} color={Colors.colors.gray[400]} />
+            <Feather name="eye" size={24} color={Colors.colors.text.primary} />
           ) : (
-            <Feather name="eye-off" size={24} color={Colors.colors.gray[400]} />
+            <Feather name="eye-off" size={24} color={Colors.colors.text.primary} />
           )}
         </TouchableOpacity>
       </View>
-      {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
+      {errorMessage && <Text style={inputStyles.errorText}>{errorMessage}</Text>}
     </View>
   );
 };
@@ -71,40 +75,11 @@ const styles = StyleSheet.create({
   inputContainer: {
     position: "relative",
   },
-  input: {
-    fontFamily: "InterRegular",
-    padding: 10,
-    paddingRight: 40,
-    borderColor: Colors.colors.gray[200],
-    borderWidth: 1,
-    borderRadius: 16,
-    backgroundColor: Colors.colors.gray[100],
-    color: Colors.colors.gray[400],
-    width: "100%",
-    minHeight: 48,
-  },
-  error: {
-    borderColor: Colors.colors.error[100],
-  },
-  disabled: {
-    backgroundColor: Colors.colors.gray[200],
-    borderColor: Colors.colors.gray[300],
-  },
   iconContainer: {
     position: "absolute",
     right: 10,
     top: "50%",
     transform: [{ translateY: -12 }],
-  },
-  focused: {
-    borderColor: Colors.colors.gray[400], // Color cuando tiene el foco (puedes ajustarlo)
-    backgroundColor: Colors.colors.neutral[100], // Fondo suave azul cuando tiene el foco
-  },
-  errorText: {
-    color: Colors.colors.error[100],
-    fontSize: 12,
-    marginTop: 4,
-    marginLeft: 10,
   },
 });
 

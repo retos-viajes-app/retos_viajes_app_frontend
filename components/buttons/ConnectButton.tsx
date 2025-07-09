@@ -7,8 +7,8 @@ import globalStyles from '@/styles/global';
 
 // Utility Imports
 import { Colors } from '@/constants/Colors';
-import { Feather } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import { Clock, UserRoundPlus } from 'lucide-react-native';
 
 // Icon Imports
 //import { UserPlus,Clock } from 'lucide-react-native';
@@ -25,16 +25,16 @@ const ConnectButton: React.FC<ButtonProps> = ({ connectionStatus, onConnect, onC
             <TouchableOpacity
               style={[
                 styles.button,
-                { backgroundColor: Colors.colors.gray[100] },
+                { backgroundColor: Colors.colors.background.hover },
               ]}
               onPress={onCancelRequest}
             >
               <>
-                {/* <Clock  strokeWidth={3} size={16} color={Colors.colors.gray[400]} /> */}
-                <Feather name="clock" size={16} color={Colors.colors.gray[400]} />
+                <Clock  strokeWidth={2.5} size={16} color={Colors.colors.text.secondary} />
                 <Text
                   style={[
                     globalStyles.mediumBodySemiBold,
+                    {color: Colors.colors.text.secondary},
                   ]}
                 >
                   {t("suggestedUsers.pending")}
@@ -46,20 +46,19 @@ const ConnectButton: React.FC<ButtonProps> = ({ connectionStatus, onConnect, onC
             <TouchableOpacity
               style={[
                 styles.button,
-                { backgroundColor: Colors.colors.primary[400] },
+                { backgroundColor: Colors.colors.backgroundButton.secondary },
               ]}
               onPress={onConnect}
             >
                 <>
-                  {/* <UserPlus 
-                    strokeWidth={3}
+                  <UserRoundPlus 
+                    strokeWidth={2.5}
                     size={16}
-                    color={Colors.colors.primary[100]}
-                  /> */}
-                  <Feather name="user-plus" size={16} color={Colors.colors.primary[100]} />
+                    color={Colors.colors.primary[500]}
+                  />
                   <Text
                     style={[
-                      globalStyles.mediumBodySemiBold, {color: Colors.colors.primary[100]},
+                      globalStyles.mediumBodySemiBold, {color: Colors.colors.primary[500]},
                     ]}
                   >
                     {t("suggestedUsers.connect")}
