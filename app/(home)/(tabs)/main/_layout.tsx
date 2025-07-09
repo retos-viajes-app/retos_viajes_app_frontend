@@ -8,7 +8,7 @@ export default function IndexLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index"/>
       <Stack.Screen name="destination/[destination_id]"
-        options={{ title: t("destinationDetails.title"), headerShown: true, headerTitleAlign: "center" }}
+        options={{ title: t("destination.title"), headerShown: true, headerTitleAlign: "center" }}
       />
     </Stack>
   );

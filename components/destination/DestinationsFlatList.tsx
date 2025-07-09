@@ -10,6 +10,8 @@ import {
 import { Destination } from '@/models/destination';
 import DestinationCard from '@/components/destination/DestinationCard';
 import { useTranslation } from "react-i18next";
+import { Colors } from '@/constants/Colors';
+
 type ItemProps = { country: string };
 
 
@@ -54,7 +56,7 @@ const handleLoadMore = () => {
 
 
   return (
-    <View style={styles.container} >
+    <View style={[styles.container,{backgroundColor: Colors.colors.background.card}]} >
         <Text >{t("destinations.tittle")}</Text>
         <FlatList
           style={{ height:285}}

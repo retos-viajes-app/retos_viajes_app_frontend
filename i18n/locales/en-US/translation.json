@@ -1,99 +1,112 @@
 {
   "auth": {
     "login": {
-      "title": "Iniciar sesión",
-      "paragraph": "Continúa tu aventura y conquista nuevos destinos",
-      "username": "Nombre de usuario o correo",
-      "password": "Contraseña",
-      "forgotPassword": "¿Has olvidado tu contraseña? ",
-      "recoverLink": "Recuperar",
-      "notAccount": "¿No tienes una cuenta? ",
-      "registerLink": "Regístrate gratis",
-      "google": "Inicia sesión con Google"
+      "title": "Log In",
+      "paragraph": "Continue your adventure and conquer new destinations",
+      "username": "Username or email",
+      "password": "Password",
+      "forgotPassword": "Forgot your password? ",
+      "recoverLink": "Recover",
+      "notAccount": "Don't have an account? ",
+      "registerLink": "Sign up for free",
+      "google": "Log in with Google"
     },
     "register": {
-      "title": "Regístrate gratis",
-      "paragraph": "Crea tu cuenta para transformar tus viajes en aventuras inolvidables",
-      "email": "Correo electrónico",
-      "password": "Contraseña",
-      "repeatPassword": "Repite tu contraseña",
-      "passwordDetails": "Tu contraseña debe tener al menos 8 caracteres e incluir una mayúscula, una minúscula, un número y un carácter especial",
-      "alreadyAccount": "¿Ya tienes cuenta? ",
-      "loginLink": "Inicia sesión"
+      "title": "Sign up for free",
+      "paragraph": "Create your account to turn your travels into unforgettable adventures",
+      "email": "Email address",
+      "password": "Password",
+      "repeatPassword": "Repeat your password",
+      "passwordDetails": "Your password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character",
+      "alreadyAccount": "Already have an account? ",
+      "loginLink": "Log in"
     },
-    "requestConfirmationCode":{
-      "title": "Recuperar contraseña",
-      "paragraph": "Ingresa tu correo electrónico para recibir un código de recuperación",
-      "email": "Correo electrónico",
-      "backToLogin": "Volver al inicio de sesión",
-      "sendCode": "Enviar código"
+    "requestConfirmationCode": {
+      "title": "Recover password",
+      "paragraph": "Enter your email to receive a recovery code",
+      "email": "Email address",
+      "backToLogin": "Back to login",
+      "sendCode": "Send code"
     },
     "verifyCode": {
-      "title": "Verificar código",
-      "paragraph": "Ingresa el código de 6 dígitos que enviamos a ",
-      "codePlaceholder": "Código de 6 dígitos",
-      "noCode": "¿No recibiste el código? ",
-      "sendOtherCodeLink": "Solicita otro",
-      "verify": "Verificar código",
-      "sending": "Enviando..."
+      "title": "Verify code",
+      "paragraph": "Enter the 6-digit code we sent to ",
+      "codePlaceholder": "6-digit code",
+      "noCode": "Didn't receive the code? ",
+      "sendOtherCodeLink": "Request another",
+      "verify": "Verify code",
+      "sending": "Sending..."
     },
     "resetPassword": {
-      "title": "Nueva contraseña",
-      "paragraph": "Establece una nueva contraseña para tu cuenta",
-      "newPassword": "Nueva contraseña",
-      "confirmPassword": "Confirmar contraseña",
-      "updatePassword": "Actualizar contraseña"
+      "title": "New password",
+      "paragraph": "Set a new password for your account",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "updatePassword": "Update password"
     },
     "completeRegister": {
-      "title": "¡Dale personalidad a tu perfil!",
-      "paragraph": "Completa tu información para personalizar tu experiencia y contectarte con otros viajeros",
-      "name": "Nombre",
-      "username": "Nombre de usuario",
-      "bioPlaceholder": "Sobre mi (opcional)",
-      "characters" : " caracteres"
+      "title": "Give your profile some personality!",
+      "paragraph": "Complete your information to personalize your experience and connect with other travelers",
+      "name": "Name",
+      "username": "Username",
+      "bioPlaceholder": "About me (optional)",
+      "characters": " characters"
     }
   },
   "index": {
-    "trip" : {
-      "title": "Descubriendo"
+    "trip": {
+      "title": "Discovering"
     },
     "noTrip": {
-      "title": "¡Hola, {{name}}! 👋",
-      "subtitle": "Prepárate para una nueva aventura"
+      "title": "Hi, {{name}}! 👋",
+      "subtitle": "Get ready for a new adventure"
     }
   },
+  "activity": {
+    "notificationsTitle": "Don't miss anything",
+    "loadingPosts": "Loading posts...",
+    "loadingMore": "Loading more...",
+    "noMorePosts": "You've reached the end 👋",
+    "errorLoadingPosts": "Error loading posts.",
+    "noPostsYet": "There's no activity to show yet. Explore and join in!"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "noNotifications": "You have no pending requests",
+    "connectionNotifications": "Friend requests"
+  },
   "suggestedUsers": {
-    "title": "Conecta con otros viajeros",
-    "noUsers": "No hay usuarios sugeridos disponibles",
-    "pending": "Pendiente",
-    "connect": "Conectar"
+    "title": "Connect with other travelers",
+    "noUsers": "No suggested users available",
+    "pending": "Pending",
+    "connect": "Connect"
   },
   "createTrip": {
-    "title": "Crear Viaje",
+    "title": "Create Trip",
     "selectCategories": {
-      "title": "Elige tus misiones",
-      "paragraph": "Personaliza tu aventura con desafíos culturales, gastronómicos y más."
+      "title": "Choose your missions",
+      "paragraph": "Customize your adventure with cultural, culinary challenges and more."
     },
     "selectDate": {
-      "title": "Selecciona las fechas de tu aventura",
-      "paragraph": "Define cuándo empezará y terminará tu viaje",
-      "startDate": "Fecha de inicio",
-      "endDate": "Fecha de fin"
+      "title": "Select the dates of your adventure",
+      "paragraph": "Set when your trip will start and end",
+      "startDate": "Start date",
+      "endDate": "End date"
     },
     "selectDestination": {
-      "title": "¿A dónde quieres ir?",
-      "paragraph": "Escribe el nombre del destino o elige entre nuestras recomendaciones.",
-      "searchPlaceholder": "Buscar por ciudad o país"
+      "title": "Where do you want to go?",
+      "paragraph": "Type the name of the destination or choose from our recommendations.",
+      "searchPlaceholder": "Search by city or country"
     },
     "summary": {
-      "title": "¡Todo listo para tu aventura!",
-      "paragraph": "Este es el resumen de tu viaje:",
-      "destination": "Destino",
-      "dates": "Fechas",
-      "missions": "Misiones",
-      "confirm": "Confirmar y empezar la aventura"
+      "title": "All set for your adventure!",
+      "paragraph": "Here's the summary of your trip:",
+      "destination": "Destination",
+      "dates": "Dates",
+      "missions": "Missions",
+      "confirm": "Confirm and start the adventure"
     },
-    "button":{
+    "button": {
       "create": "Create new trip",
       "addPast": "Add past trip"
     }
@@ -102,82 +115,85 @@
     "tittle": "Popular destinations"
   },
   "tabs": {
-    "home": "home",
-    "activity": "Actividad",
+    "home": "Home",
+    "activity": "Activity",
     "ranking": "Ranking",
-    "profile": "Perfil"
+    "profile": "Profile"
   },
   "errorsBackend": {
-    "invalidCredentials": "Usuario o contraseña incorrectos",
-    "userNotVerified": "Usuario no verificado",
-    "emailAlreadyRegistered": "El email ya está registrado",
-    "userNotFound": "Usuario no encontrado",
-    "userAlreadyVerified": "El usuario ya está verificado",
-    "invalidEmail": "Email no válido",
-    "sendingCodeErrors": "Error al enviar el código de confirmación",
-    "emailSendError": "Error al enviar el email. Inténtalo de nuevo",
-    "invalidRefreshToken": "Token de refresco inválido o expirado",
-    "invalidToken": "Token inválido",
-    "verifyEmailBeforeReset": "Debes verificar tu email antes de restablecer la contraseña",
-    "invalidConfirmationCode": "Código de confirmación inválido o expirado",
-    "incorrectConfirmationCode": "Código de confirmación incorrecto",
-    "noDestinations": "No hay destinos disponibles",
-    "tripNotFound": "Viaje no encontrado",
-    "notConnectYourself": "No puedes conectar contigo mismo",
-    "pendingConnectionRequest": "Ya tienes una solicitud de conexión pendiente con este usuario",
-    "usernameExists": "El nombre de usuario ya existe",
-    "alreadyConnected": "Ya estás conectado con este usuario",
-    "connectionRequestNotFound": "Solicitud de conexión no encontrada",
-    "cancelAcceptedConnection": "No puedes cancelar una conexión aceptada",
-    "genericError": "Ocurrió un error inesperado",
-    "networkError": "Problema de conexión. Verifica tu internet",
-    "timeoutError": "La solicitud está tardando demasiado",
-    "serverError": "Error del servidor. Inténtalo más tarde"
+    "invalidCredentials": "Incorrect username or password",
+    "userNotVerified": "User not verified",
+    "emailAlreadyRegistered": "Email is already registered",
+    "userNotFound": "User not found",
+    "userAlreadyVerified": "User already verified",
+    "invalidEmail": "Invalid email",
+    "sendingCodeErrors": "Error sending confirmation code",
+    "emailSendError": "Error sending email. Try again",
+    "invalidRefreshToken": "Invalid or expired refresh token",
+    "invalidToken": "Invalid token",
+    "verifyEmailBeforeReset": "You must verify your email before resetting the password",
+    "invalidConfirmationCode": "Invalid or expired confirmation code",
+    "incorrectConfirmationCode": "Incorrect confirmation code",
+    "noDestinations": "No destinations available",
+    "tripNotFound": "Trip not found",
+    "notConnectYourself": "You can't connect with yourself",
+    "pendingConnectionRequest": "You already have a pending connection request with this user",
+    "usernameExists": "Username already exists",
+    "alreadyConnected": "You are already connected with this user",
+    "connectionRequestNotFound": "Connection request not found",
+    "cancelAcceptedConnection": "You can't cancel an accepted connection",
+    "genericError": "An unexpected error occurred",
+    "networkError": "Connection problem. Check your internet",
+    "timeoutError": "The request is taking too long",
+    "serverError": "Server error. Try again later"
   },
-  "errorsFrontend":{
+  "errorsFrontend": {
     "validations": {
-      "emptyUserid": "Por favor, ingresa tu usuario o correo",
-      "usernameRequired": "El nombre de usuario es obligatorio.",
-      "usernameLength": "El nombre de usuario debe tener entre 3 y 20 caracteres.",
-      "usernameNoSpaces": "El nombre de usuario no puede contener espacios.",
-      "usernameInvalidChars": "El nombre de usuario solo puede contener letras, números, guiones bajos y guiones.",
+      "emptyUserid": "Please enter your username or email",
+      "usernameRequired": "Username is required.",
+      "usernameLength": "Username must be between 3 and 20 characters.",
+      "usernameNoSpaces": "Username cannot contain spaces.",
+      "usernameInvalidChars": "Username can only contain letters, numbers, underscores, and hyphens.",
 
-      "emailRequired": "El correo electrónico es obligatorio.",
-      "emailInvalid": "El correo electrónico no es válido.",
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Email is not valid.",
 
-      "passwordRequired": "La contraseña es obligatoria.",
-      "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
-      "passwordUppercase": "La contraseña debe contener al menos una letra mayúscula",
-      "passwordLowercase": "La contraseña debe contener al menos una letra minúscula",
-      "passwordDigit": "La contraseña debe contener al menos un número",
-      "passwordSpecialChar": "La contraseña debe contener al menos un carácter especial",
+      "passwordRequired": "Password is required.",
+      "passwordMinLength": "Password must be at least 8 characters long",
+      "passwordUppercase": "Password must contain at least one uppercase letter",
+      "passwordLowercase": "Password must contain at least one lowercase letter",
+      "passwordDigit": "Password must contain at least one number",
+      "passwordSpecialChar": "Password must contain at least one special character",
 
-      "passwordCheckRequired": "Confirma tu contraseña.",
-      "passwordsDontMatch": "Las contraseñas no coinciden.",
+      "passwordCheckRequired": "Please confirm your password.",
+      "passwordsDontMatch": "Passwords do not match.",
 
-      "confirmationCodeRequired": "Por favor, ingresa el código de verificación.",
-      "confirmationCodeInvalid": "El código debe tener 6 dígitos.",
+      "confirmationCodeRequired": "Please enter the verification code.",
+      "confirmationCodeInvalid": "Code must be 6 digits.",
 
-      "nameRequired": "El nombre es obligatorio.",
-      "nameLength": "El nombre debe tener entre 3 y 50 caracteres.",
+      "nameRequired": "Name is required.",
+      "nameLength": "Name must be between 3 and 50 characters.",
 
-      "ageRequired": "La edad es obligatoria.",
-      "ageInvalid": "Introduce una edad válida",
-      "weightRequired": "El peso es obligatorio.",
-      "weightInvalid": "Introduce un peso válido",
-      "heightRequired": "La altura es obligatoria.",
-      "heightInvalid": "Introduce una altura válida en cm",
-      "genderRequired": "Selecciona un sexo."
+      "ageRequired": "Age is required.",
+      "ageInvalid": "Enter a valid age",
+      "weightRequired": "Weight is required.",
+      "weightInvalid": "Enter a valid weight",
+      "heightRequired": "Height is required.",
+      "heightInvalid": "Enter a valid height in cm",
+      "genderRequired": "Select a gender."
     },
-    "selectCategories": "Selecciona al menos dos categorías",
-    "invalidDateSelected": "La fecha de inicio debe ser menor a la fecha de fin",
-    "noDatesSelected": "Debes seleccionar ambas fechas",
-    "selectDestination": "Debes seleccionar un destino para continuar."
+    "selectCategories": "Select at least two categories",
+    "invalidDateSelected": "Start date must be before the end date",
+    "noDatesSelected": "You must select both dates",
+    "selectDestination": "You must select a destination to continue."
   },
-  "continue": "Continuar",
+  "continue": "Continue",
   "dividerText": "or if you prefer",
-  "destinationDetails":{
-    "title": "Destination"
+  "destination": {
+    "title": "Destination",
+    "visited": "Visited",
+    "languages": "Language(s)",
+    "currency": "Currency"
   },
   "language": {
     "es": "Spanish",

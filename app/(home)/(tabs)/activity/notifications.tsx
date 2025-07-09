@@ -11,6 +11,7 @@ import { LoadingScreen } from '@/components/LoadingScreen';
 import PaddingView from '@/components/views/PaddingView';
 import { useSuggestedUsers } from '@/hooks/useSuggestedUsers';
 import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 export interface NotificationUser {
   id: string;
@@ -79,8 +80,7 @@ export default function NotificationsScreen() {
   const { pendingConnectionRequests, getPendingConnectionRequests} = useSuggestedUsers();
   const [refreshing, setRefreshing] = useState(false);
   const pollingRef = useRef<number | null>(null);
-  const { t } = useTranslation();
-
+  const { t } = useTranslation(); 
   const router = useRouter();
 
   const fetchNotifications = useCallback(async () => {

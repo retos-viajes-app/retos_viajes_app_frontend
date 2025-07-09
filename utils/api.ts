@@ -2,12 +2,16 @@ import axios from "axios";
 import { getAccessToken } from "./secureTokens";
 import { refreshAccessToken } from "@/services/refreshToken";
 import { getBackendUrl } from "@/utils/getBackendUrl";
-
+import i18n from "@/i18n/index";
 const api = axios.create({
   baseURL: getBackendUrl(),
   timeout: 10000
 });
 
+api.interceptors.request.use( config => {
+  config.headers["Accept-Language"] = i18n.language || "es";
+  return config;
+});
 api.interceptors.request.use(
   async (config) => {
     if (

@@ -87,7 +87,11 @@
         "noPendingRequests": "No tienes solicitudes"
       }
   },
-  
+  "notifications":{
+    "title": "Notificaciones",
+    "noNotifications": "No tienes solicitudes pendientes",
+    "connectionNotifications": "Solicitudes de amistad"
+  },
   "suggestedUsers": {
     "title": "Conecta con otros viajeros",
     "noUsers": "No hay usuarios sugeridos disponibles",
@@ -213,8 +217,11 @@
   "continue": "Continuar",
   "dividerText": "o si lo prefieres",
   "retry": "Reintentar",
-  "destinationDetails":{
-    "title": "Destino"
+  "destination":{
+    "title": "Destino",
+    "visited": "Visitado",
+    "languages": "Idioma(s)",
+    "currency": "Moneda"
   },
   "language":{
     "es": "Español",

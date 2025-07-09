@@ -1,30 +1,32 @@
 import { Colors } from '@/constants/Colors';
 import { Stack } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export default function ActivityLayout() {
+  const {t} = useTranslation();
   return (
     <Stack 
-        screenOptions={{ contentStyle: { backgroundColor: Colors.colors.neutral[100] }}}
+      screenOptions={{ contentStyle: { backgroundColor: Colors.colors.neutral[100] }}}
     >
       <Stack.Screen 
-        name="index" 
-        options={{ 
-          headerShown: false 
-        }} 
+      name="index" 
+      options={{ 
+        headerShown: false 
+      }} 
       />
       <Stack.Screen 
-        name="notifications" 
-        options={{ 
-          title: 'Notificaciones',
-          headerBackTitle: 'Atrás'
-        }} 
+      name="notifications" 
+      options={{ 
+        title: t("notifications.title"),
+        headerBackTitle: 'Atrás'
+      }} 
       />
       <Stack.Screen 
-        name="connectionRequests" 
-        options={{ 
-          title: 'Solicitudes de amistad',
-          headerBackTitle: 'Atrás'
-        }} 
+      name="connectionRequests" 
+      options={{ 
+        title: t('notifications.connectionNotifications'),
+        headerBackTitle: 'Atrás'
+      }} 
       />
     </Stack>
   );
