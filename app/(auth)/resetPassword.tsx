@@ -12,18 +12,16 @@ import ViewInputs from "@/components/views/ViewInputs";
 import PaddingView from "@/components/views/PaddingView";
 import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import ViewForm from "@/components/views/ViewForm";
+import PasswordInput from "@/components/forms/PasswordInput";
 
 // Hook Imports
 import { useFormValidation } from "@/hooks/useFormValidation";
 import { useAuth } from "@/hooks/useAuth";
+import { useValidations } from "@/hooks/useValidations";
+import { useTranslation } from "react-i18next";
 
 // Style Imports
 import globalStyles from "@/styles/global";
-
-// Utility Imports
-import { validations } from "@/utils/validations";
-import { useTranslation } from "react-i18next";
-import PasswordInput from "@/components/forms/PasswordInput";
 
 
 export default function ResetPasswordScreen() {
@@ -34,7 +32,16 @@ export default function ResetPasswordScreen() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { t } = useTranslation();
+  const validations = useValidations();
 
+  const { errors, validateForm } = useFormValidation({
+    newPassword: validations.password,
+    confirmPassword: (value: string) => {
+      return validations.passwordCheck(value, newPassword);
+    }
+  });
+
+  
   useEffect(() => {
     if (user?.is_verified && user.verification_type == "passwordReset") {
       Toast.show({
@@ -46,12 +53,7 @@ export default function ResetPasswordScreen() {
       });
     }
   }, []);
-  const { errors, validateForm } = useFormValidation({
-    newPassword: validations.password,
-    confirmPassword: (value: string) => {
-      return validations.passwordCheck(value, newPassword);
-    }
-  });
+  
 
   const handleResetPassword = async () => {
     setErrorMessage("");

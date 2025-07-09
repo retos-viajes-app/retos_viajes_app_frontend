@@ -22,10 +22,10 @@ import PaddingView from "@/components/views/PaddingView";
 // Hook Imports
 import { useAuth } from "@/hooks/useAuth";
 import { useFormValidation } from "@/hooks/useFormValidation";
-
+import { useValidations } from "@/hooks/useValidations";
 
 // Utility Imports
-import { validations } from "@/utils/validations";
+
 import { useTranslation } from "react-i18next";
 
 
@@ -38,6 +38,8 @@ export default  function RegisterScreen() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+  const validations = useValidations();
+  
   const { errors, validateForm } = useFormValidation({
     name: validations.name,
     username: validations.username,

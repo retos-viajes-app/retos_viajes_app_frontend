@@ -9,6 +9,8 @@ export interface CompletedChallenge {
     completed_at?: Date;
     proof_photo_url?: string;
     description?: string;
+    likes_count: number;
+    is_liked_by_me: boolean;
 }
 
 export interface CompletedChallengesPostsResponse {

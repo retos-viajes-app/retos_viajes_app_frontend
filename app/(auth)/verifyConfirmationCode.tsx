@@ -14,14 +14,13 @@ import ViewForm from "@/components/views/ViewForm";
 
 // Hook Imports
 import { useFormValidation } from "@/hooks/useFormValidation";
+import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "react-i18next";
+import { useValidations } from "@/hooks/useValidations";
+
 
 // Style Imports
 import globalStyles from "@/styles/global";
-
-// Utility Imports
-import { validations } from "@/utils/validations";
-import { useAuth } from "@/hooks/useAuth";
-import { useTranslation } from "react-i18next";
 
 
 export default function VerifyConfirmationCodeScreen() {
@@ -35,6 +34,7 @@ export default function VerifyConfirmationCodeScreen() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const mode = params.mode?.toString() || "";
+  const validations = useValidations();
   
   const { errors, validateForm } = useFormValidation({
     code: validations.resetCode,
