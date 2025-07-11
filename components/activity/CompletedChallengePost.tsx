@@ -112,7 +112,7 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
             <Text
               style={[
                 globalStyles.mediumBodyRegular,
-                { color: Colors.colors.gray[500] },
+                { color: Colors.colors.text.primary },
               ]}
             >
               {t("activity.posts.completedAMission")}
@@ -122,7 +122,7 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
         <Text
           style={[
             globalStyles.smallBodyRegular,
-            { color: Colors.colors.gray[400] },
+            { color: Colors.colors.text.secondary },
           ]}
         >
           {timeAgo}
@@ -169,15 +169,15 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
           <TouchableOpacity onPress={onLikePress} style={styles.likeButton}>
             {completedChallenge.is_liked_by_me
               ? <AntDesign name="heart" size={20} color={Colors.colors.error[500]} /> 
-              : <AntDesign name="hearto" size={20} color={Colors.colors.gray[500]} />
+              : <AntDesign name="hearto" size={20} color={Colors.colors.text.primary} />
             }
           </TouchableOpacity>
-          <Text style={[globalStyles.mediumBodyRegular,{ color: Colors.colors.gray[500] },]}>
+          <Text style={[globalStyles.mediumBodyRegular,{ color: Colors.colors.text.primary },]}>
             <Trans
               i18nKey="activity.posts.likesText"
               count={completedChallenge.likes_count || 0}
               components={{
-                bold: <Text style={[globalStyles.mediumBodySemiBold, { color: Colors.colors.gray[500] }]} />,
+                bold: <Text style={[globalStyles.mediumBodySemiBold, { color: Colors.colors.text.primary }]} />,
               }}
             />
           </Text>
@@ -186,17 +186,17 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
         {/* Challenge title and location */}
         <View style={styles.challengeTitleContainer}>
           <Text
-            style={[globalStyles.largeBodySemiBold,{ color: Colors.colors.gray[500] },]}
+            style={[globalStyles.largeBodySemiBold,{ color: Colors.colors.text.primary },]}
             numberOfLines={1}
           >
             {completedChallenge.challenge?.title}
           </Text>
           <View style={styles.locationContainer}>
-            <Feather name="map-pin" size={16} color={Colors.colors.gray[500]} />
+            <Feather name="map-pin" size={16} color={Colors.colors.text.primary} />
             <Text
               style={[
                 globalStyles.mediumBodyRegular,
-                { color: Colors.colors.gray[500] },
+                { color: Colors.colors.text.primary },
               ]}
               numberOfLines={1}
             >
@@ -208,7 +208,7 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
         {/* Comment */}
         {completedChallenge.description && (
           <Text
-            style={[ globalStyles.mediumBodyRegular, { color: Colors.colors.gray[500] },]}
+            style={[ globalStyles.mediumBodyRegular, { color: Colors.colors.text.primary },]}
             numberOfLines={2}
           >
             {completedChallenge.description}
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    backgroundColor: Colors.colors.gray[100],
+    backgroundColor: Colors.colors.background.default,
     borderRadius: 8,
     flexShrink: 1,
   },

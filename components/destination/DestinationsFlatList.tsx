@@ -11,6 +11,7 @@ import { Destination } from '@/models/destination';
 import DestinationCard from '@/components/destination/DestinationCard';
 import { useTranslation } from "react-i18next";
 import { Colors } from '@/constants/Colors';
+import globalStyles from '@/styles/global';
 
 type ItemProps = { country: string };
 
@@ -57,9 +58,8 @@ const handleLoadMore = () => {
 
   return (
     <View style={[styles.container,{backgroundColor: Colors.colors.background.card}]} >
-        <Text >{t("destinations.tittle")}</Text>
+        <Text style={globalStyles.title}>{t("destinations.tittle")}</Text>
         <FlatList
-          style={{ height:285}}
           ref={flatListRef}
           data={destinations}
           renderItem={({ item }) => <DestinationCard destination={item}/>}
@@ -79,8 +79,9 @@ const handleLoadMore = () => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingHorizontal: 16, 
-    paddingVertical: 20,
+    paddingLeft: 16,
+    paddingVertical: 40,
+    gap: 16,
   },
   separator: {
     width: 10, // Gap de 10 entre cada tarjeta

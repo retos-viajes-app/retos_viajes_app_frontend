@@ -64,8 +64,8 @@ export default function SummaryScreen() {
                     <MaterialCommunityIcons name="map" size={35} color={Colors.colors.primary[200]} />
                     <View >
                         {/* No hay mediumbodymedium */}
-                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.gray[500]}]}>{t("createTrip.summary.destination")}</Text>
-                        <Text style={[globalStyles.largeBodyMedium, {color: Colors.colors.gray[400]}]}>{currenDestination?.city}, {currenDestination?.country}</Text>  
+                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.text.primary}]}>{t("createTrip.summary.destination")}</Text>
+                        <Text style={[globalStyles.largeBodyMedium, {color: Colors.colors.text.secondary}]}>{currenDestination?.city}, {currenDestination?.country}</Text>  
                     </View> 
                 </View>
 
@@ -76,8 +76,8 @@ export default function SummaryScreen() {
                     {/* <CalendarMinus2 color={Colors.colors.primary[200]} strokeWidth={1.6} size={35}/> */}
                     <MaterialCommunityIcons name="calendar-remove" size={35} color={Colors.colors.primary[200]} />
                     <View >
-                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.gray[500]}]}>{t("createTrip.summary.dates")}</Text>
-                        <Text style={[globalStyles.largeBodyMedium, {color: Colors.colors.gray[400]}]}>{trip?.start_date?.toDateString()} - {trip?.start_date?.toDateString()}</Text>  
+                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.text.primary}]}>{t("createTrip.summary.dates")}</Text>
+                        <Text style={[globalStyles.largeBodyMedium, {color: Colors.colors.text.secondary}]}>{trip?.start_date?.toDateString()} - {trip?.start_date?.toDateString()}</Text>  
                     </View> 
                 </View>
 
@@ -89,13 +89,13 @@ export default function SummaryScreen() {
                     <Feather name="star" size={35} color={Colors.colors.primary[200]} />
                     <View >
                         {/* No hay mediumbodymedium */}
-                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.gray[500]}]}>{t("createTrip.summary.missions")}</Text>
+                        <Text style={[globalStyles.mediumBodySemiBold, {color:Colors.colors.text.primary}]}>{t("createTrip.summary.missions")}</Text>
                         <FlatList
                             data={selectedCategories}
                             keyExtractor={(item) => item.id!.toString()}
                             renderItem={({ item }) => (
                                 <View >
-                                <Text style={[globalStyles.largeBodyMedium, {color: Colors.colors.gray[400]}]} >• {item.name}</Text>
+                                <Text style={[globalStyles.largeBodyMedium, {color: Colors.colors.text.secondary}]} >• {item.name}</Text>
                                 </View>
                             )}
                             />

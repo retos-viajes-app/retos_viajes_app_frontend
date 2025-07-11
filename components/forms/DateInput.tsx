@@ -49,8 +49,8 @@ export const  DateInput: React.FC<CustomDateInputProps> = ({
       >
       <View style={styles.inputContent}>
         <Text style={styles.dateText}>{date ? date.toLocaleDateString() : title}</Text>
-        {/* <Calendar size={20} color={Colors.colors.gray[400]} /> */}
-        <Feather name="calendar" size={20} color={Colors.colors.gray[400]} />
+        {/* <Calendar size={20} color={Colors.colors.text.secondary} /> */}
+        <Feather name="calendar" size={20} color={Colors.colors.text.secondary} />
       </View>
       </TouchableOpacity>
       {isPickerVisible && (
@@ -73,24 +73,24 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: "InterRegular", // Asegúrate de tener la fuente correcta
     padding: 10,
-    borderColor: Colors.colors.gray[200], // Color de borde gris
+    borderColor: Colors.colors.border.default, // Color de borde gris
     borderWidth: 1,
     borderRadius: 16,
-    backgroundColor: Colors.colors.gray[100], // Color de fondo gris suave
-    color: Colors.colors.gray[400], // Color de texto gris
+    backgroundColor: Colors.colors.background.default, // Color de fondo gris suave
+    color: Colors.colors.text.secondary, // Color de texto gris
     width: "100%",
     minHeight: 48,
   },
   focused: {
-    borderColor: Colors.colors.gray[400], // Color cuando tiene el foco (puedes ajustarlo)
-    backgroundColor: Colors.colors.neutral[100], // Fondo suave azul cuando tiene el foco
+    borderColor: Colors.colors.border.strong, // Color cuando tiene el foco (puedes ajustarlo)
+    backgroundColor: Colors.colors.background.inputFocused, // Fondo suave azul cuando tiene el foco
   },
   error: {
     borderColor: Colors.colors.error[100], // Color de borde cuando hay error
   },
   disabled: {
-    backgroundColor: Colors.colors.gray[200], // Fondo gris claro cuando está deshabilitado
-    borderColor: Colors.colors.gray[300], // Borde gris claro cuando está deshabilitado
+    backgroundColor: Colors.colors.border.default, // Fondo gris claro cuando está deshabilitado
+    borderColor: Colors.colors.border.default, // Borde gris claro cuando está deshabilitado
   },
   errorText: {
     color: Colors.colors.error[100], // Color del texto de error
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   //date+
   dateText: {
-    color: Colors.colors.gray[400],
+    color: Colors.colors.text.secondary,
   },  
   inputContent: {
     flexDirection: "row",

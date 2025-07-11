@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   noRequestsText: {
     ...globalStyles.mediumBodyRegular,
-    color: Colors.colors.gray[500],
+    color: Colors.colors.text.primary,
     textAlign: 'center',
   },
   requestItemContainer: {
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 50,
-    backgroundColor: Colors.colors.gray[200],
+    backgroundColor: Colors.colors.border.default,
     marginRight: 8,
   },
   userInfoContainer: {
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   fullNameText: {
     ...globalStyles.mediumBodyRegular,
-    color: Colors.colors.gray[500],
+    color: Colors.colors.text.primary,
   },
   buttonsContainer: {
     flexDirection: 'row',
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   acceptButtonText: {
-    color: Colors.colors.neutral[100],
+    color: Colors.colors.textWhite.primary,
   },
   denyButtonText: {
     color: Colors.colors.primary[100],

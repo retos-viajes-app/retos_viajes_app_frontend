@@ -20,7 +20,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({ title, onPress, style = null, lo
   return (
     <TouchableOpacity style={[styles.button, style,  disabled && styles.disabledButton]} onPress={onPress}>
       {loading ? (
-        <ActivityIndicator size="small" color={Colors.colors.neutral[100]} />
+        <ActivityIndicator size="small" color={Colors.colors.textWhite.primary} />
       ) : (
       <Text style={[
         globalStyles.largeBodySemiBold,
@@ -36,22 +36,22 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: 20,
     paddingVertical: 12,
-    backgroundColor: Colors.colors.primary[100],
+    backgroundColor: Colors.colors.primary[500],
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 16,
     marginBottom: 16,
   },
   text: {
-    color: Colors.colors.neutral[100],
+    color: Colors.colors.textWhite.primary,
     fontSize: 16,
     fontWeight: 'bold',
   },
   disabledButton: {
-    backgroundColor: Colors.colors.gray[200],
+    backgroundColor: Colors.colors.border.default,
   },
   disabledText: {
-    color: Colors.colors.gray[400],
+    color: Colors.colors.text.secondary,
   },
 });
 

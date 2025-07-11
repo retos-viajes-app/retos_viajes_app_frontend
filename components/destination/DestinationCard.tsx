@@ -1,10 +1,10 @@
 
 import {StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { Destination } from "@/models/destination";
-import { Feather } from "@expo/vector-icons";
 import {  useRouter } from "expo-router";
 import { ArrowRight } from "lucide-react-native";
 import { Colors } from "@/constants/Colors";
+import { LinearGradient } from 'expo-linear-gradient';
 
 const DestinationCard = ({ destination }: { destination: Destination }) => {
     const router = useRouter();
@@ -14,15 +14,24 @@ const DestinationCard = ({ destination }: { destination: Destination }) => {
     };
     return (
         <View style={styles.card}>
-            <View style={styles.footer}>
+             <LinearGradient
+                colors={['rgba(0,0,0,0.4)', 'transparent', 'rgba(0,0,0,0.6)']}
+                locations={[0, 0.5, 1]}
+            />
+            <LinearGradient
+                    colors={['#4c669f', '#3b5998', '#192f6a']}
+                     style={styles.footer}
+            >
+              
                 <View style={styles.textContainer}>
-                    <Text>{destination.city}</Text>
-                    <Text>{destination.country}</Text>
+                        <Text >{destination.city}</Text>
+                        <Text>{destination.country}</Text>
                 </View>
+                
                 <TouchableOpacity style={styles.circle} onPress={handlePress}>
                      <ArrowRight size={18} color={Colors.colors.primary[500]}/>
                 </TouchableOpacity>
-            </View>
+            </LinearGradient>
         </View>
     );
 };

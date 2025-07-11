@@ -57,14 +57,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 10,
-    borderColor: Colors.colors.gray[200],
+    borderColor: Colors.colors.border.default,
     borderWidth: 1,
     borderRadius: 16,
-    backgroundColor: Colors.colors.gray[100],
+    backgroundColor: Colors.colors.background.default,
     paddingHorizontal: 10,
   },
   selected: {
-    borderColor: Colors.colors.gray[400],
+    borderColor: Colors.colors.text.secondary,
     backgroundColor: Colors.colors.primary[300],
   },
   radioCircle: {
@@ -72,17 +72,17 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 100,
     borderWidth: 2,
-    borderColor: Colors.colors.gray[400],
+    borderColor: Colors.colors.text.secondary,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 10,
   },
   checkedCircle: {
-    backgroundColor: Colors.colors.gray[500],
+    backgroundColor: Colors.colors.text.primary,
     width: 24,
     height: 24,
     borderRadius: 100,
-    borderColor: Colors.colors.gray[500],
+    borderColor: Colors.colors.text.primary,
   },
 });
 

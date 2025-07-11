@@ -91,14 +91,12 @@ const globalStyles = StyleSheet.create({
     lineHeight: 16,
     color: Colors.colors.text.default,
   },
-
-  // Otros estilos que tenías
-  // diplaySemiBold: { // Este no está en la tabla, si no lo usas, considera eliminarlo
-  //   fontFamily: 'InterBlack', // Asegúrate de tener 'InterBlack' cargado si lo usas
-  //   fontSize: 24,
-  //   lineHeight: 24,
-  //   color: Colors.text.default,
-  // },
+  diplaySemiBold: { // Este no está en la tabla, si no lo usas, considera eliminarlo
+    fontFamily: 'InterSemiBold', // Asegúrate de tener 'InterBlack' cargado si lo usas
+    fontSize: 32,
+    lineHeight: 40,
+    color: Colors.colors.text.default, 
+  },
   link: {
     color: Colors.colors.primary[500], // Utiliza el color principal de tu paleta
     textDecorationLine: 'underline',

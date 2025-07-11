@@ -6,7 +6,7 @@ export default function ActivityLayout() {
   const {t} = useTranslation();
   return (
     <Stack 
-      screenOptions={{ contentStyle: { backgroundColor: Colors.colors.neutral[100] }}}
+      screenOptions={{ contentStyle: { backgroundColor: Colors.colors.textWhite.primary }}}
     >
       <Stack.Screen 
       name="index" 

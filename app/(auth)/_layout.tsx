@@ -7,7 +7,7 @@ export default function AuthLayout() {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
 
         <Stack screenOptions={{ headerShown: false,
-          contentStyle: { backgroundColor: Colors.colors.neutral[100] }
+          contentStyle: { backgroundColor: Colors.colors.background.default },
         }}>
           
           <Stack.Screen name="login" />

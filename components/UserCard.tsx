@@ -40,7 +40,7 @@ const UserCard: React.FC<UserCardProps> = ({
           <Text
             style={[
               globalStyles.mediumBodySemiBold,
-              { color: Colors.colors.gray[500] },
+              { color: Colors.colors.text.primary },
             ]}
             numberOfLines={1}
           >
@@ -49,7 +49,7 @@ const UserCard: React.FC<UserCardProps> = ({
           <Text
             style={[
               globalStyles.extraSmallRegular,
-              { color: Colors.colors.gray[500] },
+              { color: Colors.colors.text.primary },
             ]}
             numberOfLines={1}
           >
@@ -70,7 +70,7 @@ const UserCard: React.FC<UserCardProps> = ({
 const styles = StyleSheet.create({
   card: {
     width: 172,
-    backgroundColor: Colors.colors.neutral[100],
+    backgroundColor: Colors.colors.textWhite.primary,
     borderRadius: 16,
     padding: 8,
     gap: 16,

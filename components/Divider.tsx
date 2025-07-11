@@ -15,9 +15,9 @@ const Divider = ({ text = "", full = false }) => {
   const dividerText = text || t("dividerText");
   return (
     <View style={styles.container}>
-      <View style={[styles.line,{backgroundColor: Colors.colors.gray[200]}]} />
-      {!full && <Text style={{...globalStyles.largeBodyMedium, marginLeft: 4, marginRight: 4}}>{dividerText}</Text>}
-      <View style={[styles.line,{backgroundColor: Colors.colors.gray[200]}]} />
+      <View style={[styles.line,{backgroundColor: Colors.colors.border.default}]} />
+      {!full && <Text style={{...globalStyles.largeBodyMedium, marginLeft: 4, marginRight: 4, color: Colors.colors.text.secondary}}>{dividerText}</Text>}
+      <View style={[styles.line,{backgroundColor: Colors.colors.border.default}]} />
     </View>
   );
 };
