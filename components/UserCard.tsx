@@ -27,42 +27,32 @@ const UserCard: React.FC<UserCardProps> = ({
 
   return (
     <View style={styles.card}>
-      <View style={styles.userInfoContainer}>
+      <View style={styles.userData}>
+        <View style={styles.profileImageWrapper}>
         <Image
           source={{
             uri:
-              profile_photo_url ||
-              "https://thumbs.dreamstime.com/b/imagen-del-placeholder-perfil-silueta-gris-ninguna-foto-127393523.jpg",
+              "https://www.google.com/url?sa=i&url=https%3A%2F%2Funsplash.com%2Fes%2Fs%2Ffotos%2Frandom-person&psig=AOvVaw3VZNnD33skWOwdA12TYqTs&ust=1752762853190000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCNCV4MvMwY4DFQAAAAAdAAAAABAE"
           }}
           style={styles.profileImage}
         />
-        <View style={styles.textContainer}>
-          <Text
-            style={[
-              globalStyles.mediumBodySemiBold,
-              { color: Colors.colors.text.primary },
-            ]}
-            numberOfLines={1}
-          >
+        </View>
+        <View>
+          <Text style={styles.nameText} numberOfLines={1}>
             {name}
           </Text>
-          <Text
-            style={[
-              globalStyles.extraSmallRegular,
-              { color: Colors.colors.text.primary },
-            ]}
-            numberOfLines={1}
-          >
+
+          <Text style={styles.usernameText} numberOfLines={1}>
             @{username}
           </Text>
         </View>
+        
       </View>
       <ConnectButton
-        connectionStatus={connection_status} 
+        connectionStatus={connection_status}
         onConnect={onConnect}
         onCancelRequest={onCancelRequest}
       />
-      
     </View>
   );
 };
@@ -72,26 +62,49 @@ const styles = StyleSheet.create({
     width: 172,
     backgroundColor: Colors.colors.textWhite.primary,
     borderRadius: 16,
+    borderWidth: 1,
+    borderColor: Colors.colors.border.default,
     padding: 8,
-    gap: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  userInfoContainer: {
-    flexDirection: "row",
     alignItems: "center",
-    gap: 8, // Espacio entre la foto y el texto
+    justifyContent: "center",
+    gap: 16,
+    shadowColor: "#2C3E5026",
+    shadowOffset: { width: 1, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  userData:{
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8
+  },
+  profileImageWrapper: {
+    width: 64,
+    height: 64,
+    borderRadius: 50,
+    overflow: "hidden",
+    backgroundColor: "#000",
   },
   profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 64,
+    height: 64,
+    borderRadius: 50,
   },
-  textContainer: {
-    flex: 1,
+  nameText: {
+    fontFamily: "Inter-SemiBold",
+    fontSize: 14,
+    fontWeight: "600",
+    color: Colors.colors.text.primary,
+    textAlign: "center",
+  },
+  usernameText: {
+    fontFamily: "Inter-Regular",
+    fontSize: 10,
+    lineHeight: 16,
+    fontWeight: "400",
+    color: Colors.colors.text.secondary,
+    textAlign: "center",
   },
 });
 
