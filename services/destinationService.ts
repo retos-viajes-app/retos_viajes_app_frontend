@@ -35,7 +35,7 @@ export const getDestinationsPaginated = async (
   perPage = 10
 ): Promise<{ destinations: Destination[]; pagination: { page: number; per_page: number; has_more: boolean } }> => {
   try {
-    const response = await api.get('/destinations', {
+    const response = await api.get('/destinations/', {
       params: {
         page,
         per_page: perPage,

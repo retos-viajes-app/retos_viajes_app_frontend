@@ -87,6 +87,23 @@
         "noPendingRequests": "No tienes solicitudes"
       }
   },
+  "profile":{
+    "editProfile": "Editar perfil",
+    "trip": "{{count}} Viaje",
+    "trip_plural": "{{count}} Viajes",
+    "myTrips": "Mis viajes",
+    "myBadges": "Mis insignias",
+    "stats": {
+      "countries": "PAÍSES",
+      "missions": "MISIONES",
+      "contacts": "CONTACTOS"
+    },
+    "badges":{
+      "all": "Todas",
+      "completed": "Completadas",
+      "incomplete": "Por completar"
+    }
+  },
   "notifications":{
     "title": "Notificaciones",
     "noNotifications": "No tienes solicitudes pendientes",

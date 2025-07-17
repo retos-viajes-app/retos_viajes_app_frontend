@@ -1,3 +1,5 @@
+import { Colors } from '@/constants/Colors';
+import globalStyles from '@/styles/global';
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
@@ -6,66 +8,73 @@ interface ProfileHeaderProps {
   username: string;
   location: string;
   bio: string;
-  avatar: string;
+  profileImage: string;
 }
 
-export default function ProfileHeader({ name, username, location, bio, avatar }: ProfileHeaderProps) {
+export default function ProfileHeader({ name, username, location, bio, profileImage }: ProfileHeaderProps) {
   return (
     <View style={styles.container}>
-        <View style={styles.imageWrapper}>
-      <Image source={{ uri: avatar }} style={styles.avatar} />
+      <View style={styles.imageWrapper}>
+        <Image source={{ uri: profileImage }} style={styles.profileImage} />
       </View>
-      <View styles={styles.userInfo}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.username}>{username}</Text>
-        <Text style={styles.location}>{location}</Text>
+      <View style={styles.textContainer}>
+        <View style={styles.userInfoTop}>
+          <View>
+            <Text style={styles.name}>{name}</Text>
+            <View style={styles.atUsername}>
+              <Text style={styles.username}>@</Text>
+              <Text style={styles.username}>{username}</Text>
+            </View>
+          </View>
+          <Text style={styles.location}>{location}</Text>
+        </View>
         <Text style={styles.bio}>{bio}</Text>
       </View>
-      
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     alignItems: 'center',
     gap: 13,
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  userInfo:{
-    flexDirection: "column",
   },
   imageWrapper:{
     width: 122,
+    alignItems: "center"
   },
-  avatar: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    borderWidth: 2,
-    borderColor: '#fff',
-    marginBottom: 10,
+  profileImage: {
+    width: 96,
+    height: 96,
+    borderRadius: 50,
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    gap: 10,
+  },
+  userInfoTop:{
+    gap: 8
+  },
+  atUsername:{
+    flexDirection: 'row',
+    gap: 2
   },
   name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#0D1B2A',
+    ...globalStyles.title,
+    color: Colors.colors.primary[900]
   },
   username: {
-    fontSize: 16,
-    color: '#778DA9',
-    marginBottom: 5,
+    ...globalStyles.smallBodyRegular,
+    color: Colors.colors.text.primary
   },
   location: {
-    fontSize: 14,
-    color: '#778DA9',
-    marginBottom: 10,
+    ...globalStyles.mediumBodyMedium,
+    color: Colors.colors.text.secondary
   },
   bio: {
-    fontSize: 14,
-    color: '#415A77',
-    textAlign: 'center',
+    ...globalStyles.smallBodyRegular,
+    color: Colors.colors.text.secondary
   },
 });

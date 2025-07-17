@@ -1,8 +1,8 @@
 export const Colors = {
   colors: {
     primary: {
-      50: "#e6f2ff",
-      100: "#b0d6ff",
+      50: "#F5F9FF",
+      100: "#E6F1FE",
       200: "#8ac2ff",
       300: "#54a6ff",
       400: "#3395ff",
