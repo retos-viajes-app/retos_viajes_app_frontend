@@ -27,6 +27,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Model Imports
 import { CompletedChallenge } from "@/models/completedChallenge";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function ActivityScreen() {
@@ -201,46 +202,48 @@ export default function ActivityScreen() {
   };
 
   return user ? (
-    <FlatList
-      data={completedChallengesPosts}
-      style={styles.container}
-      renderItem={renderItem}
-      contentContainerStyle={{ paddingBottom: 100, flexGrow: 1  }} 
-      keyExtractor={(item) => item.id!.toString()}
-      showsVerticalScrollIndicator={false}
-      onEndReached={handleLoadMore}
-      onEndReachedThreshold={0.5}
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
-      refreshControl={
-        <RefreshControl 
-          refreshing={refreshing} 
-          onRefresh={onRefresh}
-          colors={[Colors.colors.primary[300]]} // Android
-          tintColor={Colors.colors.primary[300]} // IOS
-        />
-      }
-      ListHeaderComponent={
-        <>
-          <View style={styles.headerContainer}>
-            <Text style={[globalStyles.title, { color: Colors.colors.text.primary }]}>
-             {t("activity.notificationsTitle")}
-            </Text>
-            <TouchableOpacity style={styles.notificationButton} onPress={() => router.push('/(tabs)/activity/notifications' as any)}>
-              <MaterialCommunityIcons
-                name="bell-alert"
-                size={24}
-                color={Colors.colors.primary[100]}
-              />
-               {pendingConnectionRequests.length > 0 && ( <View style={styles.notificationDot} /> )}
-            </TouchableOpacity>
-          </View>
-          <ConnectUsers />
-          {(!initialLoading && !initialError && completedChallengesPosts.length > 0) ? <View style={{ marginBottom: 16 }} /> : null}
-          {renderInitialContentArea()}
-        </>
-      }
-      ListFooterComponent={renderListFooter}
-    />
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <FlatList
+        data={completedChallengesPosts}
+        style={styles.container}
+        renderItem={renderItem}
+        contentContainerStyle={{ paddingBottom: 100, flexGrow: 1  }} 
+        keyExtractor={(item) => item.id!.toString()}
+        showsVerticalScrollIndicator={false}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        refreshControl={
+          <RefreshControl 
+            refreshing={refreshing} 
+            onRefresh={onRefresh}
+            colors={[Colors.colors.primary[300]]} // Android
+            tintColor={Colors.colors.primary[300]} // IOS
+          />
+        }
+        ListHeaderComponent={
+          <>
+            <View style={styles.headerContainer}>
+              <Text style={[globalStyles.title, { color: Colors.colors.text.primary }]}>
+              {t("activity.notificationsTitle")}
+              </Text>
+              <TouchableOpacity style={styles.notificationButton} onPress={() => router.push('/(tabs)/activity/notifications' as any)}>
+                <MaterialCommunityIcons
+                  name="bell-alert"
+                  size={24}
+                  color={Colors.colors.primary[100]}
+                />
+                {pendingConnectionRequests.length > 0 && ( <View style={styles.notificationDot} /> )}
+              </TouchableOpacity>
+            </View>
+            <ConnectUsers />
+            {(!initialLoading && !initialError && completedChallengesPosts.length > 0) ? <View style={{ marginBottom: 16 }} /> : null}
+            {renderInitialContentArea()}
+          </>
+        }
+        ListFooterComponent={renderListFooter}
+      />
+    </SafeAreaView>
   ) : (
     <LoadingScreen />
   );

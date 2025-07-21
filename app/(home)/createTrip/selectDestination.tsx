@@ -1,6 +1,6 @@
 // React & React Native Imports
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, ImageBackground } from "react-native";
-import { useState } from "react";
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, ImageBackground, ActivityIndicator } from "react-native";
+import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 
 // Component Imports
@@ -22,21 +22,67 @@ import globalStyles from "@/styles/global";
 import {Destination} from "@/models/destination";
 import { useTranslation } from "react-i18next";
 import ErrorText from "@/components/text/ErrorText";
+import { getDestinationsPaginated } from "@/services/destinationService";
+import { Colors } from "@/constants/Colors";
+import StepIndicator from "@/components/ui/StepIndicator";
 
-const SelectDestination =()=> {
+const SelectDestination = ()=> {
   const [search, setSearch] = useState<string>("");
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
   const router = useRouter();
   const { t } = useTranslation();
-  const {destinations,setTrip,trip } = useTrip();
+  const {setTrip,trip } = useTrip();
+  const [loading, setLoading] = useState(false);
+  const { destinations, setDestinations } = useTrip();
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
+  const fetchDestinations = async (currentPage: number) => {
+    if (loading || !hasMore) return;
+
+    console.log('Fetching destinations for page:', currentPage);
+    setLoading(true);
+    try {
+      const destinationsResponse = await getDestinationsPaginated(currentPage);
+      if (destinationsResponse.error) {
+        console.error('Error fetching destinations:', destinationsResponse.error);
+        return;
+      }
+      const data = destinationsResponse.destinations;
+      console.log('Fetched destinations:', data);
+      setDestinations([...destinations, ...data]);
+      setHasMore(destinationsResponse.pagination.has_more);
+    } catch (error) {
+      console.error('Error fetching destinations:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const loadDestinations = async () => {
+      console.log('Component mounted, fetching destinations for page:', page);
+      await fetchDestinations(page);
+    };
+    loadDestinations();
+  }, []);
+
+  const handleLoadMore = async () => {
+      if (!loading && hasMore) {
+        const nextPage = page + 1;
+        setPage(nextPage);
+        await fetchDestinations(nextPage);
+      }
+    };
+  
 
   const handleContinue = () => {
     if (selectedId) {
     setTrip({
         ...trip,  
         destination_id: selectedId,
+        status: "pending",
         });
       router.push("/createTrip/selectDates");
     } else {
@@ -50,7 +96,6 @@ const SelectDestination =()=> {
         item.country!.toLowerCase().includes(search.toLowerCase()) ||
         item.city!.toLowerCase().includes(search.toLowerCase())
     )
-    .slice(0, 4);
 
   const renderItemF = ({ item }: { item: Destination }) => (
     <TouchableOpacity
@@ -63,7 +108,8 @@ const SelectDestination =()=> {
       }}
     >
     <ImageBackground 
-      source={item.image_url ? { uri: item.image_url } : require('@/assets/images/ciudad-defecto-destino-grid.jpg')}
+      //source={item.image_url ? { uri: item.image_url } : require('@/assets/images/ciudad-defecto-destino-grid.jpg')}
+      source= {require('@/assets/images/ciudad-defecto-destino-grid.jpg')}
       style={styles.imageBackground}
       imageStyle={styles.imageStyle}
     >
@@ -77,6 +123,7 @@ const SelectDestination =()=> {
 
   return (
     <PaddingView>
+      <StepIndicator steps={4} currentStep={1} />
       <ViewContentContinue>
         <ViewForm>
           <TitleParagraph
@@ -90,17 +137,28 @@ const SelectDestination =()=> {
               onChangeText={setSearch}
             />
           </ViewInputs>
-       
+             
             {errorMessage ? <ErrorText text={errorMessage} /> : null}
+          <View style={{ width: "100%", height: 270 }}>
             <FlatList
-                style={{ width: "100%" }}
-                data={filteredData}
-                numColumns={2}
-                keyExtractor={(item) => item.id!.toString()}
-                renderItem={renderItemF}
-                columnWrapperStyle={{ gap: 16 }}
-                contentContainerStyle={{ gap: 16 }}
-            />
+              style={{ 
+                  width: "100%",
+              }}
+              data={filteredData}
+              numColumns={2}
+              keyExtractor={(item) => item.id!.toString()}
+              renderItem={renderItemF}
+              columnWrapperStyle={{ gap: 16 }}
+              contentContainerStyle={{ 
+                gap: 16,
+                paddingBottom: 16,
+              }}
+              onEndReached={handleLoadMore}
+              onEndReachedThreshold={0.5}
+              ListFooterComponent={loading ? <ActivityIndicator /> : null}
+              showsVerticalScrollIndicator={true}
+              />
+          </View>
         </ViewForm>
         <PrimaryButton title={t("continue")} onPress={handleContinue}/>
       </ViewContentContinue>
@@ -109,15 +167,10 @@ const SelectDestination =()=> {
 }
 
 
-
-
-
-
-
 const styles = StyleSheet.create({
    item: {
     flex: 1,
-    height: 80, // Making it taller
+    height: 120,
     borderRadius: 16,
     overflow: 'hidden',
   },

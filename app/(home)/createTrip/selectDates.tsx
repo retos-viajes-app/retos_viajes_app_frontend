@@ -15,6 +15,7 @@ import StyledDateInput from "@/components/forms/DateInput";
 import { useTrip } from "@/hooks/useTrip";
 import { useTranslation } from "react-i18next";
 import ErrorText from "@/components/text/ErrorText";
+import StepIndicator from "@/components/ui/StepIndicator";
 
 
 export default function SelectDatesScreen() {
@@ -42,6 +43,7 @@ export default function SelectDatesScreen() {
     };
     return  (
       <PaddingView >
+        <StepIndicator steps={4} currentStep={2} />
         <ViewContentContinue>
         <ViewForm>
           <TitleParagraph

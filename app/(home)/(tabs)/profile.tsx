@@ -1,5 +1,5 @@
 // React & React Native Imports
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 
 // Component Imports
@@ -21,11 +21,10 @@ export default function ProfileScreen() {
 
 
   return user? (
-    <View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <Text>Hola</Text>
       <Button title="Cerrar sesión de Google" onPress={handleLogout} />
-      
-    </View>
+    </SafeAreaView>
   ): <LoadingScreen />;
 }
 

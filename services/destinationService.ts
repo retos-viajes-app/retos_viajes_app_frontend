@@ -4,6 +4,16 @@ import  {ChallengesPaginationResponse }from "@/models/challenge";
 import {Destination} from "@/models/destination";
 import api from "@/utils/api";
 
+
+interface GetPaginatedDestinationsResponse {
+  destinations: Destination[];
+  error?: string;
+  pagination: {
+    page: number;
+    per_page: number;
+    has_more: boolean;
+  };
+}
 export const getChallengesForDestination = async (
   page = 1,
   perPage = 10,
@@ -33,7 +43,7 @@ export const getChallengesForDestination = async (
 export const getDestinationsPaginated = async (
   page = 1,
   perPage = 10
-): Promise<{ destinations: Destination[]; pagination: { page: number; per_page: number; has_more: boolean } }> => {
+): Promise<GetPaginatedDestinationsResponse> => {
   try {
     const response = await api.get('/destinations', {
       params: {
@@ -41,8 +51,16 @@ export const getDestinationsPaginated = async (
         per_page: perPage,
       },
     });
-    console.log("Response from getDestinationsPaginated:", response.data);
-    return response.data;
+    console.log("Response from getDestinationsPaginated:", response.data.destinations);
+    return {
+      destinations: response.data.destinations, 
+      error: undefined,
+      pagination: {
+        page,
+        per_page: perPage,
+        has_more: response.data.pagination.has_more,
+      },
+    };
   }catch (error) {
     console.error("Error fetching destinations:", error);
     return {
@@ -52,6 +70,7 @@ export const getDestinationsPaginated = async (
         per_page: perPage,
         has_more: false,
       },
+      error: "Error fetching destinations",
     };
   }
 }

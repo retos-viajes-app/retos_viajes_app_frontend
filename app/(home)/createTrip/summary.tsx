@@ -1,6 +1,6 @@
 // React & React Native Imports
 import { View, Text, FlatList } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 
 // Component Imports
@@ -21,13 +21,20 @@ import { Colors } from "@/constants/Colors";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import ErrorText from "@/components/text/ErrorText";
-
+import { postTrip } from "@/services/tripService";
+import { getCategories } from "@/services/categoryService";
+import { getDestinationsPaginated } from "@/services/destinationService";
+import Category from "@/models/category";
+import { Destination } from "@/models/destination";
+import StepIndicator from "@/components/ui/StepIndicator";
 // Icon Imports
 //import { Map, CalendarMinus2, Star } from 'lucide-react-native';
 
 export default function SummaryScreen() {
-    const {destinations, trip, selectedCategoriesId,categories,postTrip} = useTrip();
     const [errorMessage,setErrorMessage] = useState<string | undefined>(undefined);
+    const {trip, selectedCategoriesId} = useTrip();
+    const {categories} = useTrip();
+    const [destinations, setDestinations] = useState<Destination[]>([]);
     const router = useRouter();
     const currenDestination = destinations.find((destination) => destination.id === trip?.destination_id);
     const selectedCategories = categories.filter((category) => selectedCategoriesId.includes(category.id!.toString()));
@@ -48,8 +55,22 @@ export default function SummaryScreen() {
         setLoading(false);
         
     }
+    useEffect(() => {
+        const loadDestinations = async () => {
+            console.log('Component mounted, fetching destinations');
+            const response = await getDestinationsPaginated();
+           
+            if (response.error) {
+                setErrorMessage(response.error);
+            } else {
+                setDestinations(response.destinations || []);
+            }
+        };
+        loadDestinations();
+    }, []);
     return  (
         <PaddingView >
+        <StepIndicator steps={4} currentStep={4} />
         <ViewContentContinue>
         <View style={{gap:30}}>
             <TitleParagraph
