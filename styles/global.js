@@ -8,14 +8,14 @@ const globalStyles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 28,
     // Asumiendo un color oscuro para los títulos, puedes ajustarlo
-    color: Colors.colors.text.default, // O Colors.text.secondary si es más suave
+    color: Colors.colors.text.primary, // O Colors.text.secondary si es más suave
   },
   subtitle: {
     fontFamily: 'InterSemiBold',
     fontSize: 18,
     lineHeight: 20,
     // Asumiendo un color oscuro para los subtítulos
-    color: Colors.colors.text.default,
+    color: Colors.colors.text.secondary,
   },
 
   // Large body
@@ -98,7 +98,7 @@ const globalStyles = StyleSheet.create({
     color: Colors.colors.text.default, 
   },
   link: {
-    color: Colors.colors.primary[500], // Utiliza el color principal de tu paleta
+    color: Colors.colors.primary[300], // Utiliza el color principal de tu paleta
     textDecorationLine: 'underline',
   }
 });
