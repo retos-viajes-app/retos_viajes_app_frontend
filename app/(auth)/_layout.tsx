@@ -12,14 +12,32 @@ export default function AuthLayout() {
           
           <Stack.Screen name="login" />
           <Stack.Screen name="register" />
-          <Stack.Screen name="completeRegister" />
+          <Stack.Screen name="completeRegister" options={{
+                headerShown: true,
+                headerTitle: "Completa tu perfil",
+                headerTitleAlign: "center",
+                headerBackTitle: "Atrás"
+              }} />
           <Stack.Screen name="requestConfirmationCode"   options={{
                 headerShown: true,
                 headerTitle: "Recuperar contraseña",
                 headerTitleAlign: "center",
+                headerBackTitle: "Atrás"
               }}/>
-          <Stack.Screen name="verifyConfirmationCode" />
-          <Stack.Screen name="resetPassword" />
+          <Stack.Screen name="verifyConfirmationCode"  options={{
+                headerShown: true,
+                headerTitle: "Verifica tu correo",
+                headerTitleAlign: "center",
+                headerBackTitle: "Atrás"
+              }}/>
+          <Stack.Screen name="resetPassword" 
+            options={{
+                  headerShown: true,
+                  headerTitle: "Cambiar contraseña",
+                  headerTitleAlign: "center",
+                  headerBackTitle: "Atrás"
+                }}
+          />
 
         </Stack>
       </ScrollView>

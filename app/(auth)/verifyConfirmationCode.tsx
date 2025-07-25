@@ -1,6 +1,6 @@
 // React & React Native Imports
 import { useState } from "react";
-import { Text, TouchableOpacity, ImageBackground } from "react-native";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import Toast from "react-native-toast-message";
 // Component Imports
@@ -21,6 +21,7 @@ import { useValidations } from "@/hooks/useValidations";
 
 // Style Imports
 import globalStyles from "@/styles/global";
+import { Colors } from "@/constants/Colors";
 
 
 export default function VerifyConfirmationCodeScreen() {
@@ -32,7 +33,7 @@ export default function VerifyConfirmationCodeScreen() {
   const {verifyConfirmationCode, requestConfirmationCode} = useAuth();
   const [resendLoading, setResendLoading] = useState(false);
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, resetEmail } = useAuth();
   const mode = params.mode?.toString() || "";
   const validations = useValidations();
   
@@ -56,37 +57,43 @@ export default function VerifyConfirmationCodeScreen() {
     }
 
     if (mode === "register") {
+      Toast.show({
+        type: "success",
+        text1: "Código verificado",
+        text2: "Completa tu perfil",
+      });
       router.replace("/completeRegister");
     } else {
-      router.push("/resetPassword");
+       Toast.show({
+        type: "success",
+        text1: "Código verificado",
+        text2: "Establece tu nueva contraseña",
+      });
+      router.replace("/resetPassword");
     }
     setLoading(false);
   };
 
   const handleResendCode = async () => {
     if (resendLoading) return;
-    
-    if (!user?.email) {
+    const confirmationEmail = mode === "register" ? user?.email : resetEmail;
+    if (!confirmationEmail ) {
       return;
     }
     setResendLoading(true);
-    const response = await requestConfirmationCode(user!.email, mode);
+    const response = await requestConfirmationCode(confirmationEmail, mode);
     if (response.success) {
       setErrorMessage("")
       Toast.show({
         type: "success",
         text1: "Código enviado",
-        text2: "Se ha enviado un nuevo código de verificación a tu correo.",
-        position: "bottom",
-        bottomOffset: 80,
+        text2: "Se ha enviado un nuevo código de verificación a tu correo."
       });
     } else {
       Toast.show({
         type: "error",
         text1: "Error",
         text2: response.error || "No se pudo reenviar el código.",
-        position: "bottom",
-        bottomOffset: 80,
       });
     }
     setResendLoading(false);
@@ -95,25 +102,12 @@ export default function VerifyConfirmationCodeScreen() {
 
   return (
     <>
-      <ImageBackground
-        source={require("@/assets/images/loginImage.png")}
-        style={{
-          width: "100%",
-          height: 124,
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: 24,
-        }}
-        resizeMode="cover"
-      ></ImageBackground>
       <PaddingView>
         <ViewContentContinue>
           <ViewForm>
             <TitleParagraph
               title={t("auth.verifyCode.title")}
-              paragraph={`${t(
-                      "auth.verifyCode.paragraph"
-                    )}${user!.email}`}
+              paragraph={`${t("auth.verifyCode.paragraph")}${mode === "register" ? user!.email : resetEmail}`}
             />
 
             {errorMessage ? <ErrorText text={errorMessage} /> : null}
@@ -132,11 +126,11 @@ export default function VerifyConfirmationCodeScreen() {
               disabled={resendLoading}
             >
               {resendLoading ? (
-                      <Text style={[globalStyles.mediumBodyMedium, { marginVertical: 16 }]}>
+                      <Text style={[globalStyles.mediumBodyMedium, styles.noCodeText]}>
                         {t("auth.verifyCode.sending")}
                       </Text>
                     ) : (
-                      <Text style={[globalStyles.mediumBodyMedium, { marginVertical: 16 }]}>
+                      <Text style={[globalStyles.mediumBodyMedium, styles.noCodeText]}>
                         {t("auth.verifyCode.noCode")}
                         <Text style={globalStyles.link}>
                           {t("auth.verifyCode.sendOtherCodeLink")}
@@ -158,4 +152,11 @@ export default function VerifyConfirmationCodeScreen() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  noCodeText: {
+    color: Colors.colors.text.secondary,
+    marginVertical: 16
+  },
+});
 

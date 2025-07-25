@@ -6,12 +6,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Component Imports
 import { LoadingScreen } from '@/components/LoadingScreen';
+import { AppToast } from '@/components/CustomToast';
 
 // Hook Imports
 import { useFonts } from 'expo-font';
 
 // Utility Imports
-import Toast from 'react-native-toast-message';
+
 
 
 // Navigation Imports
@@ -24,6 +25,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import * as SplashScreen from 'expo-splash-screen';
 
 import { initI18n } from '@/i18n';
+
 
 
 // Evita que la pantalla de carga desaparezca antes de tiempo
@@ -61,7 +63,7 @@ export default function RootLayout() {
     <SafeAreaView style={{ flex: 1 }}>
       <AuthProvider>
         <Slot />
-        <Toast />
+        <AppToast />
         <StatusBar style="auto" />
       </AuthProvider>
     </SafeAreaView>

@@ -1,9 +1,15 @@
 // React & React Native Imports
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  ScrollView,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
+  View,
 } from "react-native";
 import Toast from "react-native-toast-message";
 import { useRouter } from "expo-router";
@@ -14,9 +20,6 @@ import TextAreaWithCounter from "@/components/forms/TextAreaWithCounter";
 import StyledTextInput from "@/components/forms/StyledTextInput";
 import ErrorText from "@/components/text/ErrorText";
 import TitleParagraph from "@/components/text/TitleParagraph";
-import ViewForm from "@/components/views/ViewInputs";
-import ViewInputs from "@/components/views/ViewInputs";
-import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import PaddingView from "@/components/views/PaddingView";
 
 // Hook Imports
@@ -27,10 +30,12 @@ import { useValidations } from "@/hooks/useValidations";
 // Utility Imports
 
 import { useTranslation } from "react-i18next";
+import ViewForm from "@/components/views/ViewForm";
+import ViewInputs from "@/components/views/ViewInputs";
 
 
 export default  function RegisterScreen() {
-  const { user, finishRegister } = useAuth();
+  const { finishRegister } = useAuth();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [name, setName] = useState("");
@@ -45,19 +50,6 @@ export default  function RegisterScreen() {
     username: validations.username,
     bio: validations.bio,
   });
-  useEffect(() => {
-    if (
-      user?.is_verified && user.verification_type == "register"
-    ) {
-      Toast.show({
-        type: "success",
-        text1: "Email verificado",
-        text2: "Completa tu perfil",
-        position: "bottom",
-        bottomOffset: 80,
-      });
-    }
-  }, []);
 
   const handleSaveProfile = async () => {
     setErrorMessage("");
@@ -71,65 +63,83 @@ export default  function RegisterScreen() {
       setLoading(false);
       return;
     }
-
-    router.replace("/main"); // Redirigir a la pantalla de destinos
+    Toast.show({type: "success", text1: "XPerfil Completado",});
+    router.replace("/main");
     setLoading(false);
   };
 
   return (
-    <>
-      <PaddingView>
-        <ViewContentContinue>
-          <ViewForm>
-            <TitleParagraph
-              title={t("auth.completeRegister.title")}
-              paragraph={t("auth.completeRegister.paragraph")}
-            />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 68 : 0} // Ajusta según tu header
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={{ flex: 1 }}>
+        <ScrollView
+           contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
+          <PaddingView>
+              <ViewForm>
+                <TitleParagraph
+                  title={t("auth.completeRegister.title")}
+                  paragraph={t("auth.completeRegister.paragraph")}
+                />
 
-            {/* Profile Picture Section */}
-            <TouchableOpacity style={styles.imagePickerButton}>
-              <Image
-                style={styles.profileImage}
-                source={require("@/assets/images/profile-placeholder.png")}
-              />
-            </TouchableOpacity>
-            {errorMessage ? <ErrorText text={errorMessage} /> : null}
-            <ViewInputs>
-              {/* Nombre Input */}
-              <StyledTextInput
-                style={styles.input}
-                placeholder={t("auth.completeRegister.name")}
-                value={name}
-                onChangeText={setName}
-                errorMessage={errors.name}
-              />
-              <StyledTextInput
-                style={styles.input}
-                value={username}
-                autoCapitalize="none"
-                onChangeText={setUsername}
-                placeholder={t("auth.completeRegister.username")}
-                errorMessage={errors.username}
-              />
-              <TextAreaWithCounter
-                bio={bio}
-                setBio={setBio}
-                errorMessage={errors.bio}
-              />
-            </ViewInputs>
-          </ViewForm>
-          {/* Save Button */}
-          <PrimaryButton 
+                {/* Profile Picture Section */}
+                <TouchableOpacity style={styles.imagePickerButton}>
+                  <Image
+                    style={styles.profileImage}
+                    source={require("@/assets/images/profile-placeholder.png")}
+                  />
+                </TouchableOpacity>
+                {errorMessage ? <ErrorText text={errorMessage} /> : null}
+                <ViewInputs>
+                  {/* Nombre Input */}
+                  <StyledTextInput
+                    placeholder={t("auth.completeRegister.name")}
+                    value={name}
+                    onChangeText={setName}
+                    errorMessage={errors.name}
+                  />
+                  <StyledTextInput
+                    value={username}
+                    autoCapitalize="none"
+                    onChangeText={setUsername}
+                    placeholder={t("auth.completeRegister.username")}
+                    errorMessage={errors.username}
+                  />
+                  <TextAreaWithCounter
+                    bio={bio}
+                    setBio={setBio}
+                    errorMessage={errors.bio}
+                  />
+                </ViewInputs>
+              </ViewForm>
+          </PaddingView>
+        </ScrollView>
+        <View style={styles.buttonWrapper}>
+          <PrimaryButton
             title={t("continue")}
             onPress={handleSaveProfile}
             loading={loading}
           />
-        </ViewContentContinue>
-      </PaddingView>
-    </>
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
+  </KeyboardAvoidingView>
   );
 };
 const styles = StyleSheet.create({
+  scrollContent: {
+    //padding: 16,
+    paddingBottom: 80,
+    flexGrow: 1,
+  },
+  buttonWrapper: {
+    paddingHorizontal: 16,
+  },
   imagePickerButton: {
     alignSelf: "center",
     marginBottom: 20,
@@ -139,12 +149,7 @@ const styles = StyleSheet.create({
     height: 96,
     borderRadius: 60,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 8,
-    borderRadius: 4,
-  },
+
 });
 
 

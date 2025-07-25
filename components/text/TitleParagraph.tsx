@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 
 // Style Imports
 import globalStyles from '@/styles/global';
+import { Colors } from '@/constants/Colors';
 
 
 interface TitleParagraphProps {
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     textAlign: 'center', 
+    color: Colors.colors.text.secondary
   },
 });
 

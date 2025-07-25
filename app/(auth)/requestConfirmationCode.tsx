@@ -1,6 +1,5 @@
 // React & React Native Imports
 import { useState } from "react";
-import { Text, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 
 // Component Imports
@@ -21,6 +20,7 @@ import { useValidations } from "@/hooks/useValidations";
 
 // Style Imports
 import globalStyles from "@/styles/global";
+import Toast from "react-native-toast-message";
 
 
 
@@ -51,6 +51,12 @@ export default function RequestConfirmationCodeScreen() {
       setLoading(false);
       return;
     }
+    Toast.show({
+      type: "success",
+      text1: "Revisa tu correo",
+      text2: "XHemos enviado un codigo",
+    });
+
     router.push("/verifyConfirmationCode?mode=passwordReset");
     setLoading(false);
   };
@@ -68,7 +74,6 @@ export default function RequestConfirmationCodeScreen() {
             {errorMessage ? <ErrorText text={errorMessage} /> : null}
 
             <StyledTextInput
-              style={globalStyles.largeBodyMedium}
               placeholder={t("auth.requestConfirmationCode.email")}
               keyboardType="email-address"
               autoCapitalize="none"
@@ -76,22 +81,6 @@ export default function RequestConfirmationCodeScreen() {
               onChangeText={setEmail}
               errorMessage={errors.email}
             />
-
-            <TouchableOpacity onPress={() => {
-              router.dismissAll();
-              router.replace("/login")}
-              }>
-              <Text
-                style={{
-                  color: "#0066CC",
-                  textAlign: "center",
-                  marginTop: 16,
-                  marginBottom: 16,
-                }}
-              >
-                {t("auth.requestConfirmationCode.backToLogin")}
-              </Text>
-            </TouchableOpacity>
           </ViewForm>
 
           <PrimaryButton
