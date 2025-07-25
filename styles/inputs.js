@@ -1,9 +1,10 @@
 import { StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors"; // Asegúrate de que esta ruta sea correcta
+import globalStyles from "./global";
 
 const intputStyles = StyleSheet.create({
   default: {
-    fontFamily: "InterRegular", 
+    ...globalStyles.largeBodyMedium,
     padding: 10,
     borderColor: Colors.colors.border.default, 
     borderWidth: 1,
@@ -25,8 +26,8 @@ const intputStyles = StyleSheet.create({
     opacity: 0.5, 
   },
   errorText: {
+    ...globalStyles.smallBodyRegular,
     color: Colors.colors.error[500], 
-    fontSize: 12, 
     marginTop: 4, 
     marginLeft: 10, 
   },

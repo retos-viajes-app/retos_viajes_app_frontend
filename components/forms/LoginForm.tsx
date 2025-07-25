@@ -22,12 +22,14 @@ import { useFormValidation } from "@/hooks/useFormValidation";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { useValidations } from "@/hooks/useValidations";
+import { Colors } from "@/constants/Colors";
 
 
 
 
 const LoginForm = () => {
   const router = useRouter();
+  const { user} = useAuth();
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -62,8 +64,12 @@ const LoginForm = () => {
       setLoading(false); 
       return;
     }
-
-    router.replace("/main"); 
+    if(user?.username){
+      router.replace("/main"); 
+    }else{
+      router.replace("/(auth)/completeRegister")
+    }
+    
   };
 
   return (
@@ -75,7 +81,6 @@ const LoginForm = () => {
           height: 124,
           justifyContent: "center",
           alignItems: "center",
-          marginBottom: 24,
         }}
         resizeMode="cover"
       >
@@ -110,7 +115,7 @@ const LoginForm = () => {
             <TouchableOpacity
               onPress={() => router.push("/requestConfirmationCode")}
             >
-              <Text style={globalStyles.mediumBodyMedium}>
+              <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.text.secondary}]}>
                 {t("auth.login.forgotPassword")}
                 <Text style={globalStyles.link}>{t("auth.login.recoverLink")}</Text>
               </Text>
@@ -119,8 +124,8 @@ const LoginForm = () => {
 
             <GoogleSignInButton />
 
-            <TouchableOpacity onPress={() => router.replace("/register")}>
-            <Text style={globalStyles.mediumBodyMedium}>
+            <TouchableOpacity onPress={() => router.push("/register")}>
+            <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.text.secondary}]}>
               {t("auth.login.notAccount")} <Text style={globalStyles.link}>{t("auth.login.registerLink")}</Text>
             </Text>
             </TouchableOpacity>

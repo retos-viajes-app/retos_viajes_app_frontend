@@ -1,9 +1,10 @@
 // React & React Native Imports
-import React from "react";
+import React, { useState } from "react";
 import { View, TextInput, Text, StyleSheet } from "react-native";
 
 // Style Imports
 import globalStyles from "@/styles/global";
+import inputStyles from "@/styles/inputs";
 
 // Utility Imports
 import { Colors } from "@/constants/Colors";
@@ -23,27 +24,39 @@ const TextAreaWithCounter: React.FC<TextAreaWithCounterProps> = ({
 }) => {
   const maxChars = 120;
   const { t } = useTranslation();
+  const [isFocused, setIsFocused] = useState(false);
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
   const handleChange = (inputText: string) => {
     if (inputText.length <= maxChars) {
       setBio(inputText);
     }
   };
 
+  const inputStateStyles = [
+    inputStyles.default,
+    isFocused && inputStyles.focused,
+    errorMessage && inputStyles.error,
+  ];
+
   return (
     <View style={styles.container}>
       <TextInput
         style={[
+          inputStateStyles,
           styles.textArea,
-          errorMessage && styles.error,
         ]}
         multiline
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         numberOfLines={5}
         placeholder={t("auth.completeRegister.bioPlaceholder")}
+        placeholderTextColor={Colors.colors.text.primary}
         value={bio}
         onChangeText={handleChange}
       />
       <View style={styles.infoContainer}>
-        <Text style={[styles.charCounter, globalStyles.smallBodyRegular]}>
+        <Text style={[styles.charCounter]}>
           {bio.length}/{maxChars} {t("auth.completeRegister.characters")}
         </Text>
         {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
@@ -59,24 +72,22 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textArea: {
-    fontFamily: "InterRegular",
+    ...globalStyles.largeBodyMedium,
     padding: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 16,
-    backgroundColor: "#f4f4f4",
-    color: "#808080",
+    color: Colors.colors.text.primary,
     width: "100%",
-    minHeight: 100, // Ajustado para que parezca un textarea
+    minHeight: 100,
     textAlignVertical: "top",
   },
    infoContainer: {
-    flexDirection: "column", // Coloca el contador y el error en columna
+    flexDirection: "column",
     alignItems: "flex-start",
     marginTop: 5,
   },
   charCounter: {
-    alignSelf: "flex-end", // Mueve el contador a la derecha
+    ...globalStyles.smallBodyRegular,
+    color: Colors.colors.text.secondary,
+    alignSelf: "flex-end",
   },
   error: {
     borderColor: Colors.colors.error[100],
