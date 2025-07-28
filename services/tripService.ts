@@ -13,6 +13,6 @@ export const postTrip = async (tripData: Trip): Promise<ApiPostResponse> => {
     await api.post(`/trips/`, tripData);
     return { success: true, error: undefined };
   } catch (error) {
-    return { success: false, error: handleApiError(error, "errorsBackend.tripUnexpectedError") };
+    return { success: false, error: handleApiError(error) };
   }
 };

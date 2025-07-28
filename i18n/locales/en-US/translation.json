@@ -143,9 +143,6 @@
     "connectionRequestNotFound": "Connection request not found",
     "cancelAcceptedConnection": "You can't cancel an accepted connection",
     "genericError": "An unexpected error occurred",
-    "networkError": "Connection problem. Check your internet",
-    "timeoutError": "The request is taking too long",
-    "serverError": "Server error. Try again later",
     "tripUnexpectedError": "An unexpected error occurred while creating the trip"
   },
   "errorsFrontend": {
