@@ -11,7 +11,7 @@ import ViewForm from "@/components/views/ViewForm";
 import ViewInputs from "@/components/views/ViewInputs";
 import PaddingView from "@/components/views/PaddingView";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
-
+import {Icon, Search} from "lucide-react-native";
 // Hook Imports
 import { useTrip } from "@/hooks/useTrip";
 
@@ -25,6 +25,10 @@ import ErrorText from "@/components/text/ErrorText";
 import { getDestinationsPaginated } from "@/services/destinationService";
 import { Colors } from "@/constants/Colors";
 import StepIndicator from "@/components/ui/StepIndicator";
+import { LinearGradient } from 'expo-linear-gradient';
+import { Line } from "react-native-svg";
+import LinearGradientBlack from "@/components/ui/LineaGradientBlack";
+import IconTextInput from "@/components/forms/IconTextInput";
 
 const SelectDestination = ()=> {
   const [search, setSearch] = useState<string>("");
@@ -113,9 +117,11 @@ const SelectDestination = ()=> {
       style={styles.imageBackground}
       imageStyle={styles.imageStyle}
     >
-      <View style={styles.textContainer}>
+      <View>
+      <LinearGradientBlack style={styles.textContainer}>
         <Text style={[globalStyles.mediumBodyBold, styles.cityText]}>{item.city}</Text>
-        <Text style={[ globalStyles.smallBodyRegular,styles.countryText]}>{item.country}</Text>
+        <Text style={[globalStyles.smallBodyRegular, styles.countryText]}>{item.country}</Text>
+      </LinearGradientBlack>
       </View>
     </ImageBackground>
     </TouchableOpacity>
@@ -131,10 +137,11 @@ const SelectDestination = ()=> {
             paragraph={t("createTrip.selectDestination.paragraph")}
           />
           <ViewInputs>
-            <StyledTextInputLabelText
+            <IconTextInput
               placeholder={t("createTrip.selectDestination.searchPlaceholder")}
               value={search}
               onChangeText={setSearch}
+              icon={<Search size={24} color={Colors.colors.text.primary} />}
             />
           </ViewInputs>
              
@@ -168,33 +175,38 @@ const SelectDestination = ()=> {
 
 
 const styles = StyleSheet.create({
-   item: {
-    flex: 1,
-    height: 120,
-    borderRadius: 16,
-    overflow: 'hidden',
+  item: {
+   flex: 1,
+   height: 120,
+   borderRadius: 16,
+   overflow: 'hidden',
   },
   imageBackground: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'flex-end', // Text at the bottom
-    padding: 0,
+   width: '100%',
+   height: '100%',
+   justifyContent: 'flex-end', // Text at the bottom
+   padding: 0,
   },
   imageStyle: {
-    borderRadius: 16,
+   borderRadius: 16,
   },
   textContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: 'rgba(0,0,0,0.5)', // Semi-transparent overlay
-    padding: 10,
+   width: '100%',
+   flexDirection: 'column',
+   justifyContent: 'space-between',
+   padding: 10,
   },
   cityText: {
-    color: 'white',
+   color: Colors.colors.textWhite.primary,
+   textShadowColor: 'rgba(0,0,0,0.3)',
+   textShadowOffset: { width: 0, height: 1 },
+   textShadowRadius: 2,
   },
   countryText: {
-    color: 'white',
+   color: Colors.colors.textWhite.secondary,
+   textShadowColor: 'rgba(0,0,0,0.3)',
+   textShadowOffset: { width: 0, height: 1 },
+   textShadowRadius: 2,
   },
 });
 export default SelectDestination;

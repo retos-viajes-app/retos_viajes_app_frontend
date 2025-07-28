@@ -5,6 +5,7 @@ import {  useRouter } from "expo-router";
 import { ArrowRight } from "lucide-react-native";
 import { Colors } from "@/constants/Colors";
 import { LinearGradient } from 'expo-linear-gradient';
+import LinearGradientBlack from "../ui/LineaGradientBlack";
 
 const DestinationCard = ({ destination }: { destination: Destination }) => {
     const router = useRouter();
@@ -14,15 +15,7 @@ const DestinationCard = ({ destination }: { destination: Destination }) => {
     };
     return (
         <View style={styles.card}>
-             <LinearGradient
-                colors={['rgba(0,0,0,0.4)', 'transparent', 'rgba(0,0,0,0.6)']}
-                locations={[0, 0.5, 1]}
-            />
-            <LinearGradient
-                    colors={['#4c669f', '#3b5998', '#192f6a']}
-                     style={styles.footer}
-            >
-              
+            <LinearGradientBlack style={styles.footer}>
                 <View style={styles.textContainer}>
                         <Text >{destination.city}</Text>
                         <Text>{destination.country}</Text>
@@ -31,7 +24,7 @@ const DestinationCard = ({ destination }: { destination: Destination }) => {
                 <TouchableOpacity style={styles.circle} onPress={handlePress}>
                      <ArrowRight size={18} color={Colors.colors.primary[500]}/>
                 </TouchableOpacity>
-            </LinearGradient>
+            </LinearGradientBlack>
         </View>
     );
 };
@@ -60,7 +53,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         alignSelf: 'stretch',
-        backgroundColor: 'rgba(28, 28, 30, 0.7)',
         borderBottomLeftRadius: 16,
         borderBottomRightRadius: 16,
     },
