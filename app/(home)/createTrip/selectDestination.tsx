@@ -38,7 +38,7 @@ const SelectDestination = ()=> {
   const { t } = useTranslation();
   const {setTrip,trip } = useTrip();
   const [loading, setLoading] = useState(false);
-  const { destinations, setDestinations } = useTrip();
+  const { destinations, setDestinations, currentTripPage, setCurrentTripPage} = useTrip();
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
@@ -48,14 +48,19 @@ const SelectDestination = ()=> {
     console.log('Fetching destinations for page:', currentPage);
     setLoading(true);
     try {
-      const destinationsResponse = await getDestinationsPaginated(currentPage);
+      const destinationsResponse = await getDestinationsPaginated(currentPage, 4);
       if (destinationsResponse.error) {
         console.error('Error fetching destinations:', destinationsResponse.error);
         return;
       }
       const data = destinationsResponse.destinations;
-      console.log('Fetched destinations:', data);
-      setDestinations([...destinations, ...data]);
+      if (page > currentTripPage) {
+        const unique = Array.from(new Map([...destinations, ...data].map(d => [d.id, d])).values());
+        setDestinations(unique);
+        setCurrentTripPage(page);
+        console.log('Updated destinations:', unique);
+        console.log('Current trip page updated to:', page);
+      }
       setHasMore(destinationsResponse.pagination.has_more);
     } catch (error) {
       console.error('Error fetching destinations:', error);
@@ -76,7 +81,7 @@ const SelectDestination = ()=> {
       if (!loading && hasMore) {
         const nextPage = page + 1;
         setPage(nextPage);
-        await fetchDestinations(nextPage);
+        await fetchDestinations(nextPage);  
       }
     };
   

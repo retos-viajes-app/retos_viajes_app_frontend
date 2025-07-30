@@ -23,7 +23,6 @@ import { getUser } from "@/utils/secureTokens";
 
 interface TripContextType {
   trip?: Trip | null;
-  currentTrip: Trip | undefined;
   setTrip: (trip: Trip | null) => void;
   selectedCategoriesId: string[];
   setSelectedCategoriesId: (categoriesId: string[]) => void;
@@ -31,6 +30,8 @@ interface TripContextType {
   setCategories: (categories: Category[]) => void;
   destinations: Destination[];
   setDestinations: (destinations: Destination[]) => void;
+  currentTripPage: number;
+  setCurrentTripPage: (page: number) => void;
 }
 
 const TripContext = createContext<TripContextType | undefined>(undefined);
@@ -43,39 +44,14 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
   );
 
   const [trip, setTrip] = useState<Trip | null>(null);
-  const [currentTrip, setCurrentTrip] = useState<Trip | undefined>(undefined);
   const [categories, setCategories] = useState<Category[]>([]);
   const [destinations, setDestinations] = useState<Destination[]>([]);
-
-  const { user } = useAuth();
-  //Ahora mismo solo devuelve un viaje, el primero que encuentra
-  const getTrips = async () => {
-    try {
-
-      const user = await getUser();
-
-      const response = await api.get(`users/${user?.id}/trips`);
-      if (response.data.length > 0) {
-        setCurrentTrip(response.data[0]); // Guardar el primer viaje en el estado
-        await saveTrip(response.data[0]);
-      }
-
-      return { trips: response.data, error: undefined };
-    } catch (error) {
-      return { success: false, error: handleApiError(error), trips: [] };
-    }
-  };
-  useEffect(() => {
-    if (user && user.username) {
-      getTrips(); // Carga los viajes al montar el contexto
-    }
-  }, []);
+  const [currentTripPage, setCurrentTripPage] = useState<number>(0);
 
   return (
     <TripContext.Provider
       value={{
         trip,
-        currentTrip,
         setTrip,
         setSelectedCategoriesId,
         selectedCategoriesId,
@@ -83,6 +59,8 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
         setCategories,
         destinations,
         setDestinations,
+        currentTripPage,
+        setCurrentTripPage,
       }}
     >
       {children}
