@@ -4,7 +4,6 @@ import { handleApiError } from "@/utils/errorHandler";
 
 interface ApiPostResponse {
     success?: boolean;
-    message?: string;
     error?: string;
 }
 export const postTrip = async (tripData: Trip): Promise<ApiPostResponse> => {

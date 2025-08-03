@@ -1,19 +1,14 @@
 // Servicio para hacer peticiones al backend relacionadas con 'destination',
 
 import  {ChallengesPaginationResponse }from "@/models/challenge";
-import {Destination} from "@/models/destination";
+import { 
+  PaginatedDestinationsResponse,
+  DestinationResponse
+} from "@/models/destination";
 import api from "@/utils/api";
+import { handleApiError } from "@/utils/errorHandler";
+import { Underline } from "lucide-react-native";
 
-
-interface GetPaginatedDestinationsResponse {
-  destinations: Destination[];
-  error?: string;
-  pagination: {
-    page: number;
-    per_page: number;
-    has_more: boolean;
-  };
-}
 export const getChallengesForDestination = async (
   page = 1,
   perPage = 10,
@@ -26,7 +21,6 @@ export const getChallengesForDestination = async (
         per_page: perPage,
       },
     });
-    console.log("Response from getChallengesForDestination:", response.data);
     return response.data;
   } catch (error) {
     return {
@@ -36,6 +30,7 @@ export const getChallengesForDestination = async (
         per_page: perPage,
         has_more: false,
       },
+      error: handleApiError(error),
     };
   }
 };
@@ -43,7 +38,7 @@ export const getChallengesForDestination = async (
 export const getDestinationsPaginated = async (
   page = 1,
   perPage = 10
-): Promise<GetPaginatedDestinationsResponse> => {
+): Promise<PaginatedDestinationsResponse> => {
   try {
     const response = await api.get('/destinations', {
       params: {
@@ -51,10 +46,8 @@ export const getDestinationsPaginated = async (
         per_page: perPage,
       },
     });
-    console.log("Response from getDestinationsPaginated:", response.data.destinations);
     return {
       destinations: response.data.destinations, 
-      error: undefined,
       pagination: {
         page,
         per_page: perPage,
@@ -62,7 +55,6 @@ export const getDestinationsPaginated = async (
       },
     };
   }catch (error) {
-    console.error("Error fetching destinations:", error);
     return {
       destinations: [],
       pagination: {
@@ -70,18 +62,19 @@ export const getDestinationsPaginated = async (
         per_page: perPage,
         has_more: false,
       },
-      error: "Error fetching destinations",
+      error: handleApiError(error),
     };
   }
 }
 
-export const getDestinationById = async (destination_id: number) => {
+export const getDestinationById = async (destination_id: number): Promise<DestinationResponse> => {
   try {
     const response = await api.get(`/destinations/${destination_id}`);
-    console.log("Response from getDestinationById:", response.data);
-    return response.data;
+    return { destination: response.data };
   } catch (error) {
-    console.error("Error fetching destination by ID:", error);
-    throw error;
+    return {
+      destination: undefined,
+      error: handleApiError(error),
+    };
   }
 }
