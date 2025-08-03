@@ -32,6 +32,7 @@ interface TripContextType {
   setDestinations: (destinations: Destination[]) => void;
   currentTripPage: number;
   setCurrentTripPage: (page: number) => void;
+  resetContext: () => void;
 }
 
 const TripContext = createContext<TripContextType | undefined>(undefined);
@@ -48,6 +49,14 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [currentTripPage, setCurrentTripPage] = useState<number>(0);
 
+const resetContext = () => {
+  setTrip(null);
+  setSelectedCategoriesId([]);
+  setCategories([]);
+  setDestinations([]);
+  setCurrentTripPage(0);
+};
+
   return (
     <TripContext.Provider
       value={{
@@ -61,6 +70,7 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
         setDestinations,
         currentTripPage,
         setCurrentTripPage,
+        resetContext,
       }}
     >
       {children}

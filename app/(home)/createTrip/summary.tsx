@@ -26,7 +26,7 @@ import StepIndicator from "@/components/ui/StepIndicator";
 
 export default function SummaryScreen() {
     const [errorMessage,setErrorMessage] = useState<string | undefined>(undefined);
-    const {trip, selectedCategoriesId} = useTrip();
+    const {trip, selectedCategoriesId, resetContext} = useTrip();
     const {categories} = useTrip();
     const [destinations, setDestinations] = useState<Destination[]>([]);
     const router = useRouter();
@@ -45,6 +45,7 @@ export default function SummaryScreen() {
             return;
         }
         router.dismissAll();
+        resetContext();
         router.replace("/main");
         setLoading(false);
         
