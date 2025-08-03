@@ -1,7 +1,6 @@
 // React & React Native Imports
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
-
 // Component Imports
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import TitleParagraph from "@/components/text/TitleParagraph";
@@ -10,7 +9,6 @@ import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import ViewForm from "@/components/views/ViewForm";
 import ViewInputs from "@/components/views/ViewInputs";
 import StyledDateInput from "@/components/forms/DateInput";
-
 // Hook Imports
 import { useTrip } from "@/hooks/useTrip";
 import { useTranslation } from "react-i18next";
@@ -25,10 +23,7 @@ export default function SelectDatesScreen() {
     const [endDate,setEndDate] = useState<Date | null>(trip?.end_date || null);
     const { t } = useTranslation();
     const router = useRouter();
-    //Comprovaciones de las fechas : 
-    // startDate <= endDate
-    // startDate > fecha actual
-    // endDate lo limitamos?
+
     const handleContinue = () => {
       if(startDate && endDate){
         if(startDate <= endDate){

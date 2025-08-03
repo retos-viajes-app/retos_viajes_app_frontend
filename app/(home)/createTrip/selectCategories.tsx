@@ -1,7 +1,6 @@
 // React & React Native Imports
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-
 // Component Imports
 import StyledRadioButtonList from "@/components/forms/RadioButtonList";
 import PaddingView from "@/components/views/PaddingView";
@@ -10,14 +9,11 @@ import ViewForm from "@/components/views/ViewForm";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewInputs from "@/components/views/ViewInputs";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
-
 // Hook Imports
 import { useTrip } from "@/hooks/useTrip";
 import { useTranslation } from "react-i18next";
 import ErrorText from "@/components/text/ErrorText";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { getCategories } from "@/services/categoryService";
-import Category from "@/models/category";
 import StepIndicator from "@/components/ui/StepIndicator";
 
 

@@ -2,29 +2,23 @@
 import { View, Text, FlatList } from "react-native";
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-
 // Component Imports
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import PaddingView from "@/components/views/PaddingView";
 import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import Divider from "@/components/Divider";
-
 // Hook Imports
 import { useTrip } from "@/hooks/useTrip";
-
 // Style Imports
 import globalStyles from "@/styles/global";
-
 // Utility Imports
 import { Colors } from "@/constants/Colors";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import ErrorText from "@/components/text/ErrorText";
 import { postTrip } from "@/services/tripService";
-import { getCategories } from "@/services/categoryService";
 import { getDestinationsPaginated } from "@/services/destinationService";
-import Category from "@/models/category";
 import { Destination } from "@/models/destination";
 import StepIndicator from "@/components/ui/StepIndicator";
 // Icon Imports

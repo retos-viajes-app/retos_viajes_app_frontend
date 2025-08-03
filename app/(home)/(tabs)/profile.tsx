@@ -1,13 +1,10 @@
 // React & React Native Imports
 import { Text, Button } from 'react-native';
 import { useRouter } from 'expo-router';
-
 // Component Imports
 import { LoadingScreen } from '@/components/LoadingScreen';
-
 // Hook Imports
 import { useAuth } from '@/hooks/useAuth';
-
 
 
 export default function ProfileScreen() {

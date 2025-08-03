@@ -4,7 +4,6 @@ import { Destination } from "@/models/destination";
 import {  useRouter } from "expo-router";
 import { ArrowRight } from "lucide-react-native";
 import { Colors } from "@/constants/Colors";
-import { LinearGradient } from 'expo-linear-gradient';
 import LinearGradientBlack from "../ui/LineaGradientBlack";
 
 const DestinationCard = ({ destination }: { destination: Destination }) => {

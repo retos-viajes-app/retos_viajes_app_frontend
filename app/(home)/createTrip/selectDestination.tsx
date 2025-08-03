@@ -2,22 +2,18 @@
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ImageBackground, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-
 // Component Imports
-import StyledTextInputLabelText from "@/components/forms/StyledTextInput";
 import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewForm from "@/components/views/ViewForm";
 import ViewInputs from "@/components/views/ViewInputs";
 import PaddingView from "@/components/views/PaddingView";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
-import {Icon, Search} from "lucide-react-native";
+import { Search } from "lucide-react-native";
 // Hook Imports
 import { useTrip } from "@/hooks/useTrip";
-
 // Style Imports
 import globalStyles from "@/styles/global";
-
 // Utility Imports
 import {Destination} from "@/models/destination";
 import { useTranslation } from "react-i18next";
@@ -25,8 +21,6 @@ import ErrorText from "@/components/text/ErrorText";
 import { getDestinationsPaginated } from "@/services/destinationService";
 import { Colors } from "@/constants/Colors";
 import StepIndicator from "@/components/ui/StepIndicator";
-import { LinearGradient } from 'expo-linear-gradient';
-import { Line } from "react-native-svg";
 import LinearGradientBlack from "@/components/ui/LineaGradientBlack";
 import IconTextInput from "@/components/forms/IconTextInput";
 
@@ -85,7 +79,6 @@ const SelectDestination = ()=> {
       }
     };
   
-
   const handleContinue = () => {
     if (selectedId) {
     setTrip({

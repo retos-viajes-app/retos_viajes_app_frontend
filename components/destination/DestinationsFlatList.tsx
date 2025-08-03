@@ -13,9 +13,6 @@ import { useTranslation } from "react-i18next";
 import { Colors } from '@/constants/Colors';
 import globalStyles from '@/styles/global';
 
-type ItemProps = { country: string };
-
-
 
 const DestinationsFlatList = () => {
   const [page, setPage] = useState(1);
