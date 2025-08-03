@@ -162,8 +162,7 @@
     "genericError": "Ocurrió un error inesperado",
     "networkError": "Problema de conexión. Verifica tu internet",
     "timeoutError": "La solicitud está tardando demasiado",
-    "serverError": "Error del servidor. Inténtalo más tarde",
-    "tripUnexpectedError": "Ocurrió un error inesperado al crear el viaje"
+    "serverError": "Error del servidor. Inténtalo más tarde"
   },
   "errorsFrontend":{
     "validations": {
