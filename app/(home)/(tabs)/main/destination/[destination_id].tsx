@@ -4,7 +4,6 @@ import { useLocalSearchParams } from "expo-router";
 import {Destination} from "@/models/destination"; // Importa el objeto de destino
 import { getDestinationById } from "@/services/destinationService";
 import ChallengesFlatList from "@/components/challenge/ChallengeFlatList";
-import { SafeAreaView } from "react-native-safe-area-context";
 //Styles
 import globalStyles from "@/styles/global";
 import { Colors } from "@/constants/Colors";

@@ -27,7 +27,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Model Imports
 import { CompletedChallenge } from "@/models/completedChallenge";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function ActivityScreen() {
@@ -202,7 +201,6 @@ export default function ActivityScreen() {
   };
 
   return user ? (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <FlatList
         data={completedChallengesPosts}
         style={styles.container}
@@ -243,7 +241,6 @@ export default function ActivityScreen() {
         }
         ListFooterComponent={renderListFooter}
       />
-    </SafeAreaView>
   ) : (
     <LoadingScreen />
   );

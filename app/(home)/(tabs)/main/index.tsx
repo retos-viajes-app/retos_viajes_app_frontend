@@ -6,11 +6,8 @@ import { useRouter } from 'expo-router';
 import NoCurrentTripIndex from '@/components/index/NoCurrentTripIndex';
 import ConnectUsers from '@/components/SuggestedUsers';
 
-// Hook Imports
-import { useTrip } from '@/hooks/useTrip';
 //Imports para borrar datos de expo-secure-store y localStorage
 import DestinationsFlatList from '@/components/destination/DestinationsFlatList';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function IndexScreen() {
   // Verificación de usuario
@@ -38,16 +35,15 @@ export default function IndexScreen() {
   
 
   return (
+   
     <>
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <NoCurrentTripIndex />
+      
       <View>
         <DestinationsFlatList />
         <ConnectUsers />
       </View>
-      </SafeAreaView>
     </>
-  
     );
 }
 

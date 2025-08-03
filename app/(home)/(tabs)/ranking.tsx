@@ -1,5 +1,5 @@
 // React & React Native Imports
-import { SafeAreaView, Text } from 'react-native';
+import { Text } from 'react-native';
 
 // Component Imports
 import { LoadingScreen } from '@/components/LoadingScreen';
@@ -18,9 +18,9 @@ export default function RankingScreen() {
 
  
   return user ? (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+    <>
       <Text>Ranking</Text>
-    </SafeAreaView>
+    </>
   ): <LoadingScreen/>;
 }
 

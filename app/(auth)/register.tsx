@@ -1,6 +1,6 @@
 // React & React Native Imports
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ImageBackground, SafeAreaView } from "react-native";
+import { View, Text, TouchableOpacity, ImageBackground } from "react-native";
 import { useRouter } from "expo-router";
 
 // Component Imports
@@ -71,7 +71,8 @@ const RegisterScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+    <>
+
       <ImageBackground
         source={require("@/assets/images/registerImage.png")} 
         style={{
@@ -142,7 +143,7 @@ const RegisterScreen = () => {
           />
         </ViewContentContinue>
       </PaddingView>
-    </SafeAreaView>
+    </>
   );
 };
 

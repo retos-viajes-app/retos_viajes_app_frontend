@@ -8,10 +8,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Destination } from '@/models/destination';
-import DestinationCard from '@/components/destination/DestinationCard';
 import { useTranslation } from "react-i18next";
 import ChallengeCard from './ChallengeCard';
-import { SafeAreaView } from 'react-native-safe-area-context';
 type ItemProps = { country: string };
 
 

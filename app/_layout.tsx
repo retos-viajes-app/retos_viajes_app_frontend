@@ -2,7 +2,7 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Component Imports
 import { LoadingScreen } from '@/components/LoadingScreen';
@@ -60,13 +60,13 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-    <SafeAreaProvider>
+    <SafeAreaView style={{ flex: 1 }}>
       <AuthProvider>
         <Slot />
         <AppToast />
         <StatusBar style="auto" />
       </AuthProvider>
-    </SafeAreaProvider>
+    </SafeAreaView>
     </GestureHandlerRootView>
   );
 }
