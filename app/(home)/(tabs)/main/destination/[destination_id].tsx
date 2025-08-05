@@ -4,7 +4,6 @@ import { useLocalSearchParams } from "expo-router";
 import {Destination} from "@/models/destination"; // Importa el objeto de destino
 import { getDestinationById } from "@/services/destinationService";
 import ChallengesFlatList from "@/components/challenge/ChallengeFlatList";
-import { SafeAreaView } from "react-native-safe-area-context";
 //Styles
 import globalStyles from "@/styles/global";
 import { Colors } from "@/constants/Colors";
@@ -20,11 +19,8 @@ export default function Destino() {
   useEffect(() => {
     console.log(`Cargando detalle del destino con ID: ${destination_id}`);
     getDestinationById(Number(destination_id)).then((data) => {
-        setDestination(data);
-        console.log("Destino cargado:", data);
+        setDestination(data.destination!);
         }).catch((error) => {
-        console.error("Error al cargar el destino:", error);
-        //Manejo al ir al detalle
         throw error;
         }
     );

@@ -32,6 +32,18 @@ const intputStyles = StyleSheet.create({
     marginLeft: 10, 
   },
 
+  defaultIcon: {
+    ...globalStyles.largeBodyMedium,
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: Colors.colors.border.default, 
+    borderWidth: 1,
+    borderRadius: 16,
+    backgroundColor: Colors.colors.background.input, 
+    color: Colors.colors.text.primary, 
+    width: "100%",
+    minHeight: 48,
+  },
 });
 
 export default intputStyles;

@@ -83,9 +83,8 @@ const RegisterScreen = () => {
         }}
         resizeMode="cover" 
       >
-        
       </ImageBackground >
-     
+      
       <PaddingView>
         <ViewContentContinue>
           <ViewForm>

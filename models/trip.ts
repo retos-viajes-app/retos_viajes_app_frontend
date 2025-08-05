@@ -5,5 +5,6 @@ export default interface Trip {
     start_date?: Date;
     end_date?: Date;
     status?: string;
+    categories?: number[];
   }
   

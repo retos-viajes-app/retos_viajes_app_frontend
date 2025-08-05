@@ -1,13 +1,10 @@
 // React & React Native Imports
-import { View, Text, Button } from 'react-native';
+import { Text, Button } from 'react-native';
 import { useRouter } from 'expo-router';
-
 // Component Imports
 import { LoadingScreen } from '@/components/LoadingScreen';
-
 // Hook Imports
 import { useAuth } from '@/hooks/useAuth';
-import DestinationsFlatList from '@/components/destination/DestinationsFlatList';
 
 
 export default function ProfileScreen() {
@@ -21,11 +18,10 @@ export default function ProfileScreen() {
 
 
   return user? (
-    <View>
+    <>
       <Text>Hola</Text>
       <Button title="Cerrar sesión de Google" onPress={handleLogout} />
-      
-    </View>
+    </>
   ): <LoadingScreen />;
 }
 
