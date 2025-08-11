@@ -127,7 +127,7 @@ const SelectDestination = ()=> {
 
   return (
     <PaddingView>
-      <StepIndicator steps={4} currentStep={1} />
+      <StepIndicator steps={5} currentStep={1} />
       <ViewContentContinue>
         <ViewForm>
           <TitleParagraph

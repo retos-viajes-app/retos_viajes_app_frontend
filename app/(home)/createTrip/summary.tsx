@@ -65,7 +65,7 @@ export default function SummaryScreen() {
     }, []);
     return  (
         <PaddingView >
-        <StepIndicator steps={4} currentStep={4} />
+        <StepIndicator steps={5} currentStep={5} />
         <ViewContentContinue>
         <View style={{gap:30}}>
             <TitleParagraph

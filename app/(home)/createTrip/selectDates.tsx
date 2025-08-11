@@ -38,7 +38,7 @@ export default function SelectDatesScreen() {
     };
     return  (
       <PaddingView >
-        <StepIndicator steps={4} currentStep={2} />
+        <StepIndicator steps={5} currentStep={2} />
         <ViewContentContinue>
         <ViewForm>
           <TitleParagraph

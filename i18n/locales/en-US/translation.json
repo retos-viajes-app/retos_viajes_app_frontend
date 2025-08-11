@@ -98,6 +98,11 @@
       "paragraph": "Type the name of the destination or choose from our recommendations.",
       "searchPlaceholder": "Search by city or country"
     },
+    "addParticipants": {
+      "title": "Add Participants",
+      "paragraph": "Add travel companions to easily share what you visit.",
+      "searchPlaceholder": "Search user"
+    },
     "summary": {
       "title": "All set for your adventure!",
       "paragraph": "Here's the summary of your trip:",

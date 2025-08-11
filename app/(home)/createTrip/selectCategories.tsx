@@ -30,7 +30,7 @@ const SelectCategoriesScreen = ()=> {
             return;
         }
         setTrip({...trip, categories: selectedCategoriesId.map(id => parseInt(id))});
-        router.push("/createTrip/summary");
+        router.push("/createTrip/addParticipants");
         // Continuar a la siguiente pantalla
     }
 
@@ -57,7 +57,7 @@ const SelectCategoriesScreen = ()=> {
 
     return  (
     <PaddingView >
-        <StepIndicator steps={4} currentStep={3} />
+        <StepIndicator steps={5} currentStep={3} />
         <ViewContentContinue>
             <ViewForm>
             <TitleParagraph

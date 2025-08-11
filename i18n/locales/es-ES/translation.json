@@ -115,6 +115,11 @@
       "paragraph": "Escribe el nombre del destino o elige entre nuestras recomendaciones.",
       "searchPlaceholder": "Buscar por ciudad o país"
     },
+    "addParticipants": {
+      "title": "Añade acompañantes",
+      "paragraph": "Añade compañeros de viaje con los que compartir facilmente lo que visitais.",
+      "searchPlaceholder": "Buscar usuario"
+    },
     "summary": {
       "title": "¡Todo listo para tu aventura!",
       "paragraph": "Este es el resumen de tu viaje:",
