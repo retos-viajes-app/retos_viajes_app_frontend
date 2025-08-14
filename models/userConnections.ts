@@ -13,4 +13,9 @@ export interface SuggestedUsersResponse {
   };
 }
 
-
+export interface AcceptedConnectionsInfo{
+  id: number;
+  username: string;
+  name: string;
+  profile_photo_url: string;
+}
