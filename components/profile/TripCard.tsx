@@ -1,20 +1,35 @@
 import { Colors } from '@/constants/Colors';
 import globalStyles from '@/styles/global';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 
 interface TripCardProps {
+  id: number;
   imageUri: string;
   city: string;
   tripCount: number;
 }
 
-export default function TripCard({ imageUri, city, tripCount }: TripCardProps) {
+export default function TripCard({ id, imageUri, city, tripCount }: TripCardProps) {
   const { t } = useTranslation();
+  const router = useRouter();
+
+   const handlePress = () => {
+    router.push({
+      pathname: '/profile/destinations/[destinationId]',
+      params: { 
+        destinationId: id,
+        cityName: city,
+        headerImageUrl: imageUri,
+      },
+    });
+  };
+
   return (
-    <TouchableOpacity style={styles.cardContainer}>
+    <TouchableOpacity style={styles.cardContainer} onPress={handlePress}>
     <ImageBackground
       source={{ uri: imageUri }}
       style={styles.imageBackground}

@@ -1,8 +1,9 @@
 // React & React Native Imports
-import { View, Button, StyleSheet, TouchableOpacity, FlatList, Text } from 'react-native';
+import { View, Button, StyleSheet, TouchableOpacity, FlatList, Text, RefreshControl, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import Toast from 'react-native-toast-message';
 
 // Components imports
 import ProfileHeader from '@/components/profile/ProfileHeader';
@@ -20,32 +21,12 @@ import globalStyles from '@/styles/global';
 import { Colors } from '@/constants/Colors';
 
 // Model Imports
-import { ActiveTab, BadgeData, TripData, TripOrBadgeItem } from '@/models/profileData';
+import { ActiveTab, BadgeFilter, BadgeGridItem, DestinationProfileShort, ProfileListItem } from '@/models/profileData';
+import { useUserProfile } from '@/hooks/useUserProfile';
 
-export const PROFILE_DATA = {
-  name: 'Ángel Moreno',
-  username: 'angeelmoreno',
-  location: 'Málaga, España',
-  bio: 'El mundo es como un libro, y los que no viajan, solo leen una página ✈️',
-  avatar: 'https://images.ecestaticos.com/VzYB6ne-gX80XGJsWpepmPSLWr0=/0x0:2272x1514/1200x900/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2Fff0%2Fae0%2Ff92%2Fff0ae0f926a0fd7e615f18e180b9b09d.jpg',
-  level: 'Viajero experto',
-  xp: 500,
-  xpGoal: 1540,
-  stats: {
-    countries: 12,
-    missions: 158,
-    contacts: 4512,
-  },
-};
 
-export const TRIPS_DATA: TripData[] = [
-  { id: '1', type: 'trip', city: 'Málaga', tripCount: 2, image: 'https://xior.es/wp-content/uploads/2020/08/Malaga.max-2000x1000_kwQtHaD.jpg' },
-  { id: '2', type: 'trip', city: 'Madrid', tripCount: 1, image: 'https://images.unsplash.com/photo-1543786653-7323c24b6f7a?q=80&w=2835&auto=format&fit=crop' },
-  { id: '3', type: 'trip', city: 'Barcelona', tripCount: 2, image: 'https://images.unsplash.com/photo-1528742842631-4a18246a6318?q=80&w=2940&auto=format&fit=crop' },
-  { id: '4', type: 'trip', city: 'Roma', tripCount: 3, image: 'https://content-viajes.nationalgeographic.com.es/medio/2024/09/13/coliseo_37c26845_240913142611_1200x800.jpg' },
-];
 
-export const MOCK_BADGES: BadgeData[] = [
+export const MOCK_BADGES: BadgeGridItem[] = [
   { id: '1', type: 'badge', title: 'Catador Internacional', description: 'Completa misiones gastronómicas', currentProgress: 1, totalProgress: 15, icon: "hola" },
   { id: '2', type: 'badge', title: 'Aventurero nato', description: 'Completa 10 misiones de Naturaleza', currentProgress: 10, totalProgress: 10, icon: "hola" },
   { id: '3', type: 'badge', title: 'Nómada Urbano', description: 'Visita 5 capitales', currentProgress: 3, totalProgress: 5, icon: "hola"},
@@ -55,10 +36,24 @@ export const MOCK_BADGES: BadgeData[] = [
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const {logout, user} = useAuth();
+  const {user, logout } = useAuth();
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState<'trips' | 'badges'>('trips');
-  const [badgeFilter, setBadgeFilter] = useState<'all' | 'completed' | 'incomplete'>('all');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('trips');
+  const [badgeFilter, setBadgeFilter] = useState<BadgeFilter>('all');
+
+  const { profile, destinations, isLoading, isLoadingMore, isRefreshing,
+    error, loadMoreDestinations, handleRefresh } = useUserProfile(user?.id);
+
+  useEffect(() => {
+    if (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error de Conexión',
+        text2: error,
+      });
+    }
+  }, [error]);
+  
   const tabs: { key: ActiveTab; label: string }[] = [
     { key: 'trips', label: t('profile.myTrips') },
     { key: 'badges', label: t('profile.myBadges') },
@@ -69,7 +64,10 @@ export default function ProfileScreen() {
     router.replace("/login"); 
   };
 
-  const filteredData = useMemo(() => {
+  const listData: ProfileListItem[] = useMemo(() => {
+    if (activeTab === 'trips') {
+      return destinations;
+    }
     if (activeTab === 'badges') {
       switch (badgeFilter) {
         case 'completed':
@@ -80,19 +78,27 @@ export default function ProfileScreen() {
           return MOCK_BADGES;
       }
     }
-    return TRIPS_DATA;
-  }, [activeTab, badgeFilter]);
-  
+    return [];
+  }, [activeTab, destinations, badgeFilter]);
+
+  if (isLoading) {
+    return (
+       <View style={styles.centeredContainer}>
+        <ActivityIndicator size="large" color={Colors.colors.primary[400]} />
+      </View>
+    );
+  }
+
   
   const renderListHeader = () => (
     <>
       <View style={{gap: 24}}>
         <ProfileHeader
-          name={PROFILE_DATA.name}
-          username={PROFILE_DATA.username}
-          location={PROFILE_DATA.location}
-          bio={PROFILE_DATA.bio}
-          profileImage={PROFILE_DATA.avatar}
+          name={profile?.name ?? user?.name ?? 'Nombre...'}
+          username={profile?.username ?? user?.username ?? 'Nombre de usuario...'}
+          location={"Málaga, España"}
+          bio={profile?.bio ?? user?.bio ?? null}
+          profileImage={profile?.profile_photo_url ?? user?.profile_photo_url ?? null}
         />
         <XPProgressBar
           title="Viajero experto"
@@ -100,9 +106,9 @@ export default function ProfileScreen() {
           totalXp={1540}
         />
         <ProfileStats
-          countries={PROFILE_DATA.stats.countries}
-          missions={PROFILE_DATA.stats.missions}
-          contacts={PROFILE_DATA.stats.contacts}
+          countries={profile?.stats.countries_visited ?? 0}
+          missions={profile?.stats.completed_challenges ?? 0}
+          contacts={profile?.stats.contacts ?? 0}
         />
         <PrimaryButton
           title={t("profile.editProfile")}
@@ -110,6 +116,10 @@ export default function ProfileScreen() {
           style={globalStyles.largeBodySemiBold}
           variant='secondary'
         />
+        <View style={styles.logoutContainer}>
+          <Button title="Cerrar sesión" onPress={handleLogout} color="#FF3B30" />
+        </View>
+
         {/* My Trips/My Badges Tabs */}
         <View style={styles.tabSelector}>
           {tabs.map(({ key, label }) => (
@@ -144,55 +154,81 @@ export default function ProfileScreen() {
     </>
   );
 
-   const renderListFooter = () => (
-      <View style={styles.logoutContainer}>
-          <Button title="Cerrar sesión" onPress={handleLogout} color="#FF3B30" />
-      </View>
-  );
-
-   const renderItem = ({ item }: { item: TripOrBadgeItem }) => {
-    if (item.type === 'trip') {
+   const renderItem = ({ item }: { item: ProfileListItem }) => {
+    if (activeTab === 'trips') {
+      const tripItem = item as DestinationProfileShort;
       return (
         <TripCard
-          city={item.city}
-          imageUri={item.image}
-          tripCount={item.tripCount}
+          id={tripItem.id}
+          city={tripItem.city}
+          imageUri={tripItem.image_url ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsnllDGL0RKDLU0BToL0PubWcudzVTQtMr3Q&s"}
+          tripCount={tripItem.trip_count}
         />
       );
-    } else {
-      return <BadgeCard {...item} />;
     }
+    if (activeTab === 'badges') {
+      const badgeItem = item as BadgeGridItem;
+      return (
+        <BadgeCard
+          icon={badgeItem.icon}
+          title={badgeItem.title}
+          description={badgeItem.description}
+          currentProgress={badgeItem.currentProgress}
+          totalProgress={badgeItem.totalProgress}
+        />
+      );
+    }
+    return null;
   };
   
   return (
-    <FlatList<TripOrBadgeItem>
+    <FlatList
+      data={listData}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id.toString()}
+      key={activeTab} 
       style={{ backgroundColor: Colors.colors.textWhite.primary }}
       ListHeaderComponent={renderListHeader}
-      ListFooterComponent={renderListFooter}
-      data={filteredData}
-      renderItem={renderItem}
-      keyExtractor={item => item.id}
+      ListFooterComponent={
+        isLoadingMore ? (
+          <ActivityIndicator style={{ marginVertical: 20 }} color={Colors.colors.primary[400]} />
+        ) : null
+      }
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+          tintColor={Colors.colors.primary[400]}
+        />
+      }
       numColumns={2}
-      key={activeTab} 
       contentContainerStyle={styles.listContentContainer}
       columnWrapperStyle={styles.columnWrapper}
+      onEndReached={loadMoreDestinations}
+      onEndReachedThreshold={0.5}
     />
   );
 }
 
 const styles = StyleSheet.create({
+  centeredContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.colors.textWhite.primary,
+    paddingHorizontal: 20,
+  },
   headerContainer: {
     gap: 24,
     paddingBottom: 24,
   },
   logoutContainer: {
-    marginHorizontal: 20,
-    marginTop: 24,
-    paddingBottom: 100
+    marginHorizontal: 20
   },
   listContentContainer: {
     paddingTop: 16,
     paddingHorizontal: 16,
+    paddingBottom: 120
   },
   columnWrapper: {
     justifyContent: 'space-between',

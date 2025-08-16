@@ -7,15 +7,15 @@ interface ProfileHeaderProps {
   name: string;
   username: string;
   location: string;
-  bio: string;
-  profileImage: string;
+  bio: string | null;
+  profileImage: string | null;
 }
 
 export default function ProfileHeader({ name, username, location, bio, profileImage }: ProfileHeaderProps) {
   return (
     <View style={styles.container}>
       <View style={styles.imageWrapper}>
-        <Image source={{ uri: profileImage }} style={styles.profileImage} />
+        <Image source={{ uri: profileImage ? profileImage : "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" }} style={styles.profileImage} />
       </View>
       <View style={styles.textContainer}>
         <View style={styles.userInfoTop}>
@@ -28,7 +28,10 @@ export default function ProfileHeader({ name, username, location, bio, profileIm
           </View>
           <Text style={styles.location}>{location}</Text>
         </View>
-        <Text style={styles.bio}>{bio}</Text>
+        { bio && (
+          <Text style={styles.bio}>{bio}</Text>
+        )}
+        
       </View>
     </View>
   );

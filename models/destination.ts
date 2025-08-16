@@ -8,3 +8,4 @@ export  interface Destination {
   currency?: string;
   language?: string; 
 }
+
