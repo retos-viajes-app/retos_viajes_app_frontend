@@ -4,7 +4,6 @@ import { useLocalSearchParams, Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 // Hooks y Component
-import { usePaginatedFeed } from '@/hooks/usePaginatedFeed';
 import CompletedChallengePost from '@/components/activity/CompletedChallengePost';
 import { getCompletedChallengesForTrip, likeCompletedChallenge, unlikeCompletedChallenge } from "@/services/completedChallengesService";
 import { CompletedChallenge } from '@/models/completedChallenge';
@@ -13,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 // Estilos
 import { Colors } from '@/constants/Colors';
 import globalStyles from '@/styles/global';
+import { usePaginatedFeed } from '@/hooks/usePaginatedFeed';
 
 
 const TripFeedScreen = () => {

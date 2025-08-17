@@ -53,6 +53,14 @@ export interface UserProfileStats {
   contacts: number;
 }
 
+export interface UserProfileXP {
+  title: string;
+  current_level: number
+  total_xp: number
+  level_current_xp: number
+  level_total_xp: number
+}
+
 export interface UserProfile{
   id: number;
   username: string; 
@@ -61,20 +69,22 @@ export interface UserProfile{
   bio: string | null;
   location?: string;
   stats: UserProfileStats;
+  xp_info: UserProfileXP;
 }
 
 
-export interface BadgeGridItem {
-  id: string;
-  type: 'badge';
-  icon: string;
-  title: string;
+export interface UserBadge {
+  id: number;
+  name: string;
   description: string;
-  currentProgress: number;
-  totalProgress: number;
+  icon_url: string;
+  goal: number;
+  progress: number;
+  is_completed: boolean;
+  completed_at: string | null;
 }
 
-export type ProfileListItem = DestinationProfileShort | BadgeGridItem;
+export type ProfileListItem = DestinationProfileShort | UserBadge;
 
 export type BadgeFilter = 'all' | 'completed' | 'incomplete';
 export type ActiveTab = 'trips' | 'badges';

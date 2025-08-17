@@ -1,5 +1,5 @@
 
-import { DestinationProfileShort, UserProfile } from "@/models/profileData";
+import { DestinationProfileShort, UserBadge, UserProfile } from "@/models/profileData";
 import api from "@/utils/api";
 import { useCallback, useEffect, useState } from "react";
 
@@ -8,6 +8,8 @@ const DESTINATIONS_PER_PAGE = 10;
 export const useUserProfile = (userId?: number) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [destinations, setDestinations] = useState<DestinationProfileShort[]>([]);
+  const [badges, setBadges] = useState<UserBadge[]>([]);
+  
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
@@ -17,6 +19,7 @@ export const useUserProfile = (userId?: number) => {
 
   const [profileError, setProfileError] = useState<string | null>(null);
   const [destinationsError, setDestinationsError] = useState<string | null>(null);
+  const [badgesError, setBadgesError] = useState<string | null>(null);
 
   const fetchData = useCallback(async (isRefresh = false) => {
     if (!userId) return;
@@ -28,6 +31,7 @@ export const useUserProfile = (userId?: number) => {
     }
     setProfileError(null);
     setDestinationsError(null);
+    setBadgesError(null);
 
     const initialPage = 1;
 
@@ -52,9 +56,16 @@ export const useUserProfile = (userId?: number) => {
         setHasMore(false)
       });
 
-     await Promise.all([profilePromise, destinationsPromise]);
-      setIsLoadingProfile(false);
-      if(isRefresh) setIsRefreshing(false);
+    const badgesPromise = api.get(`/users/${userId}/badges`)
+      .then(res => setBadges(res.data))
+      .catch(e => {
+        console.error("Error cargando las insignias:", e);
+        setBadgesError("No se pudieron cargar las insignias.");
+      });
+
+    await Promise.all([profilePromise, destinationsPromise, badgesPromise]);
+    setIsLoadingProfile(false);
+    if(isRefresh) setIsRefreshing(false);
 
   }, [userId]);
 
@@ -92,13 +103,12 @@ export const useUserProfile = (userId?: number) => {
   return {
     profile,
     destinations,
+    badges,
     isLoading: isLoadingProfile,
     isLoadingMore,
     isRefreshing,
     hasMore,
-    error: profileError || destinationsError,
-    profileError,
-    destinationsError,
+    error: profileError || destinationsError || badgesError,
     loadMoreDestinations,
     handleRefresh,
   };

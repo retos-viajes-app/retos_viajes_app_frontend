@@ -7,11 +7,11 @@ import { useTranslation } from 'react-i18next';
 import SpecificTripCard from '@/components/profile/SpecificTripCard';
 import { Colors } from '@/constants/Colors';
 import globalStyles from '@/styles/global';
-import { useDestinationTrips } from '@/hooks/useDestinationTrips';
 import { useAuth } from '@/hooks/useAuth';
 import { Check } from 'lucide-react-native';
 import PaddingView from '@/components/views/PaddingView';
 import { UserProfileTripItem } from '@/models/profileData';
+import { useDestinationTrips } from '@/hooks/useDestinationTrips';
 
 
 export default function DestinationDetailScreen() {

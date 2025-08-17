@@ -21,17 +21,8 @@ import globalStyles from '@/styles/global';
 import { Colors } from '@/constants/Colors';
 
 // Model Imports
-import { ActiveTab, BadgeFilter, BadgeGridItem, DestinationProfileShort, ProfileListItem } from '@/models/profileData';
+import { ActiveTab, BadgeFilter, DestinationProfileShort, ProfileListItem, UserBadge } from '@/models/profileData';
 import { useUserProfile } from '@/hooks/useUserProfile';
-
-
-
-export const MOCK_BADGES: BadgeGridItem[] = [
-  { id: '1', type: 'badge', title: 'Catador Internacional', description: 'Completa misiones gastronómicas', currentProgress: 1, totalProgress: 15, icon: "hola" },
-  { id: '2', type: 'badge', title: 'Aventurero nato', description: 'Completa 10 misiones de Naturaleza', currentProgress: 10, totalProgress: 10, icon: "hola" },
-  { id: '3', type: 'badge', title: 'Nómada Urbano', description: 'Visita 5 capitales', currentProgress: 3, totalProgress: 5, icon: "hola"},
-  { id: '4', type: 'badge', title: 'Amante del Arte', description: 'Completa 20 misiones de cultura', currentProgress: 18, totalProgress: 20, icon: "hola" },
-];
 
 
 export default function ProfileScreen() {
@@ -41,8 +32,9 @@ export default function ProfileScreen() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('trips');
   const [badgeFilter, setBadgeFilter] = useState<BadgeFilter>('all');
 
-  const { profile, destinations, isLoading, isLoadingMore, isRefreshing,
-    error, loadMoreDestinations, handleRefresh } = useUserProfile(user?.id);
+  const {
+    profile, destinations, badges,  isLoading, isLoadingMore, isRefreshing, error, loadMoreDestinations, handleRefresh
+  } = useUserProfile(user?.id);
 
   useEffect(() => {
     if (error) {
@@ -69,17 +61,51 @@ export default function ProfileScreen() {
       return destinations;
     }
     if (activeTab === 'badges') {
+      let filteredBadges: UserBadge[];
       switch (badgeFilter) {
         case 'completed':
-          return MOCK_BADGES.filter(badge => badge.currentProgress >= badge.totalProgress);
+          return badges.filter(badge => badge.is_completed);
         case 'incomplete':
-          return MOCK_BADGES.filter(badge => badge.currentProgress < badge.totalProgress);
+          return badges.filter(badge => !badge.is_completed);
         default:
-          return MOCK_BADGES;
+          filteredBadges = badges;
+          break;
       }
+      
+    return filteredBadges.sort((a, b) => {
+        // Completadas y no completadas
+        if (a.is_completed && !b.is_completed) return -1;
+        if (!a.is_completed && b.is_completed) return 1;
+
+        if (a.is_completed && b.is_completed) {
+          // Ordenar por fecha descendente (la más nueva primero)
+          return new Date(b.completed_at!).getTime() - new Date(a.completed_at!).getTime();
+        }
+        if (!a.is_completed && !b.is_completed) {
+          const progressA = a.progress;
+          const progressB = b.progress;
+          // Antes las insignias con progreso que las no empezadas
+          if (progressA > 0 && progressB === 0) return -1;
+          if (progressA === 0 && progressB > 0) return 1;
+
+          if (progressA > 0 && progressB > 0) {
+            const percentageA = progressA / a.goal;
+            const percentageB = progressB / b.goal;
+            // Ordenar por porcentaje del objetivo conseguido
+            return percentageB - percentageA;
+          }
+
+          if (progressA === 0 && progressB === 0) {
+            // Poner la más fácil primero
+            return a.goal - b.goal;
+          }
+        }
+        
+        return 0;
+      });
     }
     return [];
-  }, [activeTab, destinations, badgeFilter]);
+  }, [activeTab, destinations, badges, badgeFilter]);
 
   if (isLoading) {
     return (
@@ -101,9 +127,9 @@ export default function ProfileScreen() {
           profileImage={profile?.profile_photo_url ?? user?.profile_photo_url ?? null}
         />
         <XPProgressBar
-          title="Viajero experto"
-          currentXp={500}
-          totalXp={1540}
+          title={profile?.xp_info.title || "Viajero"}
+          currentXp={profile?.xp_info.level_current_xp || 0}
+          totalXp={profile?.xp_info.level_total_xp || 0}
         />
         <ProfileStats
           countries={profile?.stats.countries_visited ?? 0}
@@ -167,14 +193,14 @@ export default function ProfileScreen() {
       );
     }
     if (activeTab === 'badges') {
-      const badgeItem = item as BadgeGridItem;
+      const badgeItem = item as UserBadge; 
       return (
         <BadgeCard
-          icon={badgeItem.icon}
-          title={badgeItem.title}
+          icon={badgeItem.icon_url}
+          title={badgeItem.name}
           description={badgeItem.description}
-          currentProgress={badgeItem.currentProgress}
-          totalProgress={badgeItem.totalProgress}
+          currentProgress={badgeItem.progress}
+          totalProgress={badgeItem.goal}
         />
       );
     }

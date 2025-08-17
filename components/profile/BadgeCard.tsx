@@ -20,14 +20,13 @@ export default function BadgeCard({ icon, title, description, currentProgress, t
     <View style={styles.card}>
       <View style={styles.topInfoContainer}>
       <View style={[styles.iconContainer, isCompleted && styles.iconContainerCompleted]}>
-        <Image source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3PBXnED3H-tgxSbrI-9mR3b3UK_9tuM84GQ&s" }} style={styles.badgeImage} />
+        <Image source={{ uri: icon }} style={styles.badgeImage} />
         {isCompleted && (
             <View style={styles.checkContainer}>
                 <Check width={20}/>
             </View>
         )}
       </View>
-
       
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
