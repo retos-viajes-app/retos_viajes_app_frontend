@@ -9,3 +9,18 @@ export  interface Destination {
   language?: string; 
 }
 
+
+export interface PaginatedDestinationsResponse {
+  destinations: Destination[];
+  error?: string;
+  pagination: {
+    page: number;
+    per_page: number;
+    has_more: boolean;
+  };
+}
+
+export interface DestinationResponse{
+  destination?: Destination;
+  error?: string;
+}

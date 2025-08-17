@@ -24,6 +24,8 @@ import { useTranslation } from "react-i18next";
 
 // Style Imports
 import globalStyles from "@/styles/global";
+import { Colors } from "@/constants/Colors";
+import Toast from "react-native-toast-message";
 
 
 const RegisterScreen = () => {
@@ -63,7 +65,7 @@ const RegisterScreen = () => {
       setLoading(false); 
       return;
     }
-    
+    Toast.show({ type: 'success', text1: t('XTe hemos enviado un email con el codigo')});
     router.push("/verifyConfirmationCode?mode=register");
     setLoading(false); 
   };
@@ -78,13 +80,11 @@ const RegisterScreen = () => {
           height: 124, 
           justifyContent: "center", 
           alignItems: "center",
-          marginBottom: 24,
         }}
         resizeMode="cover" 
       >
-        
       </ImageBackground >
-     
+      
       <PaddingView>
         <ViewContentContinue>
           <ViewForm>
@@ -117,9 +117,9 @@ const RegisterScreen = () => {
                 errorMessage={errors.passwordCheck}
               />
               <View
-                style={{ paddingHorizontal: 16, marginTop: 4, width: "100%" }}
+                style={{ paddingHorizontal: 10, width: "100%" }}
               >
-                <Text style={globalStyles.smallBodyRegular}>
+                <Text style={[globalStyles.smallBodyRegular, { color: Colors.colors.text.secondary }]}>
                   {t("auth.register.passwordDetails")}
                 </Text>
               </View>
@@ -128,7 +128,7 @@ const RegisterScreen = () => {
 
             <GoogleSignInButton />
             <TouchableOpacity onPress={() => router.replace("/login")}>
-            <Text style={globalStyles.mediumBodyMedium}>
+            <Text style={[globalStyles.mediumBodyMedium, { color: Colors.colors.text.secondary}]}>
               {t("auth.register.alreadyAccount")}
               <Text style={globalStyles.link}>{t("auth.register.loginLink")}</Text>
             </Text>

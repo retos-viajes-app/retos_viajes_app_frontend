@@ -24,5 +24,6 @@ export interface ChallengesPaginationResponse {
     page: number;
     per_page: number;
     has_more: boolean;
-  };
+  },
+  error?: string;
 }

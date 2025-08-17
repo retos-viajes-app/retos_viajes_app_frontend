@@ -6,7 +6,7 @@ interface PaddingViewProps {
 }
 
 const ViewForm: React.FC<PaddingViewProps> = ({ children }) => {
-  return <View style={{  gap: 24, alignItems: 'center'}}>{children}</View>;
+  return <View style={{flex:1,  gap: 24, alignItems: 'center'}}>{children}</View>;
 };
 
 

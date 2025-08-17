@@ -1,20 +1,16 @@
-import { getChallengesForDestination, getDestinationsPaginated } from '@/services/destinationService';
+import { getChallengesForDestination } from '@/services/destinationService';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   FlatList,
   StyleSheet,
-  Text,
   ActivityIndicator,
 } from 'react-native';
 import { Destination } from '@/models/destination';
-import DestinationCard from '@/components/destination/DestinationCard';
 import { useTranslation } from "react-i18next";
 import ChallengeCard from './ChallengeCard';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 type ItemProps = { country: string };
-
-
 
 const ChallengesFlatList = ({destination_id}:{destination_id: number}) => {
   const [page, setPage] = useState(1);

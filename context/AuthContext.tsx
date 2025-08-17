@@ -40,6 +40,7 @@ export type ApiResponse<T = never> = {
 
 interface AuthContextType {
   user: User | null;
+  resetEmail: string | null;
   promptAsync: () => void;
   logout: () => void;
   login: (
@@ -260,6 +261,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     <AuthContext.Provider
       value={{
         user,
+        resetEmail,
         promptAsync,
         logout,
         login,

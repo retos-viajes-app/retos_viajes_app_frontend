@@ -86,5 +86,11 @@ export const Colors = {
       170: "#FFFFFF70",
       500: "#000000",
     },
+    toast: {
+      success: "#EBFAF3",
+      successIcon: "#4BD395",
+      error: "#FFEFEB",
+      errorIcon: "#FF5733",
+    },
   },
 };

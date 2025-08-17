@@ -13,9 +13,6 @@ import { useTranslation } from "react-i18next";
 import { Colors } from '@/constants/Colors';
 import globalStyles from '@/styles/global';
 
-type ItemProps = { country: string };
-
-
 
 const DestinationsFlatList = () => {
   const [page, setPage] = useState(1);
@@ -30,11 +27,15 @@ const DestinationsFlatList = () => {
     console.log('Fetching destinations for page:', currentPage);
     setLoading(true);
     try {
-      const res = await getDestinationsPaginated(currentPage);
-      const data = res.destinations;
+      const destinationsResponse = await getDestinationsPaginated(currentPage);
+      if (destinationsResponse.error) {
+        console.error('Error fetching destinations:', destinationsResponse.error);
+        return;
+      }
+      const data = destinationsResponse.destinations;
       console.log('Fetched destinations:', data);
-      setDestinations((prev)=>[...prev, ...data]); // Agregar un primer elemento para mostrar "Todos los destinos"
-      setHasMore(res.pagination.has_more);
+      setDestinations((prev)=>[...prev, ...data]);
+      setHasMore(destinationsResponse.pagination.has_more);
     } catch (error) {
       console.error('Error fetching destinations:', error);
     } finally {

@@ -6,8 +6,6 @@ import { useRouter } from 'expo-router';
 import NoCurrentTripIndex from '@/components/index/NoCurrentTripIndex';
 import ConnectUsers from '@/components/SuggestedUsers';
 
-// Hook Imports
-import { useTrip } from '@/hooks/useTrip';
 //Imports para borrar datos de expo-secure-store y localStorage
 import DestinationsFlatList from '@/components/destination/DestinationsFlatList';
 
@@ -37,15 +35,14 @@ export default function IndexScreen() {
   
 
   return (
-   
-      <>
+    <>
       <NoCurrentTripIndex />
       
       <View>
         <DestinationsFlatList />
         <ConnectUsers />
       </View>
-      </>
+    </>
     );
 }
 

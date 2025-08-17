@@ -41,7 +41,7 @@ export default function CreateTripLayout() {
           ),
         }}
       >
-        <Slot />
+      <Slot />
       </Stack>
     
   );

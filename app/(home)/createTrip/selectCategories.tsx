@@ -1,7 +1,6 @@
 // React & React Native Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-
 // Component Imports
 import StyledRadioButtonList from "@/components/forms/RadioButtonList";
 import PaddingView from "@/components/views/PaddingView";
@@ -10,24 +9,27 @@ import ViewForm from "@/components/views/ViewForm";
 import TitleParagraph from "@/components/text/TitleParagraph";
 import ViewInputs from "@/components/views/ViewInputs";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
-
 // Hook Imports
 import { useTrip } from "@/hooks/useTrip";
 import { useTranslation } from "react-i18next";
 import ErrorText from "@/components/text/ErrorText";
+import { getCategories } from "@/services/categoryService";
+import StepIndicator from "@/components/ui/StepIndicator";
 
 
-export default function SelectCategoriesScreen() {
+const SelectCategoriesScreen = ()=> {
     const {selectedCategoriesId,setSelectedCategoriesId} = useTrip();
     const [errorMessage,setErrorMessage] = useState<string | undefined>(undefined);
-    const {categories} = useTrip();
+    const {categories, setCategories,trip,setTrip} = useTrip();
     const { t } = useTranslation();
     const router = useRouter();
+
     const handleContinue = () => {
         if(selectedCategoriesId.length < 2){
             setErrorMessage(t("errosFrontend.selectCategories"));
             return;
         }
+        setTrip({...trip, categories: selectedCategoriesId.map(id => parseInt(id))});
         router.push("/createTrip/summary");
         // Continuar a la siguiente pantalla
     }
@@ -39,9 +41,23 @@ export default function SelectCategoriesScreen() {
                 : [...selectedCategoriesId, value]
         );
     };
+    useEffect(() => {
+        const loadCategories = async () => {
+            console.log('Component mounted, fetching categories');
+            const response = await getCategories();
+             if (response.error) {
+                setErrorMessage(response.error);
+            } else {
+                setCategories(response.categories || []);
+            }
+        };
+        loadCategories();
+    }, []);
+    
 
     return  (
     <PaddingView >
+        <StepIndicator steps={4} currentStep={3} />
         <ViewContentContinue>
             <ViewForm>
             <TitleParagraph
@@ -63,3 +79,4 @@ export default function SelectCategoriesScreen() {
       </PaddingView>
     );
 }
+export default SelectCategoriesScreen;
