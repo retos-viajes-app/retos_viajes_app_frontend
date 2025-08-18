@@ -97,7 +97,7 @@ export default function DestinationDetailScreen() {
                 endDate={formattedEndDate}
                 missionsCompleted={item.completed_challenges_count}
                 userAvatarUrl={user?.profile_photo_url ?? 'URL_AVATAR_POR_DEFECTO'} 
-                extraParticipantsCount={4}
+                extraParticipantsCount={item.extra_participants}
                 onPress={() => handleTripPress(item)}
             />
             )
