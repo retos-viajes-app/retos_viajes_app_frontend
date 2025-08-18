@@ -21,13 +21,14 @@ import { postTrip } from "@/services/tripService";
 import { getDestinationsPaginated } from "@/services/destinationService";
 import { Destination } from "@/models/destination";
 import StepIndicator from "@/components/ui/StepIndicator";
+import { UserRound } from "lucide-react-native";
 // Icon Imports
 //import { Map, CalendarMinus2, Star } from 'lucide-react-native';
 
 export default function SummaryScreen() {
     const [errorMessage,setErrorMessage] = useState<string | undefined>(undefined);
     const {trip, selectedCategoriesId, resetContext} = useTrip();
-    const {categories} = useTrip();
+    const {categories, participantsInfo} = useTrip();
     const [destinations, setDestinations] = useState<Destination[]>([]);
     const router = useRouter();
     const currenDestination = destinations.find((destination) => destination.id === trip?.destination_id);
@@ -112,6 +113,23 @@ export default function SummaryScreen() {
                             renderItem={({ item }) => (
                                 <View >
                                 <Text style={[globalStyles.largeBodyMedium, {color: Colors.colors.text.secondary}]} >• {item.name}</Text>
+                                </View>
+                            )}
+                            />
+                    </View> 
+                </View>
+                 <Divider full={true}/>
+                <View style={{ display: "flex", flexDirection: "row", alignItems:"center", gap:10 }}>
+                {/* Participants */}
+                    <UserRound color={Colors.colors.primary[200]} strokeWidth={1.6} size={35}/> 
+                    <View >
+                        <Text style={[globalStyles.smallBodyRegular, {color:Colors.colors.text.secondary}]}>ACOMPAÑANTES</Text>
+                        <FlatList
+                            data={participantsInfo}
+                            keyExtractor={(item) => item.id!.toString()}
+                            renderItem={({ item }) => (
+                                <View >
+                                <Text style={[globalStyles.largeBodySemiBold, {color: Colors.colors.text.secondary}]} >• {item.name} - @{item.username}</Text>
                                 </View>
                             )}
                             />

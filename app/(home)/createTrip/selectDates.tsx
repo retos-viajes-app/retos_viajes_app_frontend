@@ -55,6 +55,7 @@ export default function SelectDatesScreen() {
             date={endDate}
               title={t("createTrip.selectDate.endDate")}
               setDate={setEndDate}
+              isEndDate={true}
             />
           </ViewInputs>
           {errorMessage ? <ErrorText text={errorMessage} /> : null}

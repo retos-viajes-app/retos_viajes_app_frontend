@@ -22,6 +22,7 @@ import { useAuth } from "@/hooks/useAuth";
 // Other Imports
 import { Search } from "lucide-react-native";
 import { Colors } from "@/constants/Colors";
+import { AcceptedConnectionsInfo } from "@/models/userConnections";
 
 const AddParticipantsScreen = () => {
   const { t } = useTranslation();
@@ -29,10 +30,29 @@ const AddParticipantsScreen = () => {
   const router = useRouter();
   const { user } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
-  const { acceptedConnections, setAcceptedConnections } = useTrip();
+  const { 
+    acceptedConnections, 
+    setAcceptedConnections, 
+    participantsInfo, 
+    setParticipantsInfo,
+    setTrip,
+    trip
+   } = useTrip();
 
   const handleContinue = () => {
+    setTrip({
+      ...trip,
+      participants_ids: participantsInfo.map(participant => participant.id),
+    });
     router.push("/createTrip/summary");
+  };
+
+  const addUser = (user: AcceptedConnectionsInfo) => {
+    const isUserAlreadyAdded = participantsInfo.some((participant: AcceptedConnectionsInfo) => participant.id === user.id);
+    const newParticipants = isUserAlreadyAdded
+      ? participantsInfo.filter((participant: AcceptedConnectionsInfo) => participant.id !== user.id)
+      : [...participantsInfo, user];
+    setParticipantsInfo(newParticipants);
   };
 
   const fetchUserConnections = async () => {
@@ -88,7 +108,8 @@ const AddParticipantsScreen = () => {
                     name={item.name}
                     username={item.username}
                     profile_photo_url={item.profile_photo_url}
-                    onPressAdd={() => console.log(`Agregar a ${item.profile_photo_url}`)}
+                    onPressAdd={()=>addUser(item)}
+                    isAdded={participantsInfo.some(participant => participant.id === item.id)}
                 />
                 )}
                 style={{ marginTop: 16 }}

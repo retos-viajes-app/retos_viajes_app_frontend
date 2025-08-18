@@ -4,16 +4,21 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 
 //Icons
-import { UserRoundPlus } from "lucide-react-native";
+import { UserRoundPlus, UserRoundX } from "lucide-react-native";
 
+//Interface
+import { AcceptedConnectionsInfo } from "@/models/userConnections";
 interface UserCardProps {
   name: string;
   username: string;
   profile_photo_url: string;
   onPressAdd: () => void;
+  isAdded: boolean;
 }
 
-export default function UserCard({ name, username, profile_photo_url, onPressAdd }: UserCardProps) {
+export default function UserCard({ 
+  name, username, profile_photo_url, onPressAdd, isAdded
+}: UserCardProps) {
   return (
     <View style={styles.card}>
       <Image
@@ -25,7 +30,11 @@ export default function UserCard({ name, username, profile_photo_url, onPressAdd
         <Text style={styles.username}>@{username}</Text>
       </View>
       <TouchableOpacity style={styles.addButton} onPress={onPressAdd}>
-        <UserRoundPlus size={24} color={Colors.colors.primary['900']} />
+        {isAdded ? (
+          <UserRoundX size={24} color={Colors.colors.primary['900']} />
+        ) : (
+          <UserRoundPlus size={24} color={Colors.colors.primary['900']} />
+        )}
       </TouchableOpacity>
     </View>
   );

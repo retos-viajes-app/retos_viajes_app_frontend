@@ -6,13 +6,10 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
 
 // Icon Imports
-//import { Calendar } from "lucide-react-native";
 import { Feather } from "@expo/vector-icons";
 
 // Third-Party Imports
 import DateTimePicker from "@react-native-community/datetimepicker";
-
-
 
 interface CustomDateInputProps {
   date: Date | null;
@@ -20,14 +17,16 @@ interface CustomDateInputProps {
   errorMessage?: string;
   disabled?: boolean;
   title: string;
+  isEndDate?: boolean; // New prop to distinguish between start and end dates
 }
 
-export const  DateInput: React.FC<CustomDateInputProps> = ({
+export const DateInput: React.FC<CustomDateInputProps> = ({
   date,
   setDate,
   errorMessage,
   disabled = false,
   title,
+  isEndDate = false,
 }) => {
   const [isPickerVisible, setPickerVisible] = useState(false);
 
@@ -37,7 +36,15 @@ export const  DateInput: React.FC<CustomDateInputProps> = ({
 
   const onDateChange = (event: any, selectedDate?: Date) => {
     setPickerVisible(false);
-    if (selectedDate) setDate(selectedDate);
+    if (selectedDate) {
+      const adjustedDate = new Date(selectedDate);
+      if (isEndDate) {
+        adjustedDate.setHours(23, 59, 59, 999);
+      } else {
+        adjustedDate.setHours(0, 0, 0, 0);
+      }
+      setDate(adjustedDate);
+    }
   };
 
   return (
@@ -49,7 +56,6 @@ export const  DateInput: React.FC<CustomDateInputProps> = ({
       >
       <View style={styles.inputContent}>
         <Text style={styles.dateText}>{date ? date.toLocaleDateString() : title}</Text>
-        {/* <Calendar size={20} color={Colors.colors.text.secondary} /> */}
         <Feather name="calendar" size={20} color={Colors.colors.text.secondary} />
       </View>
       </TouchableOpacity>

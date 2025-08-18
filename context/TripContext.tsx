@@ -21,6 +21,8 @@ interface TripContextType {
   resetContext: () => void;
   acceptedConnections: AcceptedConnectionsInfo[];
   setAcceptedConnections: (connections: AcceptedConnectionsInfo[]) => void;
+  participantsInfo: AcceptedConnectionsInfo[];
+  setParticipantsInfo: (info: AcceptedConnectionsInfo[]) => void;
 }
 
 const TripContext = createContext<TripContextType | undefined>(undefined);
@@ -37,6 +39,7 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [currentTripPage, setCurrentTripPage] = useState<number>(0);
   const [acceptedConnections, setAcceptedConnections] = useState<AcceptedConnectionsInfo[]>([]);
+  const [participantsInfo, setParticipantsInfo] = useState<AcceptedConnectionsInfo[]>([]);
 
 const resetContext = () => {
   setTrip(null);
@@ -62,6 +65,8 @@ const resetContext = () => {
         resetContext,
         acceptedConnections,
         setAcceptedConnections,
+        participantsInfo,
+        setParticipantsInfo,
       }}
     >
       {children}
