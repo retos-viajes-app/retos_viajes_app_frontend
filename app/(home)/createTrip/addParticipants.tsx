@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import { useRouter } from "expo-router";
 // Component Imports
-import StyledRadioButtonList from "@/components/forms/RadioButtonList";
 import PaddingView from "@/components/views/PaddingView";
 import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import ViewForm from "@/components/views/ViewForm";
@@ -30,6 +29,7 @@ const AddParticipantsScreen = () => {
   const router = useRouter();
   const { user } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
+  
   const { 
     acceptedConnections, 
     setAcceptedConnections, 

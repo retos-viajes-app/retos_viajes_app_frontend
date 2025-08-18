@@ -126,7 +126,8 @@
       "destination": "Destino",
       "dates": "Fechas",
       "missions": "Misiones",
-      "confirm": "Confirmar y empezar la aventura"
+      "confirm": "Confirmar y empezar la aventura",
+      "participants": "Acompañantes"
     },
     "button":{
       "create": "Crear nuevo viaje",

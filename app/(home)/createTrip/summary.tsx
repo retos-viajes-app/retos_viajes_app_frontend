@@ -123,7 +123,7 @@ export default function SummaryScreen() {
                 {/* Participants */}
                     <UserRound color={Colors.colors.primary[200]} strokeWidth={1.6} size={35}/> 
                     <View >
-                        <Text style={[globalStyles.smallBodyRegular, {color:Colors.colors.text.secondary}]}>ACOMPAÑANTES</Text>
+                        <Text style={[globalStyles.smallBodyRegular, {color:Colors.colors.text.secondary}]}>{t("createTrip.summary.participants")}</Text>
                         <FlatList
                             data={participantsInfo}
                             keyExtractor={(item) => item.id!.toString()}
