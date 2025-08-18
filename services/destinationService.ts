@@ -40,7 +40,7 @@ export const getDestinationsPaginated = async (
   perPage = 10
 ): Promise<PaginatedDestinationsResponse> => {
   try {
-    const response = await api.get('/destinations', {
+    const response = await api.get('/destinations/', {
       params: {
         page,
         per_page: perPage,

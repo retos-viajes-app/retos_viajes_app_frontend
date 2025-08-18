@@ -123,7 +123,7 @@ export default function ActivityScreen() {
 
   const renderItem = ({ item }: { item: CompletedChallenge}) => (
       <View style={{paddingHorizontal: 16}}>
-          <CompletedChallengePost completedChallenge={item} onLikePress={() => handleLike(item)} /> 
+        <CompletedChallengePost completedChallenge={item} onLikePress={() => handleLike(item)} /> 
       </View>
   );
 

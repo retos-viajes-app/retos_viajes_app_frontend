@@ -21,3 +21,12 @@ export const likeCompletedChallenge = async (completedChallengeId: number): Prom
 export const unlikeCompletedChallenge = async (completedChallengeId: number): Promise<void> => {
   await api.delete(`/completed_challenges/${completedChallengeId}/like`);
 };
+
+export const getCompletedChallengesForTrip = async (tripId: number, page: number = 1, per_page: number = 10): Promise<CompletedChallengesPostsResponse> => {
+  const response = await api.get(`/trips/${tripId}/completed-challenges`, {
+    params: { page, per_page },
+  });
+  return response.data;
+};
+
+
