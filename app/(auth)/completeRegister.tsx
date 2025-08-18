@@ -19,7 +19,9 @@ import PrimaryButton from "@/components/buttons/PrimaryButton";
 import TextAreaWithCounter from "@/components/forms/TextAreaWithCounter";
 import StyledTextInput from "@/components/forms/StyledTextInput";
 import ErrorText from "@/components/text/ErrorText";
-import TitleParagraph from "@/components/text/TitleParagraph";
+import TitleParagraph from "@/components/text/TitleParagraph"
+import ViewInputs from "@/components/views/ViewInputs";
+import ViewContentContinue from "@/components/views/ViewForContinueButton";
 import PaddingView from "@/components/views/PaddingView";
 
 // Hook Imports
@@ -37,6 +39,7 @@ import ViewInputs from "@/components/views/ViewInputs";
 export default  function RegisterScreen() {
   const { finishRegister } = useAuth();
   const [username, setUsername] = useState("");
+  const [location, setLocation] = useState("");
   const [bio, setBio] = useState("");
   const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");

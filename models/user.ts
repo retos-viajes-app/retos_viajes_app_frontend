@@ -10,3 +10,4 @@ export default interface User {
   verification_type?: "register" | "passwordReset" | null;
   sub?: string | null;
 };
+

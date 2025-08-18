@@ -14,19 +14,29 @@ interface ButtonProps {
   style?: object;
   loading?: boolean;
   disabled?: boolean;
+  variant?: 'primary' | 'secondary';
 }
 
-const PrimaryButton: React.FC<ButtonProps> = ({ title, onPress, style = null, loading = false, disabled = false }) => {
+const PrimaryButton: React.FC<ButtonProps> = ({ title, onPress, style = null, loading = false, disabled = false, variant = 'primary', }) => {
+
+   const buttonStyles = [
+    styles.button,
+    styles[variant], // Aplica el estilo de la variante (styles.primary o styles.secondary)
+    style,
+    disabled && styles.disabledButton,
+  ];
+  const textStyles = [
+    globalStyles.largeBodySemiBold,
+    styles[`${variant}Text`], // Aplica el estilo de texto (styles.primaryText o styles.secondaryText)
+    disabled && styles.disabledText,
+  ];
+
   return (
-    <TouchableOpacity style={[styles.button, style,  disabled && styles.disabledButton]} onPress={onPress}>
+    <TouchableOpacity style={buttonStyles} onPress={onPress} disabled={disabled || loading}>
       {loading ? (
-        <ActivityIndicator size="small" color={Colors.colors.textWhite.primary} />
+        <ActivityIndicator size="small" color={styles[`${variant}Text`].color} />
       ) : (
-      <Text style={[
-        globalStyles.largeBodySemiBold,
-        styles.text,
-        disabled && styles.disabledText,
-      ]}>{title}</Text>
+        <Text style={textStyles}>{title}</Text>
       )}
     </TouchableOpacity>
   );
@@ -40,12 +50,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 16,
+    
+  },
+  primary: {
+    backgroundColor: Colors.colors.primary[500],
     marginBottom: 16,
   },
-  text: {
+  primaryText: {
     color: Colors.colors.textWhite.primary,
-    fontSize: 16,
-    fontWeight: 'bold',
+  },
+  secondary: {
+    backgroundColor: Colors.colors.primary[100],
+  },
+  secondaryText: {
+    color: Colors.colors.primary[500]
   },
   disabledButton: {
     backgroundColor: Colors.colors.border.default,

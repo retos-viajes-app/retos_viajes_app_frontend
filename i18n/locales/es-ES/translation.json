@@ -87,6 +87,34 @@
         "noPendingRequests": "No tienes solicitudes"
       }
   },
+  "profile":{
+    "editProfile": "Editar perfil",
+    "trip": "{{count}} Viaje",
+    "trip_plural": "{{count}} Viajes",
+    "myTrips": "Mis viajes",
+    "myBadges": "Mis insignias",
+    "visited": "Visitado",
+    "challenges":{
+      "completed": "{{count}} misión completada",
+      "completed_plural": "{{count}} misiones completadas"
+    },
+    "destinationScreen": {
+      "title": "Viajes de {{userName}}"
+    },
+    "tripScreen": {
+      "title": "Viaje a {{cityName}} de {{userName}}"
+    },
+    "stats": {
+      "countries": "PAÍSES",
+      "missions": "MISIONES",
+      "contacts": "CONTACTOS"
+    },
+    "badges":{
+      "all": "Todas",
+      "completed": "Completadas",
+      "incomplete": "Por completar"
+    }
+  },
   "notifications":{
     "title": "Notificaciones",
     "noNotifications": "No tienes solicitudes pendientes",
@@ -222,6 +250,7 @@
   },
   "continue": "Continuar",
   "dividerText": "o si lo prefieres",
+  "back": "Atrás",
   "retry": "Reintentar",
   "destination":{
     "title": "Destino",
@@ -313,4 +342,5 @@
     "MY": "Malasia",
     "IR": "Irán"
   }
+
 }

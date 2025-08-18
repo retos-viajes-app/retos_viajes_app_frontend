@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     backgroundColor: Colors.colors.background.hover,
-    paddingHorizontal: 16, 
+    paddingLeft: 16, 
     paddingVertical: 20,
   },
   title: {
