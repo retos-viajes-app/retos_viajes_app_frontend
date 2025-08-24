@@ -157,6 +157,7 @@
       "confirm": "Confirmar y empezar la aventura",
       "participants": "Acompañantes"
     },
+    "success":"Viaje creado con éxito",
     "button":{
       "create": "Crear nuevo viaje",
       "addPast": "Añadir viaje pasado"

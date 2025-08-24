@@ -26,7 +26,7 @@ const SelectCategoriesScreen = ()=> {
 
     const handleContinue = () => {
         if(selectedCategoriesId.length < 2){
-            setErrorMessage(t("errosFrontend.selectCategories"));
+            setErrorMessage(t("errorsFrontend.selectCategories"));
             return;
         }
         setTrip({...trip, categories: selectedCategoriesId.map(id => parseInt(id))});
@@ -43,13 +43,15 @@ const SelectCategoriesScreen = ()=> {
     };
     useEffect(() => {
         const loadCategories = async () => {
-            console.log('Component mounted, fetching categories');
+            if(categories.length > 0) return; 
+
             const response = await getCategories();
+
              if (response.error) {
                 setErrorMessage(response.error);
-            } else {
-                setCategories(response.categories || []);
-            }
+                return
+            } 
+            setCategories(response.categories || []);
         };
         loadCategories();
     }, []);

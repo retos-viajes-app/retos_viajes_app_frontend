@@ -18,7 +18,7 @@ import globalStyles from "@/styles/global";
 import {Destination} from "@/models/destination";
 import { useTranslation } from "react-i18next";
 import ErrorText from "@/components/text/ErrorText";
-import { getDestinationsPaginated } from "@/services/destinationService";
+import { getAllDestinations } from "@/services/destinationService";
 import { Colors } from "@/constants/Colors";
 import StepIndicator from "@/components/ui/StepIndicator";
 import LinearGradientBlack from "@/components/ui/LineaGradientBlack";
@@ -32,81 +32,56 @@ const SelectDestination = ()=> {
   const { t } = useTranslation();
   const {setTrip,trip } = useTrip();
   const [loading, setLoading] = useState(false);
-  const { destinations, setDestinations, currentTripPage, setCurrentTripPage} = useTrip();
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const { destinations, setDestinations} = useTrip();
 
-  const fetchDestinations = async (currentPage: number) => {
-    if (loading || !hasMore) return;
-
-    console.log('Fetching destinations for page:', currentPage);
+  const fetchDestinations = async () => {
+    if (loading) return;
     setLoading(true);
-    try {
-      const destinationsResponse = await getDestinationsPaginated(currentPage, 4);
-      if (destinationsResponse.error) {
-        console.error('Error fetching destinations:', destinationsResponse.error);
-        return;
-      }
-      const data = destinationsResponse.destinations;
-      if (page > currentTripPage) {
-        const unique = Array.from(new Map([...destinations, ...data].map(d => [d.id, d])).values());
-        setDestinations(unique);
-        setCurrentTripPage(page);
-        console.log('Updated destinations:', unique);
-        console.log('Current trip page updated to:', page);
-      }
-      setHasMore(destinationsResponse.pagination.has_more);
-    } catch (error) {
-      console.error('Error fetching destinations:', error);
-    } finally {
-      setLoading(false);
+    const destinationsResponse = await getAllDestinations();
+    if (destinationsResponse.error) {
+      setErrorMessage(destinationsResponse.error);
+      return;
     }
+    const data = destinationsResponse.destinations;
+    setDestinations(data);    setLoading(false);
   };
 
   useEffect(() => {
     const loadDestinations = async () => {
-      console.log('Component mounted, fetching destinations for page:', page);
-      await fetchDestinations(page);
+      if(destinations.length === 0){
+        await fetchDestinations();
+      }
     };
     loadDestinations();
   }, []);
-
-  const handleLoadMore = async () => {
-      if (!loading && hasMore) {
-        const nextPage = page + 1;
-        setPage(nextPage);
-        await fetchDestinations(nextPage);  
-      }
-    };
   
   const handleContinue = () => {
     if (selectedId) {
-    setTrip({
-        ...trip,  
-        destination_id: selectedId,
-        status: "pending",
-        });
+      setTrip({
+          ...trip,  
+          destination_id: selectedId,
+          status: "pending",
+      });
       router.push("/createTrip/selectDates");
     } else {
-      setErrorMessage(t("errosFrontend.selectDestination"));
+      setErrorMessage(t("errorsFrontend.selectDestination"));
     }
   }
 
   const filteredData = destinations
-    .filter(
-      (item) =>
-        item.country!.toLowerCase().includes(search.toLowerCase()) ||
-        item.city!.toLowerCase().includes(search.toLowerCase())
-    )
+                       .filter((item) =>
+                           item.country!.toLowerCase().includes(search.toLowerCase()) ||
+                           item.city!.toLowerCase().includes(search.toLowerCase())
+                       )
 
   const renderItemF = ({ item }: { item: Destination }) => (
     <TouchableOpacity
       style={[
-      styles.item,
-      { opacity: selectedId === item.id ? 0.5 : 1 }
+        styles.item,
+        { opacity: selectedId === item.id ? 0.5 : 1 }
       ]}
       onPress={() => {
-      setSelectedId(item.id);    
+        setSelectedId(item.id);    
       }}
     >
     <ImageBackground 
@@ -158,8 +133,6 @@ const SelectDestination = ()=> {
                 gap: 16,
                 paddingBottom: 16,
               }}
-              onEndReached={handleLoadMore}
-              onEndReachedThreshold={0.5}
               ListFooterComponent={loading ? <ActivityIndicator /> : null}
               showsVerticalScrollIndicator={true}
               />

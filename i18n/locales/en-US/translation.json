@@ -112,6 +112,7 @@
       "confirm": "Confirm and start the adventure",
       "participants": "Participants"
     },
+    "success":"Trip created successfully",
     "button": {
       "create": "Create new trip",
       "addPast": "Add past trip"

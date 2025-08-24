@@ -8,7 +8,7 @@ interface ApiGetResponse {
 }
 export const getAcceptedConnectionsInfo = async (userId: number): Promise<ApiGetResponse> => {
   try {
-    const response = await api.get(`/connections/accepted_info/${userId}`);
+    const response = await api.get(`/users/${userId}/accepted_connections_info`);
     return { acceptedConnections: response.data };
   } catch (error) {
     return { acceptedConnections: [], error: handleApiError("errorsBackend.genericError") };

@@ -1,6 +1,6 @@
 // React & React Native Imports
 import { View, Text, FlatList } from "react-native";
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import { useRouter } from "expo-router";
 // Component Imports
 import PrimaryButton from "@/components/buttons/PrimaryButton";
@@ -18,18 +18,16 @@ import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import ErrorText from "@/components/text/ErrorText";
 import { postTrip } from "@/services/tripService";
-import { getDestinationsPaginated } from "@/services/destinationService";
-import { Destination } from "@/models/destination";
 import StepIndicator from "@/components/ui/StepIndicator";
 import { UserRound } from "lucide-react-native";
+import Toast from "react-native-toast-message";
 // Icon Imports
 //import { Map, CalendarMinus2, Star } from 'lucide-react-native';
 
 export default function SummaryScreen() {
     const [errorMessage,setErrorMessage] = useState<string | undefined>(undefined);
     const {trip, selectedCategoriesId, resetContext} = useTrip();
-    const {categories, participantsInfo} = useTrip();
-    const [destinations, setDestinations] = useState<Destination[]>([]);
+    const {categories, participantsInfo, destinations} = useTrip();
     const router = useRouter();
     const currenDestination = destinations.find((destination) => destination.id === trip?.destination_id);
     const selectedCategories = categories.filter((category) => selectedCategoriesId.includes(category.id!.toString()));
@@ -46,24 +44,13 @@ export default function SummaryScreen() {
             return;
         }
         router.dismissAll();
+        Toast.show({ type: 'success', text1: t('createTrip.success')});
         resetContext();
         router.replace("/main");
         setLoading(false);
         
     }
-    useEffect(() => {
-        const loadDestinations = async () => {
-            console.log('Component mounted, fetching destinations');
-            const response = await getDestinationsPaginated();
-           
-            if (response.error) {
-                setErrorMessage(response.error);
-            } else {
-                setDestinations(response.destinations || []);
-            }
-        };
-        loadDestinations();
-    }, []);
+
     return  (
         <PaddingView >
         <StepIndicator steps={5} currentStep={5} />
@@ -118,23 +105,26 @@ export default function SummaryScreen() {
                             />
                     </View> 
                 </View>
-                 <Divider full={true}/>
-                <View style={{ display: "flex", flexDirection: "row", alignItems:"center", gap:10 }}>
-                {/* Participants */}
-                    <UserRound color={Colors.colors.primary[200]} strokeWidth={1.6} size={35}/> 
-                    <View >
-                        <Text style={[globalStyles.smallBodyRegular, {color:Colors.colors.text.secondary}]}>{t("createTrip.summary.participants")}</Text>
-                        <FlatList
-                            data={participantsInfo}
-                            keyExtractor={(item) => item.id!.toString()}
-                            renderItem={({ item }) => (
-                                <View >
-                                <Text style={[globalStyles.largeBodySemiBold, {color: Colors.colors.text.secondary}]} >• {item.name} - @{item.username}</Text>
-                                </View>
-                            )}
-                            />
-                    </View> 
-                </View>
+                {participantsInfo.length > 0 && (
+                <>
+                    <Divider full={true}/>
+                    <View style={{ display: "flex", flexDirection: "row", alignItems:"center", gap:10 }}>
+                    {/* Participants */}
+                        <UserRound color={Colors.colors.primary[200]} strokeWidth={1.6} size={35}/> 
+                        <View >
+                            <Text style={[globalStyles.smallBodyRegular, {color:Colors.colors.text.secondary}]}>{t("createTrip.summary.participants")}</Text>
+                            <FlatList
+                                data={participantsInfo}
+                                keyExtractor={(item) => item.id!.toString()}
+                                renderItem={({ item }) => (
+                                    <View >
+                                    <Text style={[globalStyles.largeBodySemiBold, {color: Colors.colors.text.secondary}]} >• {item.name} - @{item.username}</Text>
+                                    </View>
+                                )}
+                                />
+                        </View> 
+                    </View>
+                </>)}
             </View>
         </View>
             <PrimaryButton 
