@@ -127,6 +127,9 @@
     "ranking": "Ranking",
     "profile": "Profile"
   },
+  "trip": {
+    "completedChallenges": "completed challenges"
+  },
   "errorsBackend": {
     "invalidCredentials": "Incorrect username or password",
     "userNotVerified": "User not verified",

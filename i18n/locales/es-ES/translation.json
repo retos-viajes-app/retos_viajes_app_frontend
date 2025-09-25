@@ -172,6 +172,9 @@
     "ranking": "Ranking",
     "profile": "Perfil"
   },
+  "trip": {
+    "completedChallenges": "misiones completadas"
+  },
   "errorsBackend": {
     "invalidCredentials": "Usuario o contraseña incorrectos",
     "userNotVerified": "Usuario no verificado",
