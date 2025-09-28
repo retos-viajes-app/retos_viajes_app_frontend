@@ -119,7 +119,7 @@
     }
   },
   "destinations": {
-    "tittle": "Popular destinations"
+    "title": "Popular destinations"
   },
   "tabs": {
     "home": "Home",
@@ -129,6 +129,9 @@
   },
   "trip": {
     "completedChallenges": "completed challenges"
+  },
+  "pendingTrips":{
+    "title": "Pending Trips"
   },
   "errorsBackend": {
     "invalidCredentials": "Incorrect username or password",

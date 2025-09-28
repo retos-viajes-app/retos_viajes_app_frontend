@@ -59,7 +59,7 @@ const handleLoadMore = () => {
 
   return (
     <View style={[styles.container,{backgroundColor: Colors.colors.background.card}]} >
-        <Text style={globalStyles.title}>{t("destinations.tittle")}</Text>
+        <Text style={globalStyles.title}>{t("destinations.title")}</Text>
         <FlatList
           ref={flatListRef}
           data={destinations}

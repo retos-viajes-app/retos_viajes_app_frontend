@@ -11,6 +11,7 @@ import DestinationsFlatList from '@/components/destination/DestinationsFlatList'
 
 import Trip from '@/models/trip';
 import PendingTripCard from '@/components/trip/PendingTripCard';
+import PendingTripFlatList from '@/components/trip/PendingTripFlatList';
 
 export default function IndexScreen() {
   // Verificación de usuario
@@ -53,7 +54,7 @@ export default function IndexScreen() {
           keyboardShouldPersistTaps="handled"
         >
           <NoCurrentTripIndex />
-          <PendingTripCard trip={trip_mock} />
+          <PendingTripFlatList />
           <DestinationsFlatList />
           <ConnectUsers />  
         </ScrollView> 
