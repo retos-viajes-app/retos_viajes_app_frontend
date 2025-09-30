@@ -3,6 +3,7 @@ import Trip from "@/models/trip";
 import { View,StyleSheet, Text} from "react-native";
 import { Image } from "react-native";
 import { useTranslation } from "react-i18next";
+import { Colors } from "@/constants/Colors";
 
 
 const PendingTripCard = ({ trip }: { trip: Trip}) => {
@@ -11,6 +12,9 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
     return (
         <View style={styles.card}>
             <View  style={styles.photo}>
+                <View style={styles.menuItem}>
+                    <Text>{trip.start_date?.getDate()}-{trip.end_date?.getDate()} de {trip.end_date?.getMonth()}</Text>
+                </View>
             </View>
             <View style={styles.content}>
                 <View>
@@ -25,6 +29,7 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
                             : require('@/assets/images/profile-placeholder.png')
                         } 
                         style={styles.profile_photo} />
+                    <Text>{trip.extra_participants}</Text>
                 </View>
             </View>
         </View>
@@ -68,6 +73,17 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 50,
+    },
+    menuItem:{
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        backgroundColor: Colors.colors.background.hover,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 50,
+        width: 120,
+        height: 32,
     }
 });
 
