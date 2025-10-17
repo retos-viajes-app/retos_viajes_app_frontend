@@ -27,6 +27,7 @@ export interface UserProfileTripItem{
   end_date: string;
   completed_challenges_count: number;
   last_challenge_image_url: string | null
+  extra_participants: number;
 }
 
 export interface PaginatedUserProfileTripsResponse {

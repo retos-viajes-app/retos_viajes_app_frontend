@@ -3,7 +3,8 @@
 import  {ChallengesPaginationResponse }from "@/models/challenge";
 import { 
   PaginatedDestinationsResponse,
-  DestinationResponse
+  DestinationResponse,
+  DestinationsResponse
 } from "@/models/destination";
 import api from "@/utils/api";
 import { handleApiError } from "@/utils/errorHandler";
@@ -66,6 +67,27 @@ export const getDestinationsPaginated = async (
     };
   }
 }
+
+export const getAllDestinations = async (): Promise<DestinationsResponse> => {
+    try {
+        const response = await api.get('/destinations/',
+          {
+            params: {
+              is_pagination: false
+            }
+          }
+        );
+        return {
+          destinations: response.data.destinations,
+          error: undefined,
+        };
+    } catch (error) {
+        return {
+          destinations: [],
+          error: handleApiError(error),
+        };
+    }
+};
 
 export const getDestinationById = async (destination_id: number): Promise<DestinationResponse> => {
   try {

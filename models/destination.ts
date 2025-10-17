@@ -20,6 +20,11 @@ export interface PaginatedDestinationsResponse {
   };
 }
 
+export interface DestinationsResponse {
+  destinations: Destination[];
+  error?: string;
+}
+
 export interface DestinationResponse{
   destination?: Destination;
   error?: string;

@@ -1,25 +1,11 @@
 // React & React Native Imports
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 
-// Hook Imports
-import { useAuth } from "@/hooks/useAuth";
-
 // Model Imports
 import Category from "@/models/category";
 import {Destination} from "@/models/destination";
 import Trip from "@/models/trip";
-
-// Utility Imports
-import api from "@/utils/api";
-import {
-  getCachedCategories,
-  getCachedDestinations,
-  saveCategories,
-  saveDestinations,
-  saveTrip,
-} from "@/utils/asyncStorage";
-import { handleApiError } from "@/utils/errorHandler";
-import { getUser } from "@/utils/secureTokens";
+import { AcceptedConnectionsInfo } from "@/models/userConnections";
 
 interface TripContextType {
   trip?: Trip | null;
@@ -30,9 +16,11 @@ interface TripContextType {
   setCategories: (categories: Category[]) => void;
   destinations: Destination[];
   setDestinations: (destinations: Destination[]) => void;
-  currentTripPage: number;
-  setCurrentTripPage: (page: number) => void;
   resetContext: () => void;
+  acceptedConnections: AcceptedConnectionsInfo[];
+  setAcceptedConnections: (connections: AcceptedConnectionsInfo[]) => void;
+  participantsInfo: AcceptedConnectionsInfo[];
+  setParticipantsInfo: (info: AcceptedConnectionsInfo[]) => void;
 }
 
 const TripContext = createContext<TripContextType | undefined>(undefined);
@@ -47,14 +35,14 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({
   const [trip, setTrip] = useState<Trip | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [destinations, setDestinations] = useState<Destination[]>([]);
-  const [currentTripPage, setCurrentTripPage] = useState<number>(0);
+  const [acceptedConnections, setAcceptedConnections] = useState<AcceptedConnectionsInfo[]>([]);
+  const [participantsInfo, setParticipantsInfo] = useState<AcceptedConnectionsInfo[]>([]);
 
 const resetContext = () => {
   setTrip(null);
   setSelectedCategoriesId([]);
   setCategories([]);
   setDestinations([]);
-  setCurrentTripPage(0);
 };
 
   return (
@@ -68,9 +56,11 @@ const resetContext = () => {
         setCategories,
         destinations,
         setDestinations,
-        currentTripPage,
-        setCurrentTripPage,
         resetContext,
+        acceptedConnections,
+        setAcceptedConnections,
+        participantsInfo,
+        setParticipantsInfo,
       }}
     >
       {children}

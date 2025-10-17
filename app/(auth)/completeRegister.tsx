@@ -33,7 +33,7 @@ import { useValidations } from "@/hooks/useValidations";
 
 import { useTranslation } from "react-i18next";
 import ViewForm from "@/components/views/ViewForm";
-import ViewInputs from "@/components/views/ViewInputs";
+
 
 
 export default  function RegisterScreen() {
