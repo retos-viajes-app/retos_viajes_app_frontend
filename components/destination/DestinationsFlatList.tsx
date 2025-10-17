@@ -33,7 +33,6 @@ const DestinationsFlatList = () => {
         return;
       }
       const data = destinationsResponse.destinations;
-      console.log('Fetched destinations:', data);
       setDestinations((prev)=>[...prev, ...data]);
       setHasMore(destinationsResponse.pagination.has_more);
     } catch (error) {
@@ -59,7 +58,7 @@ const handleLoadMore = () => {
 
   return (
     <View style={[styles.container,{backgroundColor: Colors.colors.background.card}]} >
-        <Text style={globalStyles.title}>{t("destinations.tittle")}</Text>
+        <Text style={globalStyles.title}>{t("destinations.title")}</Text>
         <FlatList
           ref={flatListRef}
           data={destinations}

@@ -1,5 +1,5 @@
 // React & React Native Imports
-import {  StyleSheet, View } from 'react-native';
+import {  ScrollView, StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
 // Component Imports
@@ -8,6 +8,10 @@ import ConnectUsers from '@/components/SuggestedUsers';
 
 //Imports para borrar datos de expo-secure-store y localStorage
 import DestinationsFlatList from '@/components/destination/DestinationsFlatList';
+
+import Trip from '@/models/trip';
+import PendingTripCard from '@/components/trip/PendingTripCard';
+import PendingTripFlatList from '@/components/trip/PendingTripFlatList';
 
 export default function IndexScreen() {
   // Verificación de usuario
@@ -33,31 +37,29 @@ export default function IndexScreen() {
   //   }
   // }, []);
   
+  const trip_mock: Trip = {
+    destination_name: "París",
+    completed_challenges_count: 5,
+    destination_image_url: "https://example.com/paris.jpg",
+    is_ongoing: true,
+    extra_participants: 2,
+  };
 
   return (
     <>
-      <NoCurrentTripIndex />
       
       <View>
-        <DestinationsFlatList />
-        <ConnectUsers />
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <NoCurrentTripIndex />
+          <PendingTripFlatList />
+          <DestinationsFlatList />
+          <ConnectUsers />  
+        </ScrollView> 
       </View>
     </>
     );
 }
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    width:"100%",
-    height: "100%",
-  },
-});

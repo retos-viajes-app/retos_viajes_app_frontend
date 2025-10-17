@@ -56,15 +56,11 @@ const AddParticipantsScreen = () => {
   };
 
   const fetchUserConnections = async () => {
-    try {
-      const response = await getAcceptedConnectionsInfo(user?.id!);
-      if (response.error) {
-        setErrorMessage(response.error);
-      } else {
-        setAcceptedConnections(response.acceptedConnections || []);
-      }
-    } catch (error) {
-      console.error("Error fetching user connections:", error);
+    const response = await getAcceptedConnectionsInfo(user?.id!);
+    if (response.error) {
+      setErrorMessage(response.error);
+    } else {
+      setAcceptedConnections(response.acceptedConnections || []);
     }
   };
 
@@ -72,7 +68,6 @@ const AddParticipantsScreen = () => {
     fetchUserConnections();
   }, []);
 
-  // Filtrar la lista según el buscador
   const filteredConnections = acceptedConnections.filter(
     (conn) =>
       conn.name?.toLowerCase().includes(search.toLowerCase()) ||

@@ -45,6 +45,7 @@
       "updatePassword": "Update password"
     },
     "completeRegister": {
+      "header": "Complete your profile",
       "title": "Give your profile some personality!",
       "paragraph": "Complete your information to personalize your experience and connect with other travelers",
       "name": "Name",
@@ -119,13 +120,19 @@
     }
   },
   "destinations": {
-    "tittle": "Popular destinations"
+    "title": "Popular destinations"
   },
   "tabs": {
     "home": "Home",
     "activity": "Activity",
     "ranking": "Ranking",
     "profile": "Profile"
+  },
+  "trip": {
+    "completedChallenges": "completed challenges"
+  },
+  "pendingTrips":{
+    "title": "Pending Trips"
   },
   "errorsBackend": {
     "invalidCredentials": "Incorrect username or password",
@@ -285,5 +292,19 @@
     "PH": "Philippines",
     "MY": "Malaysia",
     "IR": "Iran"
+  },
+  "months": {
+    "1": "January",
+    "2": "February",
+    "3": "March",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "August",
+    "9": "September",
+    "10": "October",
+    "11": "November",
+    "12": "December"
   }
 }

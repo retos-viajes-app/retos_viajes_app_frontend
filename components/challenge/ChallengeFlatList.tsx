@@ -27,7 +27,6 @@ const ChallengesFlatList = ({destination_id}:{destination_id: number}) => {
     try {
       const res = await getChallengesForDestination(currentPage,10,destination_id);
       const data = res.challenges;
-      console.log('Fetched challenges :', data);
       setChallenges((prev)=>[...prev, ...data]); // Agregar un primer elemento para mostrar "Todos los destinos"
       setHasMore(res.pagination.has_more);
     } catch (error) {
