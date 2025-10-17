@@ -64,7 +64,10 @@ const LoginForm = () => {
       setLoading(false); 
       return;
     }
-    if(user?.username){
+    const username = user?.username;
+    if(username){
+      console.log("Usuario completo:", user);
+      console.log("Usuario con username completo:", username);
       router.replace("/main"); 
     }else{
       router.replace("/(auth)/completeRegister")

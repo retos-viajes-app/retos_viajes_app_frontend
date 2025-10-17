@@ -33,7 +33,6 @@ const DestinationsFlatList = () => {
         return;
       }
       const data = destinationsResponse.destinations;
-      console.log('Fetched destinations:', data);
       setDestinations((prev)=>[...prev, ...data]);
       setHasMore(destinationsResponse.pagination.has_more);
     } catch (error) {

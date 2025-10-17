@@ -4,16 +4,40 @@ import { View,StyleSheet, Text} from "react-native";
 import { Image } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/Colors";
+import { Calendar } from "lucide-react-native";
+import AvatarWithBadge from "@/components/ui/AvatarWithBadge";
 
 
 const PendingTripCard = ({ trip }: { trip: Trip}) => {
     const { user } = useAuth();
     const {t} = useTranslation();
+    const startDay = trip.start_date?.getDate();
+    const endDay = trip.end_date?.getDate();
+
+    const startMonth = trip.start_date?.getMonth()! + 1
+    const endMonth = trip.end_date?.getMonth()! + 1;
+
+    const startYear = trip.start_date?.getFullYear();
+    const endYear = trip.end_date?.getFullYear();
+
     return (
         <View style={styles.card}>
             <View  style={styles.photo}>
                 <View style={styles.menuItem}>
-                    <Text>{trip.start_date?.getDate()}-{trip.end_date?.getDate()} de {trip.end_date?.getMonth()}</Text>
+                    <Calendar size={16} color={Colors.colors.text.primary} style={{ marginLeft: 10 }} />
+                    {startMonth !== endMonth ? (
+                        startYear !== endYear ? (
+                            <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                        ) : (
+                            <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                        )
+                    ) : (      
+                        startYear !== endYear ? (
+                            <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                        ) : ( 
+                            <Text style={styles.dateText}>{startDay}-{endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                        )
+                    )}
                 </View>
             </View>
             <View style={styles.content}>
@@ -22,14 +46,7 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
                     <Text>{trip.completed_challenges_count} {t("trip.completedChallenges")}</Text>
                 </View>
                 <View>
-                    <Image 
-                        source={
-                            user?.profile_photo_url
-                            ? {uri: user?.profile_photo_url} 
-                            : require('@/assets/images/profile-placeholder.png')
-                        } 
-                        style={styles.profile_photo} />
-                    <Text>{trip.extra_participants}</Text>
+                    <AvatarWithBadge imageUri={user?.profile_photo_url || require('@/assets/images/profile-placeholder.png')} badgeNumber={trip.extra_participants ||0} /> 
                 </View>
             </View>
         </View>
@@ -76,14 +93,19 @@ const styles = StyleSheet.create({
     },
     menuItem:{
         position: 'absolute',
+        flexDirection: 'row',
         top: 10,
         right: 10,
         backgroundColor: Colors.colors.background.hover,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 50,
-        width: 120,
-        height: 32,
+        width: 'auto',
+        height: 33,
+    },
+    dateText:{
+        marginRight: 10,
+        marginLeft: 10,
     }
 });
 

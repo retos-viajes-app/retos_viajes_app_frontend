@@ -1,8 +1,11 @@
 import { Stack } from "expo-router";
 import { ScrollView } from "react-native";
 import {Colors} from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
 
 export default function AuthLayout() {
+  const {t} = useTranslation();
+
   return (
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
 
@@ -14,7 +17,7 @@ export default function AuthLayout() {
           <Stack.Screen name="register" />
           <Stack.Screen name="completeRegister" options={{
                 headerShown: true,
-                headerTitle: "Completa tu perfil",
+                headerTitle: t("completeRegister.header"),
                 headerTitleAlign: "center",
                 headerBackTitle: "Atrás"
               }} />

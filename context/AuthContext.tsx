@@ -145,11 +145,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
        saveRefreshToken(authResponse.tokens.refresh_token),
        saveUser(authResponse.user),
      ]);
-
       setUser(authResponse.user);
-
       return { success: true, error: "" };
     } catch (error) {
+      console.error("Error en login:", error);
       return { success: false, error: handleApiError(error) };
     }
   };
