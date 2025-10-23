@@ -6,9 +6,9 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { Destination } from '@/models/destination';
 import { useTranslation } from "react-i18next";
 import ChallengeCard from './ChallengeCard';
+import Challenge from '@/models/challenge';
 
 type ItemProps = { country: string };
 
@@ -16,18 +16,16 @@ const ChallengesFlatList = ({destination_id}:{destination_id: number}) => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [challenges, setChallenges] = useState<Destination[]>([]);
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
   const flatListRef = useRef<FlatList>(null);
   const { t } = useTranslation();
   const fetchChallengesForDestination = async (currentPage: number) => {
     if (loading || !hasMore) return;
-
-    console.log('Fetching challenges for destination for page:', currentPage);
     setLoading(true);
     try {
       const res = await getChallengesForDestination(currentPage,10,destination_id);
       const data = res.challenges;
-      setChallenges((prev)=>[...prev, ...data]); // Agregar un primer elemento para mostrar "Todos los destinos"
+      setChallenges((prev)=>[...prev, ...data]);
       setHasMore(res.pagination.has_more);
     } catch (error) {
       console.error('Error fetching challenges:', error);
@@ -37,8 +35,8 @@ const ChallengesFlatList = ({destination_id}:{destination_id: number}) => {
   };
 
   useEffect(() => {
-    console.log('Component mounted, fetching challenges for page:', page);
     fetchChallengesForDestination(page);
+    
   }, []);
 
 const handleLoadMore = () => {

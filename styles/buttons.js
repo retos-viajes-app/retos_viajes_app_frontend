@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 const buttonStyles = StyleSheet.create({
     checkButton: {
@@ -10,6 +10,8 @@ const buttonStyles = StyleSheet.create({
         height: 30,
         borderRadius: 20,
     },
+    touchableOpacity: {
+    }
 })
 
 export default buttonStyles;

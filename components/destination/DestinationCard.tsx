@@ -5,6 +5,7 @@ import {  useRouter } from "expo-router";
 import { ArrowRight } from "lucide-react-native";
 import { Colors } from "@/constants/Colors";
 import LinearGradientBlack from "../ui/LineaGradientBlack";
+import boxesStyles from "@/styles/boxes";
 
 const DestinationCard = ({ destination }: { destination: Destination }) => {
     const router = useRouter();
@@ -30,21 +31,14 @@ const DestinationCard = ({ destination }: { destination: Destination }) => {
 
 const styles = StyleSheet.create({
     card: {
+        borderRadius: 16,
         width: 172,
         height: 240,
         flexDirection: 'column',
         justifyContent: 'flex-end',
         alignItems: 'flex-start',
-        borderRadius: 16,
         backgroundColor: 'lightgray',
-        elevation: 5,
-        shadowColor: 'rgba(44, 62, 80, 0.15)',
-        shadowOffset: {
-            width: 1,
-            height: 4,
-        },
-        shadowOpacity: 1,
-        shadowRadius: 10,
+        ...boxesStyles.shadow,
     },
     footer: {
         padding: 10,
