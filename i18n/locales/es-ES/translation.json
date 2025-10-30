@@ -363,5 +363,12 @@
     "10": "Octubre",
     "11": "Noviembre",
     "12": "Diciembre"
+  },
+  "tripBanner":{
+    "toEnd": "para terminar",
+    "completed": "completado",
+    "days": "días",
+    "yourTrip": "Tu viaje a",
+    "editTrip": "Editar viaje"
   }
 }

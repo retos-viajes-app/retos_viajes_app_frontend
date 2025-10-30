@@ -1,13 +1,15 @@
+import TripInfo from "@/components/trip/TripInfo";
 import { useLocalSearchParams } from "expo-router";
 import { View, Text} from "react-native";
 
 const TripInfoScreen = () => {
     const { trip_id, trip } = useLocalSearchParams();
-
-    console.log("Trip info:", trip);
+    console.log("trip_json:", trip);
+    const tripObject = trip ? JSON.parse(trip as string) : null;
+    console.log("tripObject:", tripObject);
     return (
         <View>
-            <Text>Trip Info Screen {trip_id}</Text>
+            <TripInfo trip={tripObject} />
         </View>
     );
 }
