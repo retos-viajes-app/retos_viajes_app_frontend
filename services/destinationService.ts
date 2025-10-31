@@ -8,9 +8,22 @@ import {
 } from "@/models/destination";
 import api from "@/utils/api";
 import { handleApiError } from "@/utils/errorHandler";
-import { Underline } from "lucide-react-native";
 
 export const getChallengesForDestination = async (
+  destination_id: number
+): Promise<ChallengesPaginationResponse> => {
+  try {
+    const response = await api.get(`/destinations/${destination_id}/challenges`);
+    return response.data;
+  } catch (error) {
+    return {
+      challenges: [],
+      error: handleApiError(error),
+    };
+  }
+};
+
+export const getChallengesForDestinationPaginated = async (
   page = 1,
   perPage = 10,
   destination_id: number

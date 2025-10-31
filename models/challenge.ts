@@ -20,7 +20,7 @@ export default interface Challenge {
 
 export interface ChallengesPaginationResponse {
   challenges: Challenge[];
-  pagination: {
+  pagination?: {
     page: number;
     per_page: number;
     has_more: boolean;

@@ -1,5 +1,5 @@
 import Trip from "@/models/trip";
-import { use } from "react";
+import { useEffect, useState } from "react";
 import { ImageBackground, View, Text, StyleSheet } from "react-native"
 import { getDaysRemaining, getTripProgress } from "@/utils/dateFunctions";
 // Styles
@@ -12,6 +12,10 @@ import AvatarWithBadge from "../ui/AvatarWithBadge";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import VerticalDivider from "../ui/verticalSeparator";
+import Challenge from "@/models/challenge";
+import { getChallengesForDestination } from "@/services/destinationService";
+import ChallengesFlatList from "../challenge/ChallengeFlatList";
+import { handleApiError } from "@/utils/errorHandler";
 
 
 interface TripInfoProps {
@@ -20,9 +24,23 @@ interface TripInfoProps {
 function TripInfo({ trip }: TripInfoProps) {
     const { user } = useAuth();
     const { t } = useTranslation();
+    const [challengesForDestination, setChallengesForDestination] = useState<Challenge[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    
+    useEffect(() => {
+        const fetchChallengesForDestination = async () => {
+            const data = await getChallengesForDestination(trip.destination_id!);
+            if (data.error){
+                const error = handleApiError(data.error);
+                console.error("Error fetching challenges:", data.error);
+                setErrorMessage(data.error);
+            }
+            setChallengesForDestination(data.challenges || []);
+        };
+        fetchChallengesForDestination();
+    }, []);
     return (
-        <View>
-           
+        <View style={{flex:1}}>
             {/* Update with the real image of the trip destination */}
             <View style={[bannersStyles.bannerCurrentTrip]}>
                 <ImageBackground 
@@ -58,6 +76,9 @@ function TripInfo({ trip }: TripInfoProps) {
                     </View>
                 </ImageBackground>
             </View>
+            <View style={styles.challengesContainer}>
+                <ChallengesFlatList challenges={challengesForDestination}/>
+            </View>
         </View>
     );
 }
@@ -79,6 +100,11 @@ const styles = StyleSheet.create({
     bottomContainer:{
         height:41,
         justifyContent: 'space-between',
+    },
+    challengesContainer:{
+        flex:1,
+        paddingHorizontal:16,
+        paddingVertical:16,
     }
 })
 

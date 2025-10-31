@@ -4,11 +4,9 @@ import { View, Text} from "react-native";
 
 const TripInfoScreen = () => {
     const { trip_id, trip } = useLocalSearchParams();
-    console.log("trip_json:", trip);
     const tripObject = trip ? JSON.parse(trip as string) : null;
-    console.log("tripObject:", tripObject);
     return (
-        <View>
+        <View style={{flex:1}}>
             <TripInfo trip={tripObject} />
         </View>
     );

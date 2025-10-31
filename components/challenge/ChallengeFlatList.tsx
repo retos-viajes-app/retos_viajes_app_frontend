@@ -1,4 +1,4 @@
-import { getChallengesForDestination } from '@/services/destinationService';
+import { getChallengesForDestinationPaginated } from '@/services/destinationService';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
@@ -10,36 +10,39 @@ import { useTranslation } from "react-i18next";
 import ChallengeCard from './ChallengeCard';
 import Challenge from '@/models/challenge';
 
-type ItemProps = { country: string };
+interface  ChallengesFlatListProps {
+  destination_id?: number;
+  challenges?: Challenge[];
+}
 
-const ChallengesFlatList = ({destination_id}:{destination_id: number}) => {
+const ChallengesFlatList = ({destination_id, challenges}: ChallengesFlatListProps) => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
   const flatListRef = useRef<FlatList>(null);
-  const { t } = useTranslation();
-  const fetchChallengesForDestination = async (currentPage: number) => {
-    if (loading || !hasMore) return;
-    setLoading(true);
-    try {
-      const res = await getChallengesForDestination(currentPage,10,destination_id);
-      const data = res.challenges;
-      setChallenges((prev)=>[...prev, ...data]);
-      setHasMore(res.pagination.has_more);
-    } catch (error) {
-      console.error('Error fetching challenges:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [challengesPaginated, setChallengesPaginated] = useState<Challenge[]>([]);
+    const { t } = useTranslation();
 
-  useEffect(() => {
-    fetchChallengesForDestination(page);
-    
-  }, []);
+    const fetchChallengesForDestination = async (currentPage: number) => {
+      if (loading || !hasMore) return;
+      setLoading(true);
+      try {
+        const res = await getChallengesForDestinationPaginated(currentPage,10,destination_id!);
+        const data = res.challenges;
+        setChallengesPaginated((prev)=>[...prev, ...data]);
+        setHasMore(res.pagination!.has_more);
+      } catch (error) {
+        console.error('Error fetching challenges:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-const handleLoadMore = () => {
+    useEffect(() => {
+      fetchChallengesForDestination(page);
+      
+    }, []);
+  const handleLoadMore = () => {
     if (!loading && hasMore) {
       const nextPage = page + 1;
       setPage(nextPage);
@@ -48,29 +51,24 @@ const handleLoadMore = () => {
   };
 
 
+
   return (
-    <View style={styles.container} >
         <FlatList
           ref={flatListRef}
-          data={challenges}
+          data={challenges? challenges : challengesPaginated}
           renderItem={({ item }) => <ChallengeCard  challenge={item}/>}
           keyExtractor={item => item.id!.toString()}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContentContainer}
-          onEndReached={handleLoadMore}
+          onEndReached={challenges?handleLoadMore:undefined}
           onEndReachedThreshold={0.5}
           ListFooterComponent={loading ? <ActivityIndicator /> : null}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-  },
   separator: {
     height: 24,
   },
