@@ -370,5 +370,10 @@
     "days": "días",
     "yourTrip": "Tu viaje a",
     "editTrip": "Editar viaje"
+  },
+  "challengeExplorer": {
+    "searchPlaceholder": "Buscar desafíos",
+    "filters": "Filtros",
+    "proximity": "Proximidad"
   }
 }

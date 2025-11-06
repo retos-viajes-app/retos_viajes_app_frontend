@@ -16,6 +16,7 @@ import Challenge from "@/models/challenge";
 import { getChallengesForDestination } from "@/services/destinationService";
 import ChallengesFlatList from "../challenge/ChallengeFlatList";
 import { handleApiError } from "@/utils/errorHandler";
+import ChallengeExplorer from "../challenge/ChallengeExplorer";
 
 
 interface TripInfoProps {
@@ -26,7 +27,7 @@ function TripInfo({ trip }: TripInfoProps) {
     const { t } = useTranslation();
     const [challengesForDestination, setChallengesForDestination] = useState<Challenge[]>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    
+    const [filteredChallenges, setFilteredChallenges] = useState<Challenge[]>([]);
     useEffect(() => {
         const fetchChallengesForDestination = async () => {
             const data = await getChallengesForDestination(trip.destination_id!);
@@ -76,8 +77,14 @@ function TripInfo({ trip }: TripInfoProps) {
                     </View>
                 </ImageBackground>
             </View>
+            <ChallengeExplorer 
+                challenges={challengesForDestination} 
+                onFiltered={setFilteredChallenges}
+            />
             <View style={styles.challengesContainer}>
-                <ChallengesFlatList challenges={challengesForDestination}/>
+                <ChallengesFlatList 
+                    challenges={filteredChallenges} 
+                />
             </View>
         </View>
     );

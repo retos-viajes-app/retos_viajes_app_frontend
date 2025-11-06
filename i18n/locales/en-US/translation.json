@@ -313,5 +313,10 @@
     "days": "days",
     "yourTrip": "Your Trip to",
     "editTrip": "Edit Trip"
+  },
+  "challengeExplorer": {
+    "searchPlaceholder": "Search challenges",
+    "filters": "Filters",
+    "proximity": "Proximity"
   }
 }
