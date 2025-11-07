@@ -3,13 +3,11 @@ import { useLocalSearchParams } from "expo-router";
 import { View, Text} from "react-native";
 import { Colors } from "@/constants/Colors";
 
-const TripInfoScreen = () => {
-    const { trip_id, trip } = useLocalSearchParams();
-    const tripObject = trip ? JSON.parse(trip as string) : null;
+const challengeDetailsScreen = () => {
     return (
         <View style={{flex:1, backgroundColor: Colors.colors.background.default}}>
-            <TripInfo trip={tripObject} />
+            <Text>Trip Challenge Detail Screen</Text>
         </View>
     );
 }
-export default TripInfoScreen;
+export default challengeDetailsScreen;

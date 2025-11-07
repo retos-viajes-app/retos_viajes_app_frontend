@@ -375,5 +375,8 @@
     "searchPlaceholder": "Buscar desafíos",
     "filters": "Filtros",
     "proximity": "Proximidad"
+  },
+  "challenge":{
+    "title": "Misión"
   }
 }

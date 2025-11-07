@@ -27,8 +27,8 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
         const router = useRouter();
         console.log("Navigating to trip:", trip.id);
         router.push({
-            pathname: "/(home)/(tabs)/main/trip/[trip_id]",
-            params: { trip_id: trip.id?.toString(), trip: JSON.stringify(trip) },
+            pathname: "/(home)/(tabs)/main/trip/tripDetails",
+            params: { trip: JSON.stringify(trip) },
         });
     }
     return (

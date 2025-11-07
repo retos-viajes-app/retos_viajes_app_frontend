@@ -318,5 +318,8 @@
     "searchPlaceholder": "Search challenges",
     "filters": "Filters",
     "proximity": "Proximity"
+  },
+  "challenge":{
+    "title": "Challenge"
   }
 }
