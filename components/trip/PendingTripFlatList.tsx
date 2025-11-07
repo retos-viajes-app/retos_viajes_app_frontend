@@ -33,18 +33,6 @@ const PendingTripFlatList = () => {
     }, []);
 
     const {t} = useTranslation();
-// const mockedPendingTrips: Trip[] = [];
-//     for (let i = 0; i < 5; i++){
-//     mockedPendingTrips.push({
-//         id: i + 1,
-//         destination_name: "París",
-//         completed_challenges_count: 5,
-//         destination_image_url: "https://example.com/paris.jpg",
-//         is_ongoing: true,
-//         extra_participants: 2,
-//       });
-//     }
-
     
   return (
     <>
@@ -56,6 +44,7 @@ const PendingTripFlatList = () => {
         keyExtractor={item => item.id!.toString()}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={flatListStyles.container}
+        
       />
     </>
   )

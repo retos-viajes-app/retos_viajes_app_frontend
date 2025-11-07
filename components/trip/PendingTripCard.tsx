@@ -1,12 +1,15 @@
 import { useAuth } from "@/hooks/useAuth";
 import Trip from "@/models/trip";
-import { View,StyleSheet, Text} from "react-native";
-import { Image } from "react-native";
+import { View,StyleSheet, Text,Pressable} from "react-native";
 import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/Colors";
 import { Calendar } from "lucide-react-native";
 import AvatarWithBadge from "@/components/ui/AvatarWithBadge";
 
+//Styles
+import boxesStyles from "@/styles/boxes";
+//router
+import { useRouter } from "expo-router";
 
 const PendingTripCard = ({ trip }: { trip: Trip}) => {
     const { user } = useAuth();
@@ -20,36 +23,46 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
     const startYear = trip.start_date?.getFullYear();
     const endYear = trip.end_date?.getFullYear();
 
+    const goToTripInfo = () => {
+        const router = useRouter();
+        console.log("Navigating to trip:", trip.id);
+        router.push({
+            pathname: "/(home)/(tabs)/main/trip/tripDetails",
+            params: { trip: JSON.stringify(trip) },
+        });
+    }
     return (
-        <View style={styles.card}>
-            <View  style={styles.photo}>
-                <View style={styles.menuItem}>
-                    <Calendar size={16} color={Colors.colors.text.primary} style={{ marginLeft: 10 }} />
-                    {startMonth !== endMonth ? (
-                        startYear !== endYear ? (
-                            <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
-                        ) : (
-                            <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
-                        )
-                    ) : (      
-                        startYear !== endYear ? (
-                            <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
-                        ) : ( 
-                            <Text style={styles.dateText}>{startDay}-{endDay} {t(`months.${endMonth}`)} {endYear}</Text>
-                        )
-                    )}
+        <Pressable onPress={goToTripInfo}>
+            <View style={styles.card}>
+                <View  style={styles.photo}>
+                    <View style={styles.menuItem}>
+                        <Calendar size={16} color={Colors.colors.text.primary} style={{ marginLeft: 10 }} />
+                        {startMonth !== endMonth ? (
+                            startYear !== endYear ? (
+                                <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                            ) : (
+                                <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                            )
+                        ) : (      
+                            startYear !== endYear ? (
+                                <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                            ) : ( 
+                                <Text style={styles.dateText}>{startDay}-{endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                            )
+                        )}
+                    </View>
+                </View>
+                <View style={styles.content}>
+                    <View>
+                        <Text>{trip.destination_name}</Text>
+                        <Text>{trip.completed_challenges_ids?.length || 0} {t("trip.completedChallenges")}</Text>
+                    </View>
+                    <View>
+                        <AvatarWithBadge imageUri={user?.profile_photo_url || require('@/assets/images/profile-placeholder.png')} badgeNumber={trip.extra_participants ||0} /> 
+                    </View>
                 </View>
             </View>
-            <View style={styles.content}>
-                <View>
-                    <Text>{trip.destination_name}</Text>
-                    <Text>{trip.completed_challenges_count} {t("trip.completedChallenges")}</Text>
-                </View>
-                <View>
-                    <AvatarWithBadge imageUri={user?.profile_photo_url || require('@/assets/images/profile-placeholder.png')} badgeNumber={trip.extra_participants ||0} /> 
-                </View>
-            </View>
-        </View>
+        </Pressable>
     );
 }	
 
@@ -59,15 +72,9 @@ const styles = StyleSheet.create({
         width: 320,
         flexDirection: 'column',
         backgroundColor: '#FFF',
-        borderWidth: 1,
-        borderColor: '#E5E7EA',
-        borderStyle: 'solid',
         borderRadius: 16,
-        shadowColor: '#2C3E50',
-        shadowOffset: { width: 1, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 10,
-        marginBottom: 10,
+        marginBottom:10,
+        ...boxesStyles.shadow,
     },
     photo: {
         height: 120,

@@ -306,5 +306,20 @@
     "10": "October",
     "11": "November",
     "12": "December"
+  },
+  "tripBanner":{
+    "toEnd": "to end",
+    "completed": "completed",
+    "days": "days",
+    "yourTrip": "Your Trip to",
+    "editTrip": "Edit Trip"
+  },
+  "challengeExplorer": {
+    "searchPlaceholder": "Search challenges",
+    "filters": "Filters",
+    "proximity": "Proximity"
+  },
+  "challenge":{
+    "title": "Challenge"
   }
 }

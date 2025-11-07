@@ -10,6 +10,7 @@ export default interface Trip {
     destination_name?: string;
     destination_image_url?: string;
     completed_challenges_count?: number;
+    completed_challenges_ids?: number[];
     extra_participants?: number;
     is_ongoing?: boolean;
   }

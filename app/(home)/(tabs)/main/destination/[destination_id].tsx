@@ -17,7 +17,6 @@ export default function Destino() {
   const { destination_id } = useLocalSearchParams();
   const [destination, setDestination] = React.useState<Destination | null>(null);
   useEffect(() => {
-    console.log(`Cargando detalle del destino con ID: ${destination_id}`);
     getDestinationById(Number(destination_id)).then((data) => {
         setDestination(data.destination!);
         }).catch((error) => {
