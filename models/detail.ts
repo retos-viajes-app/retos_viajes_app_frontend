@@ -1,4 +1,4 @@
-export interface Details {
+export interface Detail {
     id?: number;
     price?: number;
     duration?: string;
