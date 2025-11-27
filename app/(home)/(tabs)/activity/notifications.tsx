@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, RefreshControl, AppState } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, RefreshControl, AppState, ActivityIndicator } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 
@@ -10,176 +10,162 @@ import ErrorText from '@/components/text/ErrorText';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import PaddingView from '@/components/views/PaddingView';
 import { useSuggestedUsers } from '@/hooks/useSuggestedUsers';
-import { useTranslation } from 'react-i18next';
-
-
-export interface NotificationUser {
-  id: string;
-  username: string;
-  profileImageUrl?: string; 
-}
-
-export type NotificationType = 'like' | 'achievement' | 'friend_request_accepted';
-
-export interface Notification {
-  id: string;
-  type: NotificationType;
-  user?: NotificationUser;
-  missionName?: string;
-  badgeName?: string; 
-  timestamp: string;
-  isRead?: boolean;
-}
-
-const MOCK_PROFILE_IMAGE_MOUNTAIN = 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'; 
-const MOCK_PROFILE_IMAGE_PERSON = 'https://content.nationalgeographic.com.es/medio/2025/01/18/himalaya_68c32f8b_250118135425_800x800.webp';
-
-const MOCK_NOTIFICATIONS: Notification[] = [
-  {
-    id: '1',
-    type: 'like',
-    user: { id: 'user1', username: 'username', profileImageUrl: MOCK_PROFILE_IMAGE_MOUNTAIN },
-    missionName: 'tu misión',
-    timestamp: 'hace 2h',
-  },
-  {
-    id: '2',
-    type: 'achievement',
-    badgeName: 'Rey de las tapas',
-    timestamp: 'hace 2h',
-    user: { id: 'currentUser', username: 'Tú', profileImageUrl: MOCK_PROFILE_IMAGE_PERSON }
-  },
-  {
-    id: '3',
-    type: 'like',
-    user: { id: 'user2', username: 'username', profileImageUrl: MOCK_PROFILE_IMAGE_MOUNTAIN },
-    missionName: 'tu misión',
-    timestamp: 'hace 2h',
-  },
-  {
-    id: '4',
-    type: 'like',
-    user: { id: 'user3', username: 'username', profileImageUrl: MOCK_PROFILE_IMAGE_MOUNTAIN },
-    missionName: 'tu misión',
-    timestamp: 'hace 2h',
-  },
-  {
-    id: '5',
-    type: 'like',
-    user: { id: 'user4', username: 'username', profileImageUrl: MOCK_PROFILE_IMAGE_MOUNTAIN },
-    missionName: 'tu misión',
-    timestamp: 'hace 2h',
-  },
-];
+import { Trans, useTranslation } from 'react-i18next';
+import { useNotifications } from '@/hooks/useNotifications';
+import { NotificationItem } from '@/models/notification';
+import { useAuth } from '@/hooks/useAuth';
+import { useTimeAgo } from '@/hooks/useTimeAgo';
 
 
 export default function NotificationsScreen() {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [loadingNotifications, setLoadingNotifications] = useState(true);
-  const [errorNotifications, setErrorNotifications] = useState<string | null>(null);
-  const { pendingConnectionRequests, getPendingConnectionRequests} = useSuggestedUsers();
-  const [refreshing, setRefreshing] = useState(false);
-  const pollingRef = useRef<number | null>(null);
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
   const router = useRouter();
-
-  const fetchNotifications = useCallback(async () => {
-    setLoadingNotifications(true);
-    setErrorNotifications(null);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setNotifications(MOCK_NOTIFICATIONS);
-    } catch (e) {
-      console.error("Error fetching notifications:", e);
-      setErrorNotifications('No se pudieron cargar las notificaciones.');
-    } finally {
-      setLoadingNotifications(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchNotifications();
-  }, [fetchNotifications]);
+  const { user } = useAuth();
+  const getTimeAgo = useTimeAgo();
+  const { pendingConnectionRequests, getPendingConnectionRequests } = useSuggestedUsers();
+  const { 
+    notifications, 
+    loading, 
+    error, 
+    pagination, 
+    fetchNotifications, 
+    markAllAsRead 
+  } = useNotifications();
 
   useFocusEffect(
     useCallback(() => {
-      getPendingConnectionRequests();
-
-      const startPolling = () => {
-        if (pollingRef.current) clearInterval(pollingRef.current);
-        pollingRef.current = setInterval(getPendingConnectionRequests, 60000);
-      };
-
-      const stopPolling = () => {
-        if (pollingRef.current) clearInterval(pollingRef.current);
-      };
-
-      startPolling();
-      const subscription = AppState.addEventListener('change', (state) => {
-        if (state === 'active') startPolling();
-        else stopPolling();
-      });
-
-      return () => {
-        stopPolling();
-        subscription.remove();
-      };
-    }, [getPendingConnectionRequests])
-);
+      (async () => {
+        try {
+          await fetchNotifications(1);
+          await markAllAsRead();
+          getPendingConnectionRequests();
+        } catch (e) {
+          console.error("Error initializing notifications screen:", e);
+        }
+      })();
+    }, [])
+  );
 
   const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await getPendingConnectionRequests();
-    setRefreshing(false);
-  }, [getPendingConnectionRequests]);
+    try {
+      await fetchNotifications(1);
+      await markAllAsRead();
+      await getPendingConnectionRequests();
+    } catch (e) {
+      console.error("Error refreshing notifications:", e);
+    }
+  }, [fetchNotifications, getPendingConnectionRequests]);
 
   const handleFriendRequestPress = () => {
     router.push('/activity/connectionRequests');
   };
 
-  const renderNotificationItem = ({ item }: { item: Notification }) => {
+  const loadMore = () => {
+    if (loading || !pagination?.has_more) return;
+    fetchNotifications((pagination?.page || 1) + 1);
+  };
+
+  const renderNotificationItem = ({ item }: { item: NotificationItem }) => {
+    console.log("Rendering notification item:", item);
     let iconName: React.ComponentProps<typeof MaterialCommunityIcons>['name'] | null = null;
     let iconColor = Colors.colors.error[400];
     let textContent: React.ReactNode;
-    let profileImage = item.user?.profileImageUrl || MOCK_PROFILE_IMAGE_PERSON;
+    let profileImage = item.actor?.profile_photo_url || 'URL_A_TU_IMAGEN_POR_DEFECTO';
+
+    if (item.type === 'badge') {
+      profileImage = user?.profile_photo_url || 'URL_A_TU_IMAGEN_POR_DEFECTO';
+    }
+
+    const isUnread = !item.is_read;
+
+    const itemStyle = [
+      styles.notificationItemContainer,
+      isUnread && styles.unreadNotification
+    ];
 
     switch (item.type) {
       case 'like':
         iconName = 'heart';
-        iconColor = Colors.colors.error[200];
+        iconColor = Colors.colors.error[500];
         textContent = (
           <Text style={styles.notificationText}>
-            A <Text style={{color: Colors.colors.primary[100]}}>@{item.user?.username}</Text> le ha gustado {item.missionName}.
+            <Trans
+              i18nKey="activity.notifications.like"
+              components={{
+                username: (
+                  <Text style={{ color: Colors.colors.primary[500] }}>
+                    @{item.actor?.username}
+                  </Text>
+                ),
+                title: (
+                  <Text style={styles.boldText}>
+                    {item.completed_challenge?.challenge_title}
+                  </Text>
+                )
+              }}
+            />
           </Text>
         );
         break;
-      case 'achievement':
-        iconName = 'check-decagram'; // Or 'shield-check', 'trophy'
-        iconColor = Colors.colors.success[200];
+
+      case 'badge':
+        iconName = 'check-decagram';
+        iconColor = Colors.colors.success[500];
         textContent = (
           <Text style={styles.notificationText}>
-            Has conseguido la insignia <Text style={[globalStyles.mediumBodySemiBold, {color: Colors.colors.neutral[500]}]}>{item.badgeName}</Text>
+            <Trans
+              i18nKey="activity.notifications.badge"
+              components={{
+                badge: (
+                  <Text style={styles.boldText}>
+                    {item.badge_name}
+                  </Text>
+                )
+              }}
+            />
           </Text>
         );
         break;
-      // Add more cases for other notification types
+
+      case 'connection_request_accepted':
+        iconName = 'account-check';
+        iconColor = Colors.colors.primary[500];
+        textContent = (
+          <Text style={styles.notificationText}>
+            <Trans
+              i18nKey="activity.notifications.connectionAccepted"
+              components={{
+                username: (
+                  <Text style={styles.usernameText}>
+                    @{item.actor.username}
+                  </Text>
+                )
+              }}
+            />
+          </Text>
+        );
+        break;
+
       default:
         return null;
     }
 
     return (
-      <TouchableOpacity style={styles.notificationItemContainer} activeOpacity={0.7}>
+      <TouchableOpacity style={itemStyle} activeOpacity={0.7}>
         <View>
           <Image source={{ uri: profileImage }} style={styles.profileImage} />
           {iconName && (
-            <View style={[styles.notificationIconOverlay, { backgroundColor: Colors.colors.textWhite.primary}]}>
+            <View style={[styles.notificationIconOverlay, { backgroundColor: Colors.colors.textWhite.primary }]}>
               <MaterialCommunityIcons name={iconName} size={16} color={iconColor} />
             </View>
           )}
         </View>
+
         <View style={styles.notificationTextContent}>
           {textContent}
-          <Text style={styles.notificationTimestamp}>{item.timestamp}</Text>
+          <Text style={styles.notificationTimestamp}>
+            {getTimeAgo(item.created_at)}
+          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -191,7 +177,7 @@ export default function NotificationsScreen() {
       <TouchableOpacity 
         style={styles.connectionRequestsContainer} 
         onPress={pendingCount > 0 ? handleFriendRequestPress : undefined}
-        activeOpacity={pendingCount> 0 ? 0.8 : 1}
+        activeOpacity={pendingCount > 0 ? 0.8 : 1}
       >
         <View style={styles.connectionRequestsIconWrapper}>
           <Feather name="users" size={24} color={Colors.colors.neutral[500]} />
@@ -215,12 +201,18 @@ export default function NotificationsScreen() {
     )
   }, [pendingConnectionRequests, handleFriendRequestPress, t]);
 
-  if (loadingNotifications && !refreshing) return <LoadingScreen />
-  
-  if (errorNotifications && !refreshing) {
+  const ListFooter = () => {
+    if (loading && notifications.length > 0) {
+      return <ActivityIndicator style={{ marginVertical: 20 }} color={Colors.colors.primary[300]} />;
+    }
+    return null;
+  };
+
+  if (loading && notifications.length === 0) return <LoadingScreen />;
+  if (error && notifications.length === 0) {
     return (
       <View style={[styles.container, styles.centered]}>
-        <ErrorText text={errorNotifications} />
+        <ErrorText text={error} />
       </View>
     );
   }
@@ -231,26 +223,23 @@ export default function NotificationsScreen() {
       <FlatList
         data={notifications}
         renderItem={renderNotificationItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
         style={styles.listContainer}
         ListHeaderComponent={ListHeader}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
-        refreshControl={
-          <RefreshControl 
-            refreshing={refreshing} 
-            onRefresh={onRefresh}
-            colors={[Colors.colors.primary[300]]} // Android
-            tintColor={Colors.colors.primary[300]} // iOS
-          />
-        }
+        onRefresh={onRefresh}
+        refreshing={loading} 
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={ListFooter}
         ListEmptyComponent={
-            !loadingNotifications && notifications.length === 0 ? (
-              <View style={styles.centeredMessage}>
-                <Text style={styles.noDataText}>No tienes notificaciones.</Text>
-              </View>
-            ) : null
-         }
+          !loading && notifications.length === 0 ? (
+            <View style={styles.centeredMessage}>
+              <Text style={styles.noDataText}>No tienes notificaciones.</Text>
+            </View>
+          ) : null
+        }
       />
       </PaddingView>
     </View>
@@ -269,11 +258,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  centeredMessage: { // Para ListEmptyComponent
+  centeredMessage: {
     marginTop: 50,
     alignItems: 'center',
   },
-  noDataText: { // Para ListEmptyComponent
+  noDataText: {
     ...globalStyles.mediumBodyRegular,
     color: Colors.colors.text.secondary,
   },
@@ -286,15 +275,25 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 16,
     borderRadius: 16,
-    // Shadow (optional, adjust for desired effect)
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.15,
     shadowRadius: 2.00,
     elevation: 2,
+  },
+  unreadNotification: {
+    backgroundColor: 'rgba(102, 112, 133, 0.05)',
+    borderLeftWidth: 3,
+    borderLeftColor: Colors.colors.primary[300],
+    paddingLeft: 13,
+  },
+  usernameText: {
+    color: Colors.colors.primary[500],
+    fontWeight: '600'
+  },
+  boldText: {
+    color: Colors.colors.neutral[500],
+    fontWeight: '600'
   },
   connectionRequestsIconWrapper: {
     width: 40,
@@ -315,7 +314,6 @@ const styles = StyleSheet.create({
     ...globalStyles.smallBodySemiBold,
     color: Colors.colors.primary[300]
   },
-  // Notification Item
   notificationItemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -350,10 +348,10 @@ const styles = StyleSheet.create({
   },
   notificationTimestamp: {
     ...globalStyles.smallBodyRegular,
-    color: Colors.colors.text.primary,
-    marginTop: 2,
+    color: Colors.colors.text.secondary, 
+    marginTop: 4,
   },
-  container: { // For loading/error states
+  container: {
     flex: 1,
     backgroundColor: Colors.colors.textWhite.primary,
   }

@@ -1,9 +1,9 @@
 // React & React Native Imports
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, RefreshControl } from "react-native";
 import { useTranslation } from "react-i18next";
 import { FlatList } from "react-native-gesture-handler";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 
 // Component Imports
 import ConnectUsers from "@/components/SuggestedUsers";
@@ -27,11 +27,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Model Imports
 import { CompletedChallenge } from "@/models/completedChallenge";
+import { useNotifications } from "@/hooks/useNotifications";
 
 
 export default function ActivityScreen() {
   const [completedChallengesPosts, setCompletedChallengesPosts] = useState<CompletedChallenge[]>([]);
-  const { pendingConnectionRequests, refreshSuggestedUsers } = useSuggestedUsers();
+  const { pendingConnectionRequests, refreshSuggestedUsers, getPendingConnectionRequests } = useSuggestedUsers();
+  const { fetchNotifications, hasUnreadNotifications } = useNotifications();
   const { user} = useAuth();
   
   const router = useRouter();
@@ -46,6 +48,7 @@ export default function ActivityScreen() {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
+  const [hasUnreadForBadge, setHasUnreadForBadge] = useState(false);
 
   const fetchCompletedChallengesPosts = async (currentPage: number, isRefresh: boolean = false) => {
       if ((isPaginating && !isRefresh) || (!hasMore && !isRefresh && currentPage > 1)){
@@ -81,6 +84,16 @@ export default function ActivityScreen() {
       }
   };
 
+
+  useFocusEffect(
+  useCallback(() => {
+    refreshSuggestedUsers();
+    getPendingConnectionRequests();
+    fetchNotifications(1);
+  }, [])
+);
+
+  
   useEffect(() => {
       fetchCompletedChallengesPosts(1);
   }, []);
@@ -133,9 +146,12 @@ export default function ActivityScreen() {
     setHasMore(true);
     setPaginationError(null);
     setInitialError(null);
+    
     await Promise.all([
       fetchCompletedChallengesPosts(1, true),
       refreshSuggestedUsers(),
+      fetchNotifications(1),
+      getPendingConnectionRequests()
     ]);
   };
 
@@ -200,6 +216,8 @@ export default function ActivityScreen() {
     return null;
   };
 
+  const hasNotifications = hasUnreadNotifications || pendingConnectionRequests.length > 0;
+
   return user ? (
     <FlatList
       data={completedChallengesPosts}
@@ -231,7 +249,7 @@ export default function ActivityScreen() {
                 size={24}
                 color={Colors.colors.primary[100]}
               />
-               {pendingConnectionRequests.length > 0 && ( <View style={styles.notificationDot} /> )}
+               {hasNotifications && ( <View style={styles.notificationDot} /> )}
             </TouchableOpacity>
           </View>
           <ConnectUsers />
@@ -278,7 +296,7 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 4,
-    backgroundColor: Colors.colors.error[200],
+    backgroundColor: Colors.colors.error[500],
     borderWidth: 1,
     borderColor: Colors.colors.textWhite.primary,
   },
