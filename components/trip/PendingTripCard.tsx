@@ -22,9 +22,9 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
 
     const startYear = trip.start_date?.getFullYear();
     const endYear = trip.end_date?.getFullYear();
-
+    const router = useRouter();
     const goToTripInfo = () => {
-        const router = useRouter();
+        
         console.log("Navigating to trip:", trip.id);
         router.push({
             pathname: "/(home)/(tabs)/main/trip/tripDetails",

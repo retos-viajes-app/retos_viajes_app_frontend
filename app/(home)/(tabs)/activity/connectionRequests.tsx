@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native';
 
 // Style Imports
 import globalStyles from '@/styles/global';
@@ -22,7 +22,15 @@ const DEFAULT_PROFILE_IMAGE = 'https://st3.depositphotos.com/6672868/13701/v/450
 
 
 export default function ConnectionRequestsScreen() {
-  const { pendingConnectionRequests, loadingPendingRequests, acceptConnectionRequest, denyConnectionRequest} = useSuggestedUsers();
+  const { 
+    pendingConnectionRequests, 
+    loadingPendingRequests, 
+    acceptConnectionRequest, 
+    denyConnectionRequest,
+    pendingRequestsHasMore,
+    loadMorePendingRequests,
+    refreshPendingRequests
+  } = useSuggestedUsers();
   const [actionLoading, setActionLoading] = useState<Record<number, boolean>>({});
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation();
@@ -49,6 +57,12 @@ export default function ConnectionRequestsScreen() {
       setErrorMessage(null);
     }
     setActionLoading(prev => ({ ...prev, [userId]: false }));
+  };
+
+  const handleLoadMore = () => {
+    if (!loadingPendingRequests && pendingRequestsHasMore) {
+      loadMorePendingRequests();
+    }
   };
 
   const renderConnectionRequestItem = ({ item }: { item: User }) => {
@@ -105,6 +119,14 @@ export default function ConnectionRequestsScreen() {
     );
   }
 
+  const ListFooter = () => {
+    if (loadingPendingRequests && pendingConnectionRequests.length > 0) {
+      return <ActivityIndicator style={{ marginVertical: 20 }} color={Colors.colors.primary[300]} />;
+    }
+    return null;
+  };
+
+
   return (
     <View style={styles.screenContainer}>
       <PaddingView>
@@ -114,6 +136,11 @@ export default function ConnectionRequestsScreen() {
           keyExtractor={(item) => item.id!.toString()}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingTop: 10, paddingBottom: 20 }}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={ListFooter}
+          refreshing={loadingPendingRequests && pendingConnectionRequests.length === 0}
+          onRefresh={refreshPendingRequests}
         />
       </PaddingView>
     </View>
