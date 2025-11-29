@@ -7,6 +7,7 @@ import globalStyles from "@/styles/global";
 import boxesStyles from "@/styles/boxes";
 import DetailsTable from "@/components/challenge/DetailsTable";
 import { useState } from "react";
+import MapWithText from "@/components/maps/MapWithText";
 
 const challengeDetailsScreen = () => {
     const params = useLocalSearchParams();
@@ -36,9 +37,14 @@ const challengeDetailsScreen = () => {
                     {challenge.short_description}
                 </Text>
             </View>
-           <DetailsTable detail={challenge.detail ? challenge.detail : {}}>
+           <DetailsTable detail={challenge.detail ? challenge.detail : {}} />
 
-           </DetailsTable>
+           <MapWithText
+            latitude={challenge.latitude?? 0}
+            longitude={challenge.longitude?? 0}
+            distance={500}
+            address="Malaga"
+           />
         </View>
     );
 }

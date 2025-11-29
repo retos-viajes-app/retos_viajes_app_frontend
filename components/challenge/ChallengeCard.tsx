@@ -4,9 +4,9 @@ import { View,StyleSheet, Text, Pressable} from "react-native";
 
 
 const ChallengeCard = ({ challenge}: { challenge: Challenge}) => {
-
+   const router = useRouter();
    const goToChallengeDetail = (challenge: Challenge) => {
-       const router = useRouter();
+      
        router.push({
            pathname: "/(home)/(tabs)/main/trip/challengeDetails",
            params: { challenge: JSON.stringify(challenge) },
