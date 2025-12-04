@@ -13,9 +13,10 @@ import Challenge from '@/models/challenge';
 interface  ChallengesFlatListProps {
   destination_id?: number;
   challenges?: Challenge[];
+  paginated?: boolean;
 }
 
-const ChallengesFlatList = ({destination_id, challenges}: ChallengesFlatListProps) => {
+const ChallengesFlatList = ({destination_id, challenges, paginated = true }: ChallengesFlatListProps) => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -39,8 +40,8 @@ const ChallengesFlatList = ({destination_id, challenges}: ChallengesFlatListProp
     };
 
     useEffect(() => {
+      if (!paginated) return;
       fetchChallengesForDestination(page);
-      
     }, []);
   const handleLoadMore = () => {
     if (!loading && hasMore) {

@@ -48,7 +48,7 @@ function ChallengeExplorer({ challenges, onFiltered }: ChallengeExplorerProps) {
                 <VerticalDivider height={35} color={Colors.colors.border.default} />
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                     <ArrowDownWideNarrow size={20} color={Colors.colors.text.primary}  />
-                    <Text>Cercanía</Text>
+                    <Text>{t('challengeExplorer.proximity')}</Text>
                 </View>
             </View>
         </View>

@@ -51,7 +51,7 @@ function TripInfo({ trip }: TripInfoProps) {
                     <View style={styles.containerPadding}>
                         <View style={styles.upperContainer}>
                             <View>
-                                <Text style={{...globalStyles.smallBodyRegular, color: Colors.colors.neutral[100]}}>TU VIAJE A</Text>
+                                <Text style={{...globalStyles.smallBodyRegular, color: Colors.colors.neutral[100]}}>{t('tripBanner.yourTrip')}</Text>
                                 <Text style={{...globalStyles.diplaySemiBold, color: Colors.colors.neutral[100]}}>{trip.destination_name}</Text>
                             </View>
                             <Pressable style={{ ...buttonStyles.roundedRectangleButton }}>
@@ -84,6 +84,7 @@ function TripInfo({ trip }: TripInfoProps) {
             <View style={styles.challengesContainer}>
                 <ChallengesFlatList 
                     challenges={filteredChallenges} 
+                    paginated={false}
                 />
             </View>
         </View>
