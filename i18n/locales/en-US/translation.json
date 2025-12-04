@@ -69,12 +69,15 @@
     "loadingMore": "Loading more...",
     "noMorePosts": "You've reached the end 👋",
     "errorLoadingPosts": "Error loading posts.",
-    "noPostsYet": "There's no activity to show yet. Explore and join in!"
-  },
-  "notifications": {
-    "title": "Notifications",
-    "noNotifications": "You have no pending requests",
-    "connectionNotifications": "Friend requests"
+    "noPostsYet": "There's no activity to show yet. Explore and join in!",
+    "notifications": {
+      "like": "<username/> liked your challenge <title/>.",
+      "badge": "Congratulations! You earned the <badge/> badge.",
+      "connectionAccepted": "<username/> accepted your connection request.",
+      "title": "Notifications",
+      "noNotifications": "You have no pending requests",
+      "connectionNotifications": "Friend requests"
+    }
   },
   "suggestedUsers": {
     "title": "Connect with other travelers",

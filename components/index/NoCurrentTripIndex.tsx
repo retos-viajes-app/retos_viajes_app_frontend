@@ -1,6 +1,6 @@
 // React & React Native Imports
 import React from 'react';
-import { View, Text, ImageBackground } from 'react-native';
+import { View, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 
 // Component Imports
@@ -22,9 +22,8 @@ const NoCurrentTripIndex = () => {
   const { t } = useTranslation();
 
   return (
-    //273 no queda bien
       <PaddingView>
-        <View style={{ justifyContent: 'center', gap: 16}}>  {/*flex: 1,*/} 
+        <View style={{ justifyContent: 'center', gap: 16}}> 
           <View style={{ gap: 8, alignItems: 'center'}}>
             <Text style={[globalStyles.diplaySemiBold, {color:Colors.colors.primary[900]}]}>{t('index.noTrip.title', { name: user?.name})}</Text> 
             <Text style={[globalStyles.largeBodyMedium,{color:Colors.colors.text.secondary}]}>{t("index.noTrip.subtitle")}</Text> 

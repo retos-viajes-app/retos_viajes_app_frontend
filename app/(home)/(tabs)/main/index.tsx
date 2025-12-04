@@ -56,7 +56,7 @@ export default function IndexScreen() {
           <NoCurrentTripIndex />
           <PendingTripFlatList />
           <DestinationsFlatList />
-          <ConnectUsers />  
+          <ConnectUsers />
         </ScrollView> 
       </View>
     </>

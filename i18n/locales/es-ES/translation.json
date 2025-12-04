@@ -82,6 +82,9 @@
         "noPending": "No tienes solicitudes pendientes"
       },
       "notifications": {
+        "like": "A <username/> le ha gustado tu reto <title/>.",
+        "badge": "¡Felicidades! Has conseguido la insignia <badge/>.",
+        "connectionAccepted": "<username/> ha aceptado tu solicitud de conexión.",
         "requestsButton": "Solicitudes de amistad",
         "pendingRequest_one": "{{count}} Solicitud pendiente",
         "pendingRequest_other": "{{count}} Solicitudes pendientes",

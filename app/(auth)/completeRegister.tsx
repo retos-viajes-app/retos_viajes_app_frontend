@@ -75,7 +75,7 @@ export default  function RegisterScreen() {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 68 : 0} // Ajusta según tu header
+      keyboardVerticalOffset={Platform.OS === "ios" ? 68 : 0}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{ flex: 1 }}>

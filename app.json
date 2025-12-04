@@ -60,11 +60,13 @@
       },
       "API_URL_WEB": "http://localhost:13000",
       // Ordenador rafa:
-      "API_URL_ANDROID": "http://192.168.20.189:13000",
-      // Emulador android rafa:
-      //"API_URL_ANDROID": "http://10.0.2.2:13000",
+      // "API_URL_ANDROID": "http://10.200.36.180:13000",
       // Ordenador pablo:
-      "API_URL_IOS": "http://192.168.1.111:13000"
+      // "API_URL_ANDROID": "http://192.168.1.190:13000",
+      // Emulador android rafa:
+      "API_URL_ANDROID": "http://10.0.2.2:13000",
+      // Ordenador pablo:
+      "API_URL_IOS": "http://192.168.1.190:13000"
     }
   }
 }

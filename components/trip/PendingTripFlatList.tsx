@@ -5,7 +5,6 @@ import PendingTripCard from "@/components/trip/PendingTripCard";
 import { useTranslation } from "react-i18next";
 import flatListStyles from "@/styles/flatList";
 import globalStyles from "@/styles/global";
-import { View } from "lucide-react-native";
 import { getPendingTripsShortInfo } from "@/services/tripService";
 import { useEffect, useState } from "react";
 const PendingTripFlatList = () => {
