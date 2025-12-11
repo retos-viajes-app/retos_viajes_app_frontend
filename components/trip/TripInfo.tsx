@@ -85,6 +85,8 @@ function TripInfo({ trip }: TripInfoProps) {
                 <ChallengesFlatList 
                     challenges={filteredChallenges} 
                     paginated={false}
+                    completedChallengesIds={trip.completed_challenges_ids || []}
+                    isForTripInfo={true}
                 />
             </View>
         </View>

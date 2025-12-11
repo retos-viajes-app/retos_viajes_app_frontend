@@ -1,11 +1,24 @@
 import { useRouter } from "expo-router";
 import Challenge from "@/models/challenge";
 import { View,StyleSheet, Text, Pressable, ImageBackground} from "react-native";
+//Icons
+import { Check, Loader } from "lucide-react-native";
+//Styles
 import { Colors } from "@/constants/Colors";
+import labelsStyles from "@/styles/labels";
+import globalStyles from "@/styles/global";
+import circles from "@/styles/circles";
+import { useTranslation } from "react-i18next";
 
 
-const ChallengeCard = ({ challenge}: { challenge: Challenge}) => {
+interface ChallengeCardProps {
+    challenge: Challenge;
+    completed: boolean;
+    isForTripInfo?: boolean;
+}
+const ChallengeCard = ({ challenge, completed, isForTripInfo}: ChallengeCardProps) => {
    const router = useRouter();
+   const { t } = useTranslation();
    const goToChallengeDetail = (challenge: Challenge) => {
       
        router.push({
@@ -19,11 +32,22 @@ const ChallengeCard = ({ challenge}: { challenge: Challenge}) => {
         <View style={styles.card}>
             <ImageBackground source={{ uri: challenge.image_url }} style={styles.imageBackground}>
                 <View>
-
+                    
                 </View>
-                <View>
-
-                </View>
+                {isForTripInfo && (
+                    !completed ?
+                    <View style={labelsStyles.cardLabel}>
+                        <Loader size={16} color={Colors.colors.text.secondary}/>
+                        <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.text.secondary}]}>{t("challenge.notCompleted")}</Text>
+                    </View>
+                    :
+                    <View style={[labelsStyles.cardLabelChecked, {backgroundColor: Colors.colors.secondary[50]}]}>
+                        <View style={[circles.circle30,{backgroundColor: Colors.colors.secondary[100]}]}>
+                            <Check color={Colors.colors.success[800]}/>
+                        </View>
+                        <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.success[800], padding: 8}]}>{t("challenge.completed")}</Text>
+                    </View>
+                )}
             </ImageBackground>
             <View style={styles.content}>
                 <Text>{challenge.title}</Text>
@@ -82,7 +106,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         borderBottomLeftRadius: 16,
         borderBottomRightRadius: 16,
-    }
+    },
 });
 
 export default ChallengeCard;

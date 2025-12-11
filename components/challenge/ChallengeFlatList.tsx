@@ -14,9 +14,17 @@ interface  ChallengesFlatListProps {
   destination_id?: number;
   challenges?: Challenge[];
   paginated?: boolean;
+  completedChallengesIds?: number[];
+  isForTripInfo?: boolean;
 }
 
-const ChallengesFlatList = ({destination_id, challenges, paginated = true }: ChallengesFlatListProps) => {
+const ChallengesFlatList = (
+  {destination_id, 
+    challenges, 
+    paginated = true, 
+    completedChallengesIds = [], 
+    isForTripInfo}: ChallengesFlatListProps
+) => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -43,21 +51,27 @@ const ChallengesFlatList = ({destination_id, challenges, paginated = true }: Cha
       if (!paginated) return;
       fetchChallengesForDestination(page);
     }, []);
-  const handleLoadMore = () => {
-    if (!loading && hasMore) {
-      const nextPage = page + 1;
-      setPage(nextPage);
-      fetchChallengesForDestination(nextPage);
-    }
-  };
 
+    const handleLoadMore = () => {
+      if (!loading && hasMore) {
+        const nextPage = page + 1;
+        setPage(nextPage);
+        fetchChallengesForDestination(nextPage);
+      }
+    };
 
 
   return (
         <FlatList
           ref={flatListRef}
           data={challenges? challenges : challengesPaginated}
-          renderItem={({ item }) => <ChallengeCard  challenge={item}/>}
+          renderItem={({ item }) => 
+            <ChallengeCard  
+              challenge={item} 
+              completed={completedChallengesIds.includes(item.id!)}  
+              isForTripInfo={isForTripInfo}
+            />
+          }
           keyExtractor={item => item.id!.toString()}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContentContainer}

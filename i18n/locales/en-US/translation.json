@@ -329,6 +329,8 @@
     "proximity": "Proximity"
   },
   "challenge":{
-    "title": "Challenge"
+    "title": "Challenge",
+    "completed": "completed",
+    "notCompleted": "To complete"
   }
 }

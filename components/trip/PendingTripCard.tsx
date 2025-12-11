@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/Colors";
 import { Calendar } from "lucide-react-native";
 import AvatarWithBadge from "@/components/ui/AvatarWithBadge";
+import labelsStyles from "@/styles/labels";
 
 //Styles
 import boxesStyles from "@/styles/boxes";
@@ -35,19 +36,19 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
         <Pressable onPress={goToTripInfo}>
             <View style={styles.card}>
                 <ImageBackground source={{ uri: trip.destination_image_url }} style={styles.photo} >
-                    <View style={styles.menuItem}>
-                        <Calendar size={16} color={Colors.colors.text.primary} style={{ marginLeft: 10 }} />
+                    <View style={labelsStyles.cardLabel}>
+                        <Calendar size={16} color={Colors.colors.text.primary}/>
                         {startMonth !== endMonth ? (
                             startYear !== endYear ? (
-                                <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                                <Text>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
                             ) : (
-                                <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                                <Text>{startDay} {t(`months.${startMonth}`)} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
                             )
                         ) : (      
                             startYear !== endYear ? (
-                                <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                                <Text>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
                             ) : ( 
-                                <Text style={styles.dateText}>{startDay}-{endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                                <Text>{startDay}-{endDay} {t(`months.${endMonth}`)} {endYear}</Text>
                             )
                         )}
                     </View>
@@ -115,10 +116,6 @@ const styles = StyleSheet.create({
         width: 'auto',
         height: 33,
     },
-    dateText:{
-        marginRight: 10,
-        marginLeft: 10,
-    }
 });
 
 export default PendingTripCard;

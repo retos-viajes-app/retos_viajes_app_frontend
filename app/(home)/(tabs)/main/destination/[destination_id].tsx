@@ -7,7 +7,7 @@ import ChallengesFlatList from "@/components/challenge/ChallengeFlatList";
 //Styles
 import globalStyles from "@/styles/global";
 import { Colors } from "@/constants/Colors";
-import buttonStyles from "@/styles/circles";
+import circle from "@/styles/circles";
 import {Check,Map} from "lucide-react-native";
 import Divider from "@/components/Divider";
 import { useTranslation } from "react-i18next";
@@ -33,7 +33,7 @@ export default function Destino() {
             <Text style={[globalStyles.smallBodyRegular,{color: '#ffffff'}]}>{destination?.country}</Text>
         </View>
         <View style={[styles.visitadoContainer, {backgroundColor: Colors.colors.secondary[50]}]}>
-          <View style={[buttonStyles.circle30,{backgroundColor: Colors.colors.secondary[100]}]}>
+          <View style={[circle.circle30,{backgroundColor: Colors.colors.secondary[100]}]}>
               <Check color={Colors.colors.success[800]}/>
           </View>
           <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.success[800], padding: 8}]}>{t("destination.visited")}</Text>
@@ -45,7 +45,7 @@ export default function Destino() {
         </View>
         <View style={styles.countryTripInfoContainer}>
           <View style={styles.countryTripInfo}>
-            <View style={[buttonStyles.circle48, {backgroundColor: Colors.colors.primary[100]}, {borderWidth: 1, borderColor: Colors.colors.primary[200]}]}>
+            <View style={[circle.circle48, {backgroundColor: Colors.colors.primary[100]}, {borderWidth: 1, borderColor: Colors.colors.primary[200]}]}>
               <Map size={24} color={Colors.colors.primary[900]} strokeWidth={1} />
             </View>
             <View style={styles.countryTripInfoText}>
@@ -55,7 +55,7 @@ export default function Destino() {
           </View>
           <Divider full={true}></Divider>
           <View style={styles.countryTripInfo}>
-            <View style={[buttonStyles.circle48, {backgroundColor: Colors.colors.primary[100]}, {borderWidth: 1, borderColor: Colors.colors.primary[200]}]}>
+            <View style={[circle.circle48, {backgroundColor: Colors.colors.primary[100]}, {borderWidth: 1, borderColor: Colors.colors.primary[200]}]}>
               <Map size={24} color={Colors.colors.primary[900]} strokeWidth={1} />
             </View>
             <View style={styles.countryTripInfoText}>

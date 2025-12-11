@@ -386,6 +386,8 @@
     "proximity": "Proximidad"
   },
   "challenge":{
-    "title": "Misión"
+    "title": "Misión",
+    "completed": "completada",
+    "notCompleted": "Por completar",
   }
 }
