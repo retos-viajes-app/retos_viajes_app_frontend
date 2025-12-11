@@ -36,7 +36,7 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
         <Pressable onPress={goToTripInfo}>
             <View style={styles.card}>
                 <ImageBackground source={{ uri: trip.destination_image_url }} style={styles.photo} >
-                    <View style={labelsStyles.cardLabel}>
+                    <View style={labelsStyles.cardLabelRight}>
                         <Calendar size={16} color={Colors.colors.text.primary}/>
                         {startMonth !== endMonth ? (
                             startYear !== endYear ? (

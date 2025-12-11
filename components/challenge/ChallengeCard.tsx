@@ -2,7 +2,7 @@ import { useRouter } from "expo-router";
 import Challenge from "@/models/challenge";
 import { View,StyleSheet, Text, Pressable, ImageBackground} from "react-native";
 //Icons
-import { Check, Loader } from "lucide-react-native";
+import { Check, Loader, MountainSnow } from "lucide-react-native";
 //Styles
 import { Colors } from "@/constants/Colors";
 import labelsStyles from "@/styles/labels";
@@ -31,17 +31,18 @@ const ChallengeCard = ({ challenge, completed, isForTripInfo}: ChallengeCardProp
     <Pressable onPress={() => goToChallengeDetail(challenge)}>
         <View style={styles.card}>
             <ImageBackground source={{ uri: challenge.image_url }} style={styles.imageBackground}>
-                <View>
-                    
+                <View style={labelsStyles.cardLabelLeft}>
+                    <MountainSnow size={16} color={Colors.colors.text.primary}/>
+                    <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.text.primary}]}>{challenge.category?.name}</Text>
                 </View>
                 {isForTripInfo && (
                     !completed ?
-                    <View style={labelsStyles.cardLabel}>
+                    <View style={labelsStyles.cardLabelRight}>
                         <Loader size={16} color={Colors.colors.text.secondary}/>
                         <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.text.secondary}]}>{t("challenge.notCompleted")}</Text>
                     </View>
                     :
-                    <View style={[labelsStyles.cardLabelChecked, {backgroundColor: Colors.colors.secondary[50]}]}>
+                    <View style={[labelsStyles.cardLabelCheckedRight, {backgroundColor: Colors.colors.secondary[50]}]}>
                         <View style={[circles.circle30,{backgroundColor: Colors.colors.secondary[100]}]}>
                             <Check color={Colors.colors.success[800]}/>
                         </View>

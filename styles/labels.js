@@ -5,7 +5,6 @@ const commonLabelStyles = {
     position: 'absolute',
     flexDirection: 'row',
     top: 10,
-    right: 10,
     backgroundColor: Colors.colors.background.hover,
     alignItems: 'center',
     borderRadius: 50,
@@ -15,15 +14,23 @@ const commonLabelStyles = {
 };
 
 const labelsStyles = StyleSheet.create({
-    cardLabel: {
+    cardLabelRight: {
         ...commonLabelStyles,
         justifyContent: 'center',
         paddingHorizontal: 10,
+        right: 10,
     },
-    cardLabelChecked: {
+    cardLabelCheckedRight: {
         ...commonLabelStyles,
         justifyContent: 'space-around',
         paddingHorizontalRight: 10,
+        right: 10,
+    },
+    cardLabelLeft: {
+        ...commonLabelStyles,
+        justifyContent: 'center',
+        paddingHorizontal: 10,
+        left: 10,
     },
 });
 export default labelsStyles;
