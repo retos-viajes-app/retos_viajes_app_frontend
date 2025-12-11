@@ -2,7 +2,16 @@ import { useRouter } from "expo-router";
 import Challenge from "@/models/challenge";
 import { View,StyleSheet, Text, Pressable, ImageBackground} from "react-native";
 //Icons
-import { Check, Loader, MountainSnow } from "lucide-react-native";
+import {
+    Check,
+    Loader,
+    MountainSnow,
+    Building2,
+    Utensils,
+    Bird,
+    Moon,
+    Droplet,
+} from "lucide-react-native";
 //Styles
 import { Colors } from "@/constants/Colors";
 import labelsStyles from "@/styles/labels";
@@ -16,14 +25,27 @@ interface ChallengeCardProps {
     completed: boolean;
     isForTripInfo?: boolean;
 }
-const ChallengeCard = ({ challenge, completed, isForTripInfo}: ChallengeCardProps) => {
+const ChallengeCard = ({ challenge, completed = false, isForTripInfo = false}: ChallengeCardProps) => {
    const router = useRouter();
    const { t } = useTranslation();
+   const ICONS_MAP: { [key: string]: React.FC<React.ComponentProps<typeof MountainSnow>> } = {
+        MountainSnow: MountainSnow,
+        Building2: Building2,
+        Utensils: Utensils,
+        Bird: Bird,
+        Moon: Moon,
+        Droplet: Droplet,
+    };
+   const CategoryIcon = challenge.category?.icon_name ? ICONS_MAP[challenge.category.icon_name] : MountainSnow;
    const goToChallengeDetail = (challenge: Challenge) => {
       
        router.push({
            pathname: "/(home)/(tabs)/main/trip/challengeDetails",
-           params: { challenge: JSON.stringify(challenge) },
+           params: { 
+            challenge: JSON.stringify(challenge), 
+            completed: JSON.stringify(completed),
+            isForTripInfo: JSON.stringify(isForTripInfo)
+           },
        });
    };
 
@@ -32,7 +54,7 @@ const ChallengeCard = ({ challenge, completed, isForTripInfo}: ChallengeCardProp
         <View style={styles.card}>
             <ImageBackground source={{ uri: challenge.image_url }} style={styles.imageBackground}>
                 <View style={labelsStyles.cardLabelLeft}>
-                    <MountainSnow size={16} color={Colors.colors.text.primary}/>
+                    <CategoryIcon size={16} color={Colors.colors.text.primary}/>
                     <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.text.primary}]}>{challenge.category?.name}</Text>
                 </View>
                 {isForTripInfo && (
