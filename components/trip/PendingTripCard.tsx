@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import Trip from "@/models/trip";
-import { View,StyleSheet, Text,Pressable} from "react-native";
+import { View,StyleSheet, Text,Pressable, ImageBackground} from "react-native";
 import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/Colors";
 import { Calendar } from "lucide-react-native";
@@ -34,7 +34,7 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
     return (
         <Pressable onPress={goToTripInfo}>
             <View style={styles.card}>
-                <View  style={styles.photo}>
+                <ImageBackground source={{ uri: trip.destination_image_url }} style={styles.photo} >
                     <View style={styles.menuItem}>
                         <Calendar size={16} color={Colors.colors.text.primary} style={{ marginLeft: 10 }} />
                         {startMonth !== endMonth ? (
@@ -51,7 +51,7 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
                             )
                         )}
                     </View>
-                </View>
+                </ImageBackground>
                 <View style={styles.content}>
                     <View>
                         <Text>{trip.destination_name}</Text>
@@ -67,6 +67,10 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
 }	
 
 const styles = StyleSheet.create({
+    imageBackground: {
+        borderRadius: 16,
+        overflow: 'hidden',
+    },
     card: {
         height: 192,
         width: 320,
@@ -82,6 +86,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#808080', 
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
+        overflow: 'hidden',
     },
     content: {
         height: 72,

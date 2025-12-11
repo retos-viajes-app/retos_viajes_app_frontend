@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import {Destination} from "@/models/destination"; // Importa el objeto de destino
 import { getDestinationById } from "@/services/destinationService";
@@ -27,7 +27,7 @@ export default function Destino() {
   }, [destination_id]);
   return (
     <View style={{ flex: 1, }}>
-      <View style={styles.backgroundImageContainer}>
+      <ImageBackground source={{ uri: destination?.image_url }} style={styles.imageBackground}>
         <View>
           <Text style={[globalStyles.largeBodySemiBold,{color: '#ffffff'}]}>{destination?.city}</Text>
             <Text style={[globalStyles.smallBodyRegular,{color: '#ffffff'}]}>{destination?.country}</Text>
@@ -38,8 +38,7 @@ export default function Destino() {
           </View>
           <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.success[800], padding: 8}]}>{t("destination.visited")}</Text>
         </View>
-       
-      </View>
+      </ImageBackground>
       <View style={{paddingHorizontal:16, flex: 1}}>
         <View style={[styles.descriptionContainer,{marginBottom: 16, marginTop: 16}]}>
           <Text>{destination?.description}</Text>
@@ -86,14 +85,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20,
   },
-  backgroundImageContainer: {
+  imageBackground: {
     display: 'flex',
     flexDirection: 'row',
     padding: 24,
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    backgroundColor: 'gray',
+    backgroundColor: Colors.colors.background.image,
+    overflow: 'hidden',
   },
   descriptionContainer: {
     display: 'flex',

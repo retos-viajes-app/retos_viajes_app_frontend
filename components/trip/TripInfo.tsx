@@ -45,7 +45,7 @@ function TripInfo({ trip }: TripInfoProps) {
             {/* Update with the real image of the trip destination */}
             <View style={[bannersStyles.bannerCurrentTrip]}>
                 <ImageBackground 
-                    source={require("@/assets/images/ciudad-defecto-destino-grid.jpg")} 
+                    source={{uri: trip.destination_image_url}} 
                     style={styles.image} 
                 >
                     <View style={styles.containerPadding}>
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     image:{
         width: '100%',
         height:137,
+        backgroundColor: Colors.colors.background.default,
     },
     containerPadding:{
         padding: 16,

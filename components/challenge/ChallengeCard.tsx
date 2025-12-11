@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import Challenge from "@/models/challenge";
-import { View,StyleSheet, Text, Pressable} from "react-native";
+import { View,StyleSheet, Text, Pressable, ImageBackground} from "react-native";
+import { Colors } from "@/constants/Colors";
 
 
 const ChallengeCard = ({ challenge}: { challenge: Challenge}) => {
@@ -16,14 +17,14 @@ const ChallengeCard = ({ challenge}: { challenge: Challenge}) => {
   return (
     <Pressable onPress={() => goToChallengeDetail(challenge)}>
         <View style={styles.card}>
-            <View  style={styles.photo}>
+            <ImageBackground source={{ uri: challenge.image_url }} style={styles.imageBackground}>
                 <View>
 
                 </View>
                 <View>
 
                 </View>
-            </View>
+            </ImageBackground>
             <View style={styles.content}>
                 <Text>{challenge.title}</Text>
                 <Text>{challenge.short_description}</Text>
@@ -59,16 +60,17 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowRadius: 10,
     },
-    photo: {
+    imageBackground: {
         flex: 1,
         height: 120,
         padding: 10,
         justifyContent: 'space-between',
         alignItems: 'baseline',
         alignSelf: 'stretch',
-        backgroundColor: '#808080', 
+        backgroundColor: Colors.colors.background.image, 
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
+        overflow: 'hidden',
     },
     content: {
         flex: 1,
