@@ -90,7 +90,18 @@ const challengeDetailsScreen = () => {
             distance={500}
             address="Malaga"
            />
+            <View style={{gap:16}}>
+                <Text style={{...globalStyles.subtitle, color: Colors.colors.text.primary}}>Te recomendamos...</Text>
+                {challenge.recommendations?.map((recommendation) => (
+                    <Text style={{...globalStyles.largeBodyMedium, color: Colors.colors.text.secondary}} key={recommendation.id}>{recommendation.text}</Text>
+                ))}
+                <Text>Lista moqueada</Text>
+                <Text>Lista moqueada</Text>
+                <Text>Lista moqueada</Text>
+                <Text>Lista moqueada</Text>
+            </View>
             </ScrollView>
+     
             {isForTripInfo && !completed &&
             <View style={buttonStyles.fixedButtonContainer}>
                 <PrimaryButton
