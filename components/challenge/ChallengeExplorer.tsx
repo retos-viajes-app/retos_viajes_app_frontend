@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import IconTextInput from "@/components/forms/IconTextInput";
 import { Search } from "lucide-react-native";
 
@@ -8,7 +8,7 @@ import Challenge from "@/models/challenge";
 import VerticalDivider from "../ui/verticalSeparator";
 //styles
 import { Colors } from "@/constants/Colors";
-import {Filter,ArrowDownWideNarrow} from "lucide-react-native"
+import {Filter,ArrowDownWideNarrow, ArrowUpWideNarrow} from "lucide-react-native"
 interface ChallengeExplorerProps {
     challenges: Challenge[];
     onFiltered: (filtered: Challenge[]) => void; 
@@ -17,6 +17,7 @@ interface ChallengeExplorerProps {
 function ChallengeExplorer({ challenges, onFiltered }: ChallengeExplorerProps) {
     const [search, setSearch] = useState("");
     const { t } = useTranslation();
+    const [isProximityAsc, setIsProximityAsc] = useState(true);
 
     const filteredChallenges = useMemo(() => {
         if (!search.trim()) return challenges;
@@ -27,6 +28,27 @@ function ChallengeExplorer({ challenges, onFiltered }: ChallengeExplorerProps) {
             challenge.long_description?.toLowerCase().includes(search.toLowerCase())
         );
     }, [search, challenges]); 
+
+    function orderByProximity() {
+        var sorted: Challenge[] = [];
+        if (isProximityAsc){
+            sorted = [...challenges].sort((a, b) => {
+                    if (a.distance_from_challenge_to_city_center === undefined) return 1;
+                    if (b.distance_from_challenge_to_city_center === undefined) return -1;
+                    return b.distance_from_challenge_to_city_center - a.distance_from_challenge_to_city_center;
+                });
+        }else{
+             sorted = [...challenges].sort((a, b) => {
+                if (a.distance_from_challenge_to_city_center === undefined) return 1;
+                if (b.distance_from_challenge_to_city_center === undefined) return -1;
+                return a.distance_from_challenge_to_city_center - b.distance_from_challenge_to_city_center;
+            });
+        }
+           
+
+        onFiltered(sorted);
+        setIsProximityAsc(!isProximityAsc);
+    }
 
     useEffect(() => {
         onFiltered(filteredChallenges);
@@ -47,8 +69,11 @@ function ChallengeExplorer({ challenges, onFiltered }: ChallengeExplorerProps) {
                 </View>
                 <VerticalDivider height={35} color={Colors.colors.border.default} />
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                    <ArrowDownWideNarrow size={20} color={Colors.colors.text.primary}  />
-                    <Text>{t('challengeExplorer.proximity')}</Text>
+                    <Pressable onPress={orderByProximity}>
+                        {isProximityAsc ? <ArrowUpWideNarrow size={20} color={Colors.colors.text.primary} /> : 
+                        <ArrowDownWideNarrow size={20} color={Colors.colors.text.primary} />}
+                        <Text>{t('challengeExplorer.proximity')}</Text>
+                    </Pressable>
                 </View>
             </View>
         </View>

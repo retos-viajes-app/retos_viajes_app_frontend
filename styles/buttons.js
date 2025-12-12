@@ -29,8 +29,6 @@ const buttonStyles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     paddingVertical: 0,
-    borderTopWidth: 1,
-    borderTopColor: Colors.colors.gray[200],
     paddingHorizontal: 16,
   },
 

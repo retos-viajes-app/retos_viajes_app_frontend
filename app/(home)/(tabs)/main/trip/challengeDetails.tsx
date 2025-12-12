@@ -48,7 +48,7 @@ const challengeDetailsScreen = () => {
             <ScrollView
                 style={{...boxesStyles.padding16,backgroundColor: Colors.colors.background.default, gap:24}}
                 ref={scrollRef}
-                contentContainerStyle={{ paddingBottom: 4, paddingTop: 0 }}
+                contentContainerStyle={{ paddingBottom: 80, paddingTop: 0 }}
             >
 
            <ImageBackground
@@ -93,12 +93,13 @@ const challengeDetailsScreen = () => {
             <View style={{gap:16}}>
                 <Text style={{...globalStyles.subtitle, color: Colors.colors.text.primary}}>Te recomendamos...</Text>
                 {challenge.recommendations?.map((recommendation) => (
-                    <Text style={{...globalStyles.largeBodyMedium, color: Colors.colors.text.secondary}} key={recommendation.id}>{recommendation.text}</Text>
+                    <>
+                        <Text style={{...globalStyles.largeBodyMedium, color: Colors.colors.text.secondary}} key={1}>{recommendation.text}</Text>
+                        <Text style={{...globalStyles.largeBodyMedium, color: Colors.colors.text.secondary}} key={2}>{recommendation.text}</Text>
+                        <Text style={{...globalStyles.largeBodyMedium, color: Colors.colors.text.secondary}} key={3}>{recommendation.text}</Text>
+                        <Text style={{...globalStyles.largeBodyMedium, color: Colors.colors.text.secondary}} key={4}>{recommendation.text}</Text>
+                    </>
                 ))}
-                <Text>Lista moqueada</Text>
-                <Text>Lista moqueada</Text>
-                <Text>Lista moqueada</Text>
-                <Text>Lista moqueada</Text>
             </View>
             </ScrollView>
      
