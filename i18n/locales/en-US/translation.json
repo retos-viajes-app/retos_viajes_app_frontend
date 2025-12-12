@@ -331,6 +331,7 @@
   "challenge":{
     "title": "Challenge",
     "completed": "completed",
-    "notCompleted": "To complete"
+    "notCompleted": "To complete",
+    "complete": "Complete"
   }
 }

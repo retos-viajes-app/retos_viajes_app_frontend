@@ -1,12 +1,12 @@
 import TripInfo from "@/components/trip/TripInfo";
 import { useLocalSearchParams } from "expo-router";
-import { View, Text, Image, ImageBackground } from "react-native";
+import { View, Text, Image, ImageBackground, ScrollView } from "react-native";
 import { Colors } from "@/constants/Colors";
 import Challenge from "@/models/challenge";
 import globalStyles from "@/styles/global";
 import boxesStyles from "@/styles/boxes";
 import DetailsTable from "@/components/challenge/DetailsTable";
-import { use, useState } from "react";
+import { use, useRef, useState } from "react";
 import MapWithText from "@/components/maps/MapWithText";
 import {
     Check,
@@ -21,6 +21,9 @@ import {
 import labelsStyles from "@/styles/labels";
 import circles from "@/styles/circles";
 import { useTranslation } from "react-i18next";
+import PaddingView from "@/components/views/PaddingView";
+import buttonStyles from "@/styles/buttons";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
 
 const challengeDetailsScreen = () => {
     const params = useLocalSearchParams();
@@ -28,7 +31,8 @@ const challengeDetailsScreen = () => {
     const completed: boolean = JSON.parse(params.completed as string);
     const isForTripInfo: boolean = JSON.parse(params.isForTripInfo as string);
     const {t} =  useTranslation();
-    const [validImage, setValidImage] = useState(true);
+    const scrollRef = useRef<ScrollView>(null);
+
      const ICONS_MAP: { [key: string]: React.FC<React.ComponentProps<typeof MountainSnow>> } = {
         MountainSnow: MountainSnow,
         Building2: Building2,
@@ -40,7 +44,13 @@ const challengeDetailsScreen = () => {
     const CategoryIcon = challenge.category?.icon_name ? ICONS_MAP[challenge.category.icon_name] : MountainSnow;
 
         return (
-        <View style={{...boxesStyles.padding16,flex:1,backgroundColor: Colors.colors.background.default, gap:24}}>
+        <View style={{flex:1}}>
+            <ScrollView
+                style={{...boxesStyles.padding16,backgroundColor: Colors.colors.background.default, gap:24}}
+                ref={scrollRef}
+                contentContainerStyle={{ paddingBottom: 4, paddingTop: 0 }}
+            >
+
            <ImageBackground
             style={{...boxesStyles.radius, width: '100%', height: 140, overflow:'hidden', backgroundColor: Colors.colors.background.image}}
             source={{ uri: challenge.image_url }        }
@@ -80,6 +90,16 @@ const challengeDetailsScreen = () => {
             distance={500}
             address="Malaga"
            />
+            </ScrollView>
+            {isForTripInfo && !completed &&
+            <View style={buttonStyles.fixedButtonContainer}>
+                <PrimaryButton
+                title={t("challenge.complete")}
+                style={{ width: "100%" }}
+                onPress={() => {}}
+                />
+            </View>}
+
         </View>
     );
 }
