@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import Challenge from "@/models/challenge";
 import { View,StyleSheet, Text, Pressable, ImageBackground} from "react-native";
+import StatusToogle from "../ui/StatusToogle";
 //Icons
 import {
     Check,
@@ -58,18 +59,7 @@ const ChallengeCard = ({ challenge, completed = false, isForTripInfo = false}: C
                     <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.text.primary}]}>{challenge.category?.name}</Text>
                 </View>
                 {isForTripInfo && (
-                    !completed ?
-                    <View style={labelsStyles.cardLabelRight}>
-                        <Loader size={16} color={Colors.colors.text.secondary}/>
-                        <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.text.secondary}]}>{t("challenge.notCompleted")}</Text>
-                    </View>
-                    :
-                    <View style={[labelsStyles.cardLabelCheckedRight, {backgroundColor: Colors.colors.secondary[50]}]}>
-                        <View style={[circles.circle30,{backgroundColor: Colors.colors.secondary[100]}]}>
-                            <Check color={Colors.colors.success[800]}/>
-                        </View>
-                        <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.success[800], padding: 8}]}>{t("challenge.completed")}</Text>
-                    </View>
+                   <StatusToogle completed={completed} textYes="challenge.completed" textNo="challenge.notCompleted"/>
                 )}
             </ImageBackground>
             <View style={styles.content}>

@@ -272,6 +272,7 @@
   "destination":{
     "title": "Destino",
     "visited": "Visitado",
+    "toVisit": "Por visitar",
     "languages": "Idioma(s)",
     "currency": "Moneda"
   },

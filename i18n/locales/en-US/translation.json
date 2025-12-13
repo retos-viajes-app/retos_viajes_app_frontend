@@ -216,7 +216,8 @@
     "title": "Destination",
     "visited": "Visited",
     "languages": "Language(s)",
-    "currency": "Currency"
+    "currency": "Currency",
+    "toVisit": "To visit"
   },
   "language": {
     "es": "Spanish",
