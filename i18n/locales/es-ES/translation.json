@@ -182,12 +182,6 @@
   "pendingTrips":{
     "title": "Viajes pendientes"
   },
-  "challengeDetail":{
-    "estimatedTime": "Tiempo estimado",
-    "price": "Precio",
-    "availablity": "Disponibilidad",
-    "experience": "experiencia"
-  },
   "errorsBackend": {
     "invalidCredentials": "Usuario o contraseña incorrectos",
     "userNotVerified": "Usuario no verificado",
