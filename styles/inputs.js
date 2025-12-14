@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors"; // Asegúrate de que esta ruta sea correcta
 import globalStyles from "./global";
 
-const intputStyles = StyleSheet.create({
+const inputStyles = StyleSheet.create({
   default: {
     ...globalStyles.largeBodyMedium,
     padding: 10,
@@ -46,4 +46,4 @@ const intputStyles = StyleSheet.create({
   },
 });
 
-export default intputStyles;
+export default inputStyles;

@@ -10,6 +10,7 @@ import AvatarWithBadge from "@/components/ui/AvatarWithBadge";
 import boxesStyles from "@/styles/boxes";
 //router
 import { useRouter } from "expo-router";
+import inputStyles from "@/styles/inputs";
 
 const PendingTripCard = ({ trip }: { trip: Trip}) => {
     const { user } = useAuth();
@@ -32,7 +33,7 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
         });
     }
     return (
-        <Pressable onPress={goToTripInfo}>
+        <Pressable onPress={goToTripInfo} style={trip.is_ongoing ? {...inputStyles.focused} : {}}>
             <View style={styles.card}>
                 <View  style={styles.photo}>
                     <View style={styles.menuItem}>
