@@ -32,9 +32,9 @@ const ChallengeCard = ({ challenge}: { challenge: Challenge}) => {
                     <Text>A {challenge.distance_from_challenge_to_city_center.toFixed(2)}km del centro </Text>
                     : null}
                     
-                    <Text>{challenge.detail?.price ? `${challenge.detail.price} $` : ""}</Text>
-                    <Text>{challenge.detail?.xp ? `${challenge.detail.xp} pts` : ""}</Text>
-                    <Text>{challenge.detail?.duration ? `${challenge.detail.duration} h` : ""}</Text>
+                    <Text>{challenge.details?.[0]?.price ? `${challenge.details[0].price} $` : ""}</Text>
+                    <Text>{challenge.details?.[0]?.xp ? `${challenge.details[0].xp} pts` : ""}</Text>
+                    <Text>{challenge.details?.[0]?.duration ? `${challenge.details[0].duration} h` : ""}</Text>
                 </View>
             </View>
         </View>

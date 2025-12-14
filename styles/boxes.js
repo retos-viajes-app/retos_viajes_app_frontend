@@ -1,4 +1,3 @@
-import { Radius } from "lucide-react-native";
 import { StyleSheet } from "react-native";
     
 const boxesStyles = StyleSheet.create({
@@ -12,12 +11,6 @@ const boxesStyles = StyleSheet.create({
         // 💡 Sombra para Android
         elevation: 4
     },
-    radius: {
-        borderRadius: 20
-    },
-    padding16: {
-        padding: 16
-    }
 })
 
 export default boxesStyles;
