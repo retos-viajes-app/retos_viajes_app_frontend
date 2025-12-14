@@ -1,12 +1,12 @@
-import i18n from "@/i18n";
 import axios from "axios";
 
-export const handleApiError = ( error: unknown, defaultMessageKey: string = "errorsBackend.genericError") => {
+export const handleApiError = (error: unknown, defaultMessage: string = "Error inesperado") => {
   if (axios.isAxiosError(error)) {
-    const backendMessage = error.response?.data?.detail || error.response?.data?.message;
-    if(backendMessage){
-      return backendMessage;
-    }
+    return (
+      error.response?.data?.detail ||
+      error.response?.data?.message ||
+      defaultMessage
+    );
   }
-  return i18n.t(defaultMessageKey);
+  return defaultMessage;
 };
