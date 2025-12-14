@@ -137,6 +137,12 @@
   "pendingTrips":{
     "title": "Pending Trips"
   },
+  "challengeDetail":{
+    "estimatedTime": "Estimated time",
+    "price": "Price",
+    "availablity": "Availability",
+    "experience": "experience"
+  },
   "errorsBackend": {
     "invalidCredentials": "Incorrect username or password",
     "userNotVerified": "User not verified",
@@ -210,7 +216,8 @@
     "title": "Destination",
     "visited": "Visited",
     "languages": "Language(s)",
-    "currency": "Currency"
+    "currency": "Currency",
+    "toVisit": "To visit"
   },
   "language": {
     "es": "Spanish",
@@ -323,6 +330,9 @@
     "proximity": "Proximity"
   },
   "challenge":{
-    "title": "Challenge"
+    "title": "Challenge",
+    "completed": "completed",
+    "notCompleted": "To complete",
+    "complete": "Complete"
   }
 }

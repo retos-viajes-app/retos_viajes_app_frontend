@@ -1,29 +1,67 @@
 import { useRouter } from "expo-router";
 import Challenge from "@/models/challenge";
-import { View,StyleSheet, Text, Pressable} from "react-native";
+import { View,StyleSheet, Text, Pressable, ImageBackground} from "react-native";
+import StatusToogle from "../ui/StatusToogle";
+//Icons
+import {
+    Check,
+    Loader,
+    MountainSnow,
+    Building2,
+    Utensils,
+    Bird,
+    Moon,
+    Droplet,
+} from "lucide-react-native";
+//Styles
+import { Colors } from "@/constants/Colors";
+import labelsStyles from "@/styles/labels";
+import globalStyles from "@/styles/global";
+import circles from "@/styles/circles";
+import { useTranslation } from "react-i18next";
 
 
-const ChallengeCard = ({ challenge}: { challenge: Challenge}) => {
-
+interface ChallengeCardProps {
+    challenge: Challenge;
+    completed: boolean;
+    isForTripInfo?: boolean;
+}
+const ChallengeCard = ({ challenge, completed = false, isForTripInfo = false}: ChallengeCardProps) => {
+   const router = useRouter();
+   const { t } = useTranslation();
+   const ICONS_MAP: { [key: string]: React.FC<React.ComponentProps<typeof MountainSnow>> } = {
+        MountainSnow: MountainSnow,
+        Building2: Building2,
+        Utensils: Utensils,
+        Bird: Bird,
+        Moon: Moon,
+        Droplet: Droplet,
+    };
+   const CategoryIcon = challenge.category?.icon_name ? ICONS_MAP[challenge.category.icon_name] : MountainSnow;
    const goToChallengeDetail = (challenge: Challenge) => {
-       const router = useRouter();
+      
        router.push({
            pathname: "/(home)/(tabs)/main/trip/challengeDetails",
-           params: { challenge: JSON.stringify(challenge) },
+           params: { 
+            challenge: JSON.stringify(challenge), 
+            completed: JSON.stringify(completed),
+            isForTripInfo: JSON.stringify(isForTripInfo)
+           },
        });
    };
 
   return (
     <Pressable onPress={() => goToChallengeDetail(challenge)}>
         <View style={styles.card}>
-            <View  style={styles.photo}>
-                <View>
-
+            <ImageBackground source={{ uri: challenge.image_url }} style={styles.imageBackground}>
+                <View style={labelsStyles.cardLabelLeft}>
+                    <CategoryIcon size={16} color={Colors.colors.text.primary}/>
+                    <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.text.primary}]}>{challenge.category?.name}</Text>
                 </View>
-                <View>
-
-                </View>
-            </View>
+                {isForTripInfo && (
+                   <StatusToogle completed={completed} textYes="challenge.completed" textNo="challenge.notCompleted"/>
+                )}
+            </ImageBackground>
             <View style={styles.content}>
                 <Text>{challenge.title}</Text>
                 <Text>{challenge.short_description}</Text>
@@ -32,9 +70,9 @@ const ChallengeCard = ({ challenge}: { challenge: Challenge}) => {
                     <Text>A {challenge.distance_from_challenge_to_city_center.toFixed(2)}km del centro </Text>
                     : null}
                     
-                    <Text>{challenge.details?.[0]?.price ? `${challenge.details[0].price} $` : ""}</Text>
-                    <Text>{challenge.details?.[0]?.xp ? `${challenge.details[0].xp} pts` : ""}</Text>
-                    <Text>{challenge.details?.[0]?.duration ? `${challenge.details[0].duration} h` : ""}</Text>
+                    <Text>{challenge.detail?.price ? `${challenge.detail.price} $` : ""}</Text>
+                    <Text>{challenge.detail?.xp ? `${challenge.detail.xp} pts` : ""}</Text>
+                    <Text>{challenge.detail?.duration ? `${challenge.detail.duration} h` : ""}</Text>
                 </View>
             </View>
         </View>
@@ -59,16 +97,17 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowRadius: 10,
     },
-    photo: {
+    imageBackground: {
         flex: 1,
         height: 120,
         padding: 10,
         justifyContent: 'space-between',
         alignItems: 'baseline',
         alignSelf: 'stretch',
-        backgroundColor: '#808080', 
+        backgroundColor: Colors.colors.background.image, 
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
+        overflow: 'hidden',
     },
     content: {
         flex: 1,
@@ -80,7 +119,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         borderBottomLeftRadius: 16,
         borderBottomRightRadius: 16,
-    }
+    },
 });
 
 export default ChallengeCard;
