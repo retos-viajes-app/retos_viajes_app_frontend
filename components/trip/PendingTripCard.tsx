@@ -34,8 +34,8 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
         });
     }
     return (
-        <Pressable onPress={goToTripInfo} style={trip.is_ongoing ? {...inputStyles.focused} : {}}>
-            <View style={styles.card}>
+        <Pressable onPress={goToTripInfo}>
+            <View style={[styles.card, trip.is_ongoing ? boxesStyles.shadowFocused : {}]}>
                 <ImageBackground source={{ uri: trip.destination_image_url }} style={styles.photo} >
                     <View style={labelsStyles.cardLabelRight}>
                         <Calendar size={16} color={Colors.colors.text.primary}/>

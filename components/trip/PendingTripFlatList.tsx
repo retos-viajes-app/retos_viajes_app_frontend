@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 const PendingTripFlatList = () => {
 
     const [pendingTrips, setPendingTrips] = useState<Trip[]>([]);
-
+    
     const fetchPendingTrips = async () => {
       const response = await getPendingTripsShortInfo();
 
@@ -32,12 +32,17 @@ const PendingTripFlatList = () => {
     }, []);
 
     const {t} = useTranslation();
+    const sortedPendingTrips = [...pendingTrips].sort((a, b) => {
+      if (a.is_ongoing && !b.is_ongoing) return -1
+      if (!a.is_ongoing && b.is_ongoing) return 1
+      return 0
+    })
     
   return (
     <>
       <Text style={[globalStyles.title,{"paddingLeft": 16, "paddingBottom": 16}]}>{t('pendingTrips.title')}</Text>
       <FlatList
-        data={pendingTrips}
+        data={sortedPendingTrips}
         renderItem={({ item }) => <PendingTripCard trip={item} />}
         horizontal
         keyExtractor={item => item.id!.toString()}
