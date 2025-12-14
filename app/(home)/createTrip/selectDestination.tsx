@@ -86,7 +86,7 @@ const SelectDestination = ()=> {
     >
     <ImageBackground 
       //source={item.image_url ? { uri: item.image_url } : require('@/assets/images/ciudad-defecto-destino-grid.jpg')}
-      source= {require('@/assets/images/ciudad-defecto-destino-grid.jpg')}
+      source= {{uri: item.image_url ?? ''}}
       style={styles.imageBackground}
       imageStyle={styles.imageStyle}
     >
@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
    height: '100%',
    justifyContent: 'flex-end', // Text at the bottom
    padding: 0,
+   backgroundColor: Colors.colors.background.image
   },
   imageStyle: {
    borderRadius: 16,

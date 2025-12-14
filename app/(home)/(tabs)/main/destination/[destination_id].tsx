@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import {Destination} from "@/models/destination"; // Importa el objeto de destino
 import { getDestinationById } from "@/services/destinationService";
@@ -7,10 +7,11 @@ import ChallengesFlatList from "@/components/challenge/ChallengeFlatList";
 //Styles
 import globalStyles from "@/styles/global";
 import { Colors } from "@/constants/Colors";
-import buttonStyles from "@/styles/circles";
+import circle from "@/styles/circles";
 import {Check,Map} from "lucide-react-native";
 import Divider from "@/components/Divider";
 import { useTranslation } from "react-i18next";
+import StatusToogle from "@/components/ui/StatusToogle";
 
 export default function Destino() {
   const { t } = useTranslation();
@@ -27,26 +28,20 @@ export default function Destino() {
   }, [destination_id]);
   return (
     <View style={{ flex: 1, }}>
-      <View style={styles.backgroundImageContainer}>
+      <ImageBackground source={{ uri: destination?.image_url }} style={styles.imageBackground}>
         <View>
           <Text style={[globalStyles.largeBodySemiBold,{color: '#ffffff'}]}>{destination?.city}</Text>
             <Text style={[globalStyles.smallBodyRegular,{color: '#ffffff'}]}>{destination?.country}</Text>
         </View>
-        <View style={[styles.visitadoContainer, {backgroundColor: Colors.colors.secondary[50]}]}>
-          <View style={[buttonStyles.circle30,{backgroundColor: Colors.colors.secondary[100]}]}>
-              <Check color={Colors.colors.success[800]}/>
-          </View>
-          <Text style={[globalStyles.mediumBodyMedium, {color: Colors.colors.success[800], padding: 8}]}>{t("destination.visited")}</Text>
-        </View>
-       
-      </View>
+         <StatusToogle completed={destination?.visited!} textYes="destination.visited" textNo="destination.toVisit"/>
+      </ImageBackground>
       <View style={{paddingHorizontal:16, flex: 1}}>
         <View style={[styles.descriptionContainer,{marginBottom: 16, marginTop: 16}]}>
           <Text>{destination?.description}</Text>
         </View>
         <View style={styles.countryTripInfoContainer}>
           <View style={styles.countryTripInfo}>
-            <View style={[buttonStyles.circle48, {backgroundColor: Colors.colors.primary[100]}, {borderWidth: 1, borderColor: Colors.colors.primary[200]}]}>
+            <View style={[circle.circle48, {backgroundColor: Colors.colors.primary[100]}, {borderWidth: 1, borderColor: Colors.colors.primary[200]}]}>
               <Map size={24} color={Colors.colors.primary[900]} strokeWidth={1} />
             </View>
             <View style={styles.countryTripInfoText}>
@@ -56,7 +51,7 @@ export default function Destino() {
           </View>
           <Divider full={true}></Divider>
           <View style={styles.countryTripInfo}>
-            <View style={[buttonStyles.circle48, {backgroundColor: Colors.colors.primary[100]}, {borderWidth: 1, borderColor: Colors.colors.primary[200]}]}>
+            <View style={[circle.circle48, {backgroundColor: Colors.colors.primary[100]}, {borderWidth: 1, borderColor: Colors.colors.primary[200]}]}>
               <Map size={24} color={Colors.colors.primary[900]} strokeWidth={1} />
             </View>
             <View style={styles.countryTripInfoText}>
@@ -86,14 +81,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20,
   },
-  backgroundImageContainer: {
+  imageBackground: {
     display: 'flex',
     flexDirection: 'row',
     padding: 24,
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    backgroundColor: 'gray',
+    backgroundColor: Colors.colors.background.image,
+    overflow: 'hidden',
   },
   descriptionContainer: {
     display: 'flex',

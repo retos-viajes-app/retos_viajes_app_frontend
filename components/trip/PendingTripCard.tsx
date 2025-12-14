@@ -1,10 +1,11 @@
 import { useAuth } from "@/hooks/useAuth";
 import Trip from "@/models/trip";
-import { View,StyleSheet, Text,Pressable} from "react-native";
+import { View,StyleSheet, Text,Pressable, ImageBackground} from "react-native";
 import { useTranslation } from "react-i18next";
 import { Colors } from "@/constants/Colors";
 import { Calendar } from "lucide-react-native";
 import AvatarWithBadge from "@/components/ui/AvatarWithBadge";
+import labelsStyles from "@/styles/labels";
 
 //Styles
 import boxesStyles from "@/styles/boxes";
@@ -35,24 +36,24 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
     return (
         <Pressable onPress={goToTripInfo} style={trip.is_ongoing ? {...inputStyles.focused} : {}}>
             <View style={styles.card}>
-                <View  style={styles.photo}>
-                    <View style={styles.menuItem}>
-                        <Calendar size={16} color={Colors.colors.text.primary} style={{ marginLeft: 10 }} />
+                <ImageBackground source={{ uri: trip.destination_image_url }} style={styles.photo} >
+                    <View style={labelsStyles.cardLabelRight}>
+                        <Calendar size={16} color={Colors.colors.text.primary}/>
                         {startMonth !== endMonth ? (
                             startYear !== endYear ? (
-                                <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                                <Text>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
                             ) : (
-                                <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                                <Text>{startDay} {t(`months.${startMonth}`)} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
                             )
                         ) : (      
                             startYear !== endYear ? (
-                                <Text style={styles.dateText}>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                                <Text>{startDay} {t(`months.${startMonth}`)} {startYear} - {endDay} {t(`months.${endMonth}`)} {endYear}</Text>
                             ) : ( 
-                                <Text style={styles.dateText}>{startDay}-{endDay} {t(`months.${endMonth}`)} {endYear}</Text>
+                                <Text>{startDay}-{endDay} {t(`months.${endMonth}`)} {endYear}</Text>
                             )
                         )}
                     </View>
-                </View>
+                </ImageBackground>
                 <View style={styles.content}>
                     <View>
                         <Text>{trip.destination_name}</Text>
@@ -68,6 +69,10 @@ const PendingTripCard = ({ trip }: { trip: Trip}) => {
 }	
 
 const styles = StyleSheet.create({
+    imageBackground: {
+        borderRadius: 16,
+        overflow: 'hidden',
+    },
     card: {
         height: 192,
         width: 320,
@@ -83,6 +88,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#808080', 
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
+        overflow: 'hidden',
     },
     content: {
         height: 72,
@@ -111,10 +117,6 @@ const styles = StyleSheet.create({
         width: 'auto',
         height: 33,
     },
-    dateText:{
-        marginRight: 10,
-        marginLeft: 10,
-    }
 });
 
 export default PendingTripCard;

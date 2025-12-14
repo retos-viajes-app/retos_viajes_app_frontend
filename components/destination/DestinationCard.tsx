@@ -1,11 +1,12 @@
 
-import {StyleSheet, View, Text, TouchableOpacity} from "react-native";
+import {StyleSheet, View, Text, TouchableOpacity, ImageBackground} from "react-native";
 import { Destination } from "@/models/destination";
 import {  useRouter } from "expo-router";
 import { ArrowRight } from "lucide-react-native";
 import { Colors } from "@/constants/Colors";
 import LinearGradientBlack from "../ui/LineaGradientBlack";
 import boxesStyles from "@/styles/boxes";
+import globalStyles from "@/styles/global";
 
 const DestinationCard = ({ destination }: { destination: Destination }) => {
     const router = useRouter();
@@ -14,31 +15,31 @@ const DestinationCard = ({ destination }: { destination: Destination }) => {
         router.push(`/main/destination/${destination.id}`);
     };
     return (
-        <View style={styles.card}>
-            <LinearGradientBlack style={styles.footer}>
-                <View style={styles.textContainer}>
-                        <Text >{destination.city}</Text>
-                        <Text>{destination.country}</Text>
-                </View>
-                
-                <TouchableOpacity style={styles.circle} onPress={handlePress}>
-                     <ArrowRight size={18} color={Colors.colors.primary[500]}/>
-                </TouchableOpacity>
-            </LinearGradientBlack>
-        </View>
+        
+        <ImageBackground source={{ uri: destination.image_url }} style={styles.imageBackground}>
+            <View style={styles.card}>
+                <LinearGradientBlack style={styles.footer}>
+                    <View style={styles.textContainer}>
+                            <Text style={[globalStyles.mediumBodyBold, {color: 'white'}]}>{destination.city}</Text>
+                            <Text style={[globalStyles.smallBodyRegular, {color: 'white'}]}>{destination.country}</Text>
+                    </View>
+                    
+                    <TouchableOpacity style={styles.circle} onPress={handlePress}>
+                        <ArrowRight size={18} color={Colors.colors.primary[500]}/>
+                    </TouchableOpacity>
+                </LinearGradientBlack>
+            </View>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
     card: {
-        borderRadius: 16,
-        width: 172,
-        height: 240,
         flexDirection: 'column',
         justifyContent: 'flex-end',
         alignItems: 'flex-start',
-        backgroundColor: 'lightgray',
-        ...boxesStyles.shadow,
+        width: 172,
+        height: 240,
     },
     footer: {
         padding: 10,
@@ -62,6 +63,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 16, // La mitad de width/height
         backgroundColor: '#FFF',
+    },
+    imageBackground: {
+        borderRadius: 16,
+        overflow: 'hidden',
+        width: 172,
+        height: 240,
+        ...boxesStyles.shadow,
+        backgroundColor: Colors.colors.background.image,
     },
 });
 

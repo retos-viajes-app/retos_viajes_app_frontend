@@ -23,7 +23,14 @@ const buttonStyles = StyleSheet.create({
         width: 96,
         height: 32,
         backgroundColor: Colors.colors.textWhite.primary,
-    }
+    },
+    fixedButtonContainer: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    paddingVertical: 0,
+    paddingHorizontal: 16,
+  },
 
 })
 
