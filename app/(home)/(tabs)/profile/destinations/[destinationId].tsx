@@ -53,7 +53,7 @@ export default function DestinationDetailScreen() {
   if (error) {
     return (
       <View style={styles.centeredContainer}>
-        <Text>{error}</Text>
+       <Text>{t(error)}</Text>
       </View>
     );
   }

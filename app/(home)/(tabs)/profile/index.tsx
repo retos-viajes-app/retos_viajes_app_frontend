@@ -40,8 +40,8 @@ export default function ProfileScreen() {
     if (error) {
       Toast.show({
         type: 'error',
-        text1: 'Error de Conexión',
-        text2: error,
+        text1: t('error'),
+        text2: t(error),
       });
     }
   }, [error]);
@@ -120,14 +120,14 @@ export default function ProfileScreen() {
     <>
       <View style={{gap: 24}}>
         <ProfileHeader
-          name={profile?.name ?? user?.name ?? 'Nombre...'}
-          username={profile?.username ?? user?.username ?? 'Nombre de usuario...'}
-          location={"Málaga, España"}
+          name={profile?.name ?? user?.name ?? t('profile.defaultName')}
+          username={profile?.username ?? user?.username ?? t('profile.defaultUsername')}
+          location={"Málaga(NoReal), España"}
           bio={profile?.bio ?? user?.bio ?? null}
           profileImage={profile?.profile_photo_url ?? user?.profile_photo_url ?? null}
         />
         <XPProgressBar
-          title={profile?.xp_info.title || "Viajero"}
+          title={profile?.xp_info.title || t('profile.travelerTitle')}
           currentXp={profile?.xp_info.level_current_xp || 0}
           totalXp={profile?.xp_info.level_total_xp || 0}
         />

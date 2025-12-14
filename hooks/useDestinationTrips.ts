@@ -34,7 +34,7 @@ export const useDestinationTrips = (userId?: number, destinationId?: number) => 
       setHasMore(res.data.pagination.has_more);
     } catch (e) {
       console.error("Error cargando los viajes del destino:", e);
-      setError("No se pudieron cargar los viajes.");
+     setError("profile.errors.loadDestinationTrips");
     } finally {
       setIsLoading(false);
     }

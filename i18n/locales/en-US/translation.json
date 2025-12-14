@@ -70,6 +70,17 @@
     "noMorePosts": "You've reached the end 👋",
     "errorLoadingPosts": "Error loading posts.",
     "noPostsYet": "There's no activity to show yet. Explore and join in!",
+     "posts": {
+      "completedAMission": "has completed a mission",
+      "likesText_zero": "Be the first to like this",
+      "likesText_one": "Liked by <bold>1 traveler</bold>",
+      "likesText_other": "Liked by <bold>{{count}} travelers</bold>"
+    },
+    "connections": {
+      "accept": "Accept",
+      "deny": "Decline",
+      "noPending": "You have no pending requests"
+    },
     "notifications": {
       "like": "<username/> liked your challenge <title/>.",
       "badge": "Congratulations! You earned the <badge/> badge.",
@@ -78,6 +89,50 @@
       "noNotifications": "You have no pending requests",
       "connectionNotifications": "Friend requests"
     }
+  },
+  "profile": {
+    "editProfile": "Edit Profile",
+    "logout": "Log Out",
+    "defaultName": "Name...",
+    "defaultUsername": "Username...",
+    "travelerTitle": "Traveler",
+    "trip_one": "{{count}} Trip",
+    "trip_other": "{{count}} Trips",
+    "myTrips": "My Trips",
+    "myBadges": "My Badges",
+    "visited": "Visited",
+    "challenges": {
+      "completed_one": "{{count}} mission completed",
+      "completed_other": "{{count}} missions completed"
+    },
+    "destinationScreen": {
+      "title": "{{userName}}'s Trips"
+    },
+    "tripScreen": {
+      "title": "Trip to {{cityName}} by {{userName}}"
+    },
+    "stats": {
+      "countries": "COUNTRIES",
+      "missions": "MISSIONS",
+      "contacts": "CONTACTS"
+    },
+    "badges": {
+      "all": "All",
+      "completed": "Completed",
+      "incomplete": "Pending"
+    },
+    "errors": {
+      "loadProfile": "Could not load profile.",
+      "loadTrips": "Could not load trips.",
+      "loadBadges": "Could not load badges.",
+      "loadMoreTrips": "Error loading more trips.",
+      "loadDestinationTrips": "Could not load trips for this destination."
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "noNotifications": "You have no pending requests",
+    "connectionNotifications": "Friend requests"
   },
   "suggestedUsers": {
     "title": "Connect with other travelers",

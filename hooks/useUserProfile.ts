@@ -39,7 +39,7 @@ export const useUserProfile = (userId?: number) => {
       .then(res => setProfile(res.data))
       .catch(e => {
         console.error("Error cargando el perfil:", e);
-        setProfileError("No se pudo cargar el perfil.");
+        setProfileError("profile.errors.loadProfile"); 
         setProfile(null);
       });
 
@@ -51,7 +51,7 @@ export const useUserProfile = (userId?: number) => {
       })
       .catch(e => {
         console.error("Error cargando los destinos:", e);
-        setDestinationsError("No se pudieron cargar los viajes.");
+        setDestinationsError("profile.errors.loadTrips");
         setDestinations([]);
         setHasMore(false)
       });
@@ -60,7 +60,7 @@ export const useUserProfile = (userId?: number) => {
       .then(res => setBadges(res.data))
       .catch(e => {
         console.error("Error cargando las insignias:", e);
-        setBadgesError("No se pudieron cargar las insignias.");
+        setBadgesError("profile.errors.loadBadges");
       });
 
     await Promise.all([profilePromise, destinationsPromise, badgesPromise]);
@@ -88,7 +88,7 @@ export const useUserProfile = (userId?: number) => {
 
     } catch (e) {
       console.error("Error cargando más destinos:", e);
-      setDestinationsError("Error al cargar más viajes.");
+      setDestinationsError("profile.errors.loadMoreTrips");
     } finally {
       setIsLoadingMore(false);
     }
