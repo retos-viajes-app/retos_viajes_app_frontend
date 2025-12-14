@@ -12,7 +12,7 @@ import { Colors } from "@/constants/Colors";
 
 // Icon Imports
 import Feather from "@expo/vector-icons/Feather";
-import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 // Model Imports
 import { CompletedChallenge } from "@/models/completedChallenge";
@@ -159,7 +159,7 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
               ]}
               pointerEvents="none" 
             >
-              <AntDesign name="heart" size={80} color="white" />
+             <Ionicons name="heart" size={80} color="white" />
             </Animated.View>
           )}
         </View>
@@ -168,8 +168,8 @@ const CompletedChallengePost: React.FC<CompletedChallengePostProps> = ({
         <View style={styles.likesContainer}>
           <TouchableOpacity onPress={onLikePress} style={styles.likeButton}>
             {completedChallenge.is_liked_by_me
-              ? <AntDesign name="heart" size={20} color={Colors.colors.error[500]} /> 
-              : <AntDesign name="hearto" size={20} color={Colors.colors.text.primary} />
+              ? <Ionicons name="heart" size={24} color={Colors.colors.error[500]} /> 
+              : <Ionicons name="heart-outline" size={24} color={Colors.colors.text.primary} />
             }
           </TouchableOpacity>
           <Text style={[globalStyles.mediumBodyRegular,{ color: Colors.colors.text.primary },]}>

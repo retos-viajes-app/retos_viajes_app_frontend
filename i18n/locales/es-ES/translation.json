@@ -93,8 +93,12 @@
   },
   "profile":{
     "editProfile": "Editar perfil",
-    "trip": "{{count}} Viaje",
-    "trip_plural": "{{count}} Viajes",
+    "logout": "Cerrar sesión",
+    "defaultName": "Nombre...",
+    "defaultUsername": "Usuario...",
+    "travelerTitle": "Viajero",
+    "trip_one": "{{count}} Viaje",
+    "trip_other": "{{count}} Viajes",
     "myTrips": "Mis viajes",
     "myBadges": "Mis insignias",
     "visited": "Visitado",
@@ -117,6 +121,13 @@
       "all": "Todas",
       "completed": "Completadas",
       "incomplete": "Por completar"
+    },
+    "errors": {
+      "loadProfile": "No se pudo cargar el perfil.",
+      "loadTrips": "No se pudieron cargar los viajes.",
+      "loadBadges": "No se pudieron cargar las insignias.",
+      "loadMoreTrips": "Error al cargar más viajes.",
+      "loadDestinationTrips": "No se pudieron cargar los viajes de este destino."
     }
   },
   "notifications":{
@@ -267,6 +278,7 @@
   },
   "continue": "Continuar",
   "dividerText": "o si lo prefieres",
+  "error": "Error",
   "back": "Atrás",
   "retry": "Reintentar",
   "destination":{
