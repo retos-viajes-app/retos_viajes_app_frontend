@@ -1,0 +1,395 @@
+{
+  "auth": {
+    "login": {
+      "title": "Iniciar sesión",
+      "paragraph": "Continúa tu aventura y conquista nuevos destinos",
+      "username": "Nombre de usuario o correo",
+      "password": "Contraseña",
+      "forgotPassword": "¿Has olvidado tu contraseña? ",
+      "recoverLink": "Recuperar",
+      "notAccount": "¿No tienes una cuenta? ",
+      "registerLink": "Regístrate gratis",
+      "google": "Inicia sesión con Google"
+    },
+    "register": {
+      "title": "Regístrate gratis",
+      "paragraph": "Crea tu cuenta para transformar tus viajes en aventuras inolvidables",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "repeatPassword": "Repite tu contraseña",
+      "passwordDetails": "Tu contraseña debe tener al menos 8 caracteres e incluir una mayúscula, una minúscula, un número y un carácter especial",
+      "alreadyAccount": "¿Ya tienes cuenta? ",
+      "loginLink": "Inicia sesión"
+    },
+    "requestConfirmationCode":{
+      "title": "Recuperar contraseña",
+      "paragraph": "Ingresa tu correo electrónico para recibir un código de recuperación",
+      "email": "Correo electrónico",
+      "backToLogin": "Volver al inicio de sesión",
+      "sendCode": "Enviar código"
+    },
+    "verifyCode": {
+      "title": "Verificar código",
+      "paragraph": "Ingresa el código de 6 dígitos que enviamos a ",
+      "codePlaceholder": "Código de 6 dígitos",
+      "noCode": "¿No recibiste el código? ",
+      "sendOtherCodeLink": "Solicita otro",
+      "verify": "Verificar código",
+      "sending": "Enviando..."
+    },
+    "resetPassword": {
+      "title": "Nueva contraseña",
+      "paragraph": "Establece una nueva contraseña para tu cuenta",
+      "newPassword": "Nueva contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "updatePassword": "Actualizar contraseña"
+    },
+    "completeRegister": {
+      "header": "Completa tu perfil",
+      "title": "¡Dale personalidad a tu perfil!",
+      "paragraph": "Completa tu información para personalizar tu experiencia y contectarte con otros viajeros",
+      "name": "Nombre",
+      "username": "Nombre de usuario",
+      "bioPlaceholder": "Sobre mi (opcional)",
+      "characters" : " caracteres"
+    }
+  },
+  "index": {
+    "trip" : {
+      "title": "Descubriendo"
+    },
+    "noTrip": {
+      "title": "¡Hola, {{name}}! 👋",
+      "subtitle": "Prepárate para una nueva aventura"
+    }
+  },
+  "activity": {
+      "notificationsTitle": "No te pierdas nada",
+      "loadingPosts": "Cargando publicaciones...",
+      "loadingMore": "Cargando más...",
+      "noMorePosts": "Has llegado al final 👋",
+      "errorLoadingPosts": "Error al cargar publicaciones.",
+      "noPostsYet": "Aún no hay actividad para mostrar. ¡Explora y participa!",
+      "posts": {
+        "completedAMission": "ha completado una misión",
+        "likesText_zero": "Sé el primero en dar me gusta",
+        "likesText_one": "Le gusta a <bold>1 viajero</bold>",
+        "likesText_other": "Le gusta a <bold>{{count}} viajeros</bold>"
+      },
+      "connections": {
+        "accept": "Aceptar",
+        "deny": "Rechazar",
+        "noPending": "No tienes solicitudes pendientes"
+      },
+      "notifications": {
+        "like": "A <username/> le ha gustado tu reto <title/>.",
+        "badge": "¡Felicidades! Has conseguido la insignia <badge/>.",
+        "connectionAccepted": "<username/> ha aceptado tu solicitud de conexión.",
+        "requestsButton": "Solicitudes de amistad",
+        "pendingRequest_one": "{{count}} Solicitud pendiente",
+        "pendingRequest_other": "{{count}} Solicitudes pendientes",
+        "noPendingRequests": "No tienes solicitudes"
+      }
+  },
+  "profile":{
+    "editProfile": "Editar perfil",
+    "trip": "{{count}} Viaje",
+    "trip_plural": "{{count}} Viajes",
+    "myTrips": "Mis viajes",
+    "myBadges": "Mis insignias",
+    "visited": "Visitado",
+    "challenges":{
+      "completed": "{{count}} misión completada",
+      "completed_plural": "{{count}} misiones completadas"
+    },
+    "destinationScreen": {
+      "title": "Viajes de {{userName}}"
+    },
+    "tripScreen": {
+      "title": "Viaje a {{cityName}} de {{userName}}"
+    },
+    "stats": {
+      "countries": "PAÍSES",
+      "missions": "MISIONES",
+      "contacts": "CONTACTOS"
+    },
+    "badges":{
+      "all": "Todas",
+      "completed": "Completadas",
+      "incomplete": "Por completar"
+    }
+  },
+  "notifications":{
+    "title": "Notificaciones",
+    "noNotifications": "No tienes solicitudes pendientes",
+    "connectionNotifications": "Solicitudes de amistad"
+  },
+  "suggestedUsers": {
+    "title": "Conecta con otros viajeros",
+    "noUsers": "No hay usuarios sugeridos disponibles",
+    "pending": "Pendiente",
+    "connect": "Conectar"
+  },
+  "createTrip": {
+    "title": "Crear Viaje",
+    "selectCategories": {
+      "title": "Elige tus misiones",
+      "paragraph": "Personaliza tu aventura con desafíos culturales, gastronómicos y más."
+    },
+    "selectDate": {
+      "title": "Selecciona las fechas de tu aventura",
+      "paragraph": "Define cuándo empezará y terminará tu viaje",
+      "startDate": "Fecha de inicio",
+      "endDate": "Fecha de fin"
+    },
+    "selectDestination": {
+      "title": "¿A dónde quieres ir?",
+      "paragraph": "Escribe el nombre del destino o elige entre nuestras recomendaciones.",
+      "searchPlaceholder": "Buscar por ciudad o país"
+    },
+    "addParticipants": {
+      "title": "Añade acompañantes",
+      "paragraph": "Añade compañeros de viaje con los que compartir facilmente lo que visitais.",
+      "searchPlaceholder": "Buscar usuario"
+    },
+    "summary": {
+      "title": "¡Todo listo para tu aventura!",
+      "paragraph": "Este es el resumen de tu viaje:",
+      "destination": "Destino",
+      "dates": "Fechas",
+      "missions": "Misiones",
+      "confirm": "Confirmar y empezar la aventura",
+      "participants": "Acompañantes"
+    },
+    "success":"Viaje creado con éxito",
+    "button":{
+      "create": "Crear nuevo viaje",
+      "addPast": "Añadir viaje pasado"
+    }
+  },
+  "destinations": {
+    "title": "Destinos populares"
+  },
+  "tabs": {
+    "home": "home",
+    "activity": "Actividad",
+    "ranking": "Ranking",
+    "profile": "Perfil"
+  },
+  "trip": {
+    "completedChallenges": "misiones completadas"
+  },
+  "pendingTrips":{
+    "title": "Viajes pendientes"
+  },
+  "challengeDetail":{
+    "estimatedTime": "Tiempo estimado",
+    "price": "Precio",
+    "availablity": "Disponibilidad",
+    "experience": "experiencia"
+  },
+  "errorsBackend": {
+    "invalidCredentials": "Usuario o contraseña incorrectos",
+    "userNotVerified": "Usuario no verificado",
+    "emailAlreadyRegistered": "El email ya está registrado",
+    "userNotFound": "Usuario no encontrado",
+    "userAlreadyVerified": "El usuario ya está verificado",
+    "invalidEmail": "Email no válido",
+    "sendingCodeErrors": "Error al enviar el código de confirmación",
+    "emailSendError": "Error al enviar el email. Inténtalo de nuevo",
+    "invalidRefreshToken": "Token de refresco inválido o expirado",
+    "invalidToken": "Token inválido",
+    "verifyEmailBeforeReset": "Debes verificar tu email antes de restablecer la contraseña",
+    "invalidConfirmationCode": "Código de confirmación inválido o expirado",
+    "incorrectConfirmationCode": "Código de confirmación incorrecto",
+    "noDestinations": "No hay destinos disponibles",
+    "tripNotFound": "Viaje no encontrado",
+    "notConnectYourself": "No puedes conectar contigo mismo",
+    "pendingConnectionRequest": "Ya tienes una solicitud de conexión pendiente con este usuario",
+    "usernameExists": "El nombre de usuario ya existe",
+    "alreadyConnected": "Ya estás conectado con este usuario",
+    "connectionRequestNotFound": "Solicitud de conexión no encontrada",
+    "cancelAcceptedConnection": "No puedes cancelar una conexión aceptada",
+    "genericError": "Ocurrió un error inesperado",
+    "networkError": "Problema de conexión. Verifica tu internet",
+    "timeoutError": "La solicitud está tardando demasiado",
+    "serverError": "Error del servidor. Inténtalo más tarde"
+  },
+  "errorsFrontend":{
+    "validations": {
+      "emptyUserid": "Por favor, ingresa tu usuario o correo",
+      "usernameRequired": "El nombre de usuario es obligatorio.",
+      "usernameLength": "El nombre de usuario debe tener entre 3 y 20 caracteres.",
+      "usernameNoSpaces": "El nombre de usuario no puede contener espacios.",
+      "usernameInvalidChars": "El nombre de usuario solo puede contener letras, números, guiones bajos y guiones.",
+
+      "emailRequired": "El correo electrónico es obligatorio.",
+      "emailInvalid": "El correo electrónico no es válido.",
+
+      "passwordRequired": "La contraseña es obligatoria.",
+      "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+      "passwordUppercase": "La contraseña debe contener al menos una letra mayúscula",
+      "passwordLowercase": "La contraseña debe contener al menos una letra minúscula",
+      "passwordDigit": "La contraseña debe contener al menos un número",
+      "passwordSpecialChar": "La contraseña debe contener al menos un carácter especial",
+
+      "passwordCheckRequired": "Confirma tu contraseña.",
+      "passwordsDontMatch": "Las contraseñas no coinciden.",
+
+      "resetCodeRequired": "Por favor, ingresa el código de verificación.",
+      "resetCodeInvalid": "El código debe tener 6 dígitos.",
+
+      "nameRequired": "El nombre es obligatorio.",
+      "nameLength": "El nombre debe tener entre 3 y 50 caracteres.",
+      "bioLength": "La biografía no puede exceder de los 120 caracteres"
+      
+    },
+    "selectCategories": "Selecciona al menos dos categorías",
+    "invalidDateSelected": "La fecha de inicio debe ser menor a la fecha de fin",
+    "noDatesSelected": "Debes seleccionar ambas fechas",
+    "selectDestination": "Debes seleccionar un destino para continuar."
+  },
+  "errors": {
+    "genericError": "Ocurrió un error inesperado"
+  },
+  "timeAgo": {
+    "moment": "hace un momento",
+    "minute_one": "hace {{count}} minuto",
+    "minute_other": "hace {{count}} minutos",
+    "hour_one": "hace {{count}} hora",
+    "hour_other": "hace {{count}} horas",
+    "day_one": "hace {{count}} día",
+    "day_other": "hace {{count}} días",
+    "month_one": "hace {{count}} mes",
+    "month_other": "hace {{count}} meses",
+    "year_one": "hace {{count}} año",
+    "year_other": "hace {{count}} años"
+  },
+  "continue": "Continuar",
+  "dividerText": "o si lo prefieres",
+  "back": "Atrás",
+  "retry": "Reintentar",
+  "destination":{
+    "title": "Destino",
+    "visited": "Visitado",
+    "toVisit": "Por visitar",
+    "languages": "Idioma(s)",
+    "currency": "Moneda"
+  },
+  "language":{
+    "es": "Español",
+    "en": "Inglés",
+    "fr": "Francés",
+    "de": "Alemán",
+    "it": "Italiano",
+    "pt": "Portugués",
+    "ru": "Ruso",
+    "zh": "Chino",
+    "ja": "Japonés",
+    "ko": "Coreano",
+    "ar": "Árabe",
+    "hi": "Hindi",
+    "nl": "Neerlandés",
+    "sv": "Sueco",
+    "no": "Noruego",
+    "fi": "Finlandés",
+    "da": "Danés",
+    "pl": "Polaco",
+    "tr": "Turco",
+    "cs": "Checo",
+    "el": "Griego",
+    "he": "Hebreo",
+    "uk": "Ucraniano",
+    "vi": "Vietnamita",
+    "th": "Tailandés",
+    "id": "Indonesio",
+    "ro": "Rumano",
+    "hu": "Húngaro",
+    "sk": "Eslovaco",
+    "bg": "Búlgaro",
+    "hr": "Croata",
+    "lt": "Lituano",
+    "lv": "Letón",
+    "sr": "Serbio",
+    "sl": "Esloveno",
+    "ms": "Malayo",
+    "fa": "Persa",
+    "ur": "Urdu",
+    "ta": "Tamil",
+    "bn": "Bengalí"
+  },
+  "country":{
+    "US": "Estados Unidos",
+    "MX": "México",
+    "ES": "España",
+    "FR": "Francia",
+    "DE": "Alemania",
+    "IT": "Italia",
+    "BR": "Brasil",
+    "AR": "Argentina",
+    "CO": "Colombia",
+    "PE": "Perú",
+    "CL": "Chile",
+    "VE": "Venezuela",
+    "CA": "Canadá",
+    "GB": "Reino Unido",
+    "RU": "Rusia",
+    "CN": "China",
+    "JP": "Japón",
+    "KR": "Corea del Sur",
+    "IN": "India",
+    "AU": "Australia",
+    "PT": "Portugal",
+    "NL": "Países Bajos",
+    "BE": "Bélgica",
+    "CH": "Suiza",
+    "SE": "Suecia",
+    "NO": "Noruega",
+    "FI": "Finlandia",
+    "DK": "Dinamarca",
+    "PL": "Polonia",
+    "CZ": "República Checa",
+    "GR": "Grecia",
+    "TR": "Turquía",
+    "EG": "Egipto",
+    "ZA": "Sudáfrica",
+    "TH": "Tailandia",
+    "VN": "Vietnam",
+    "ID": "Indonesia",
+    "PH": "Filipinas",
+    "MY": "Malasia",
+    "IR": "Irán"
+  },
+  "months":{
+    "1": "Enero",
+    "2": "Febrero",
+    "3": "Marzo",
+    "4": "Abril",
+    "5": "Mayo",
+    "6": "Junio",
+    "7": "Julio",
+    "8": "Agosto",
+    "9": "Septiembre",
+    "10": "Octubre",
+    "11": "Noviembre",
+    "12": "Diciembre"
+  },
+  "tripBanner":{
+    "toEnd": "para terminar",
+    "completed": "completado",
+    "days": "días",
+    "yourTrip": "Tu viaje a",
+    "editTrip": "Editar viaje"
+  },
+  "challengeExplorer": {
+    "searchPlaceholder": "Buscar desafíos",
+    "filters": "Filtros",
+    "proximity": "Proximidad"
+  },
+  "challenge":{
+    "title": "Misión",
+    "completed": "completada",
+    "notCompleted": "Por completar",
+    "complete": "Completar"
+  }
+}

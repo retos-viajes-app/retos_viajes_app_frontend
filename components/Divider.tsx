@@ -1,12 +1,23 @@
+// React & React Native Imports
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const DividerWithText = ({ text = "o si lo prefieres" }) => {
+// Style Imports
+import globalStyles from "@/styles/global";
+
+// Utility Imports
+import { Colors } from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
+
+
+const Divider = ({ text = "", full = false }) => {
+  const { t } = useTranslation();
+  const dividerText = text || t("dividerText");
   return (
     <View style={styles.container}>
-      <View style={styles.line} />
-      <Text style={styles.text}>{text}</Text>
-      <View style={styles.line} />
+      <View style={[styles.line,{backgroundColor: Colors.colors.border.default}]} />
+      {!full && <Text style={{...globalStyles.largeBodyMedium, marginLeft: 4, marginRight: 4, color: Colors.colors.text.secondary}}>{dividerText}</Text>}
+      <View style={[styles.line,{backgroundColor: Colors.colors.border.default}]} />
     </View>
   );
 };
@@ -22,15 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 50,  // Evita que la línea colapse
     height: 1, 
-    backgroundColor: "#000",
   }
-  ,  
-  text: {
-    marginHorizontal: 10, // Espaciado entre texto y líneas
-    fontSize: 14,
-    fontFamily: "InterMedium",
-    color: "#808080",
-  },
 });
 
-export default DividerWithText;
+export default Divider;

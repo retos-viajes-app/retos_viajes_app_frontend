@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 
 interface PaddingViewProps {
   children: React.ReactNode;
 }
 
 const ViewForm: React.FC<PaddingViewProps> = ({ children }) => {
-  return <View style={{  gap: 24, alignItems: 'center'}}>{children}</View>;
+  return <View style={{flex:1,  gap: 24, alignItems: 'center'}}>{children}</View>;
 };
 
 

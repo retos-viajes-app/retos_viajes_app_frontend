@@ -1,70 +1,85 @@
+// React & React Native Imports
 import React, { createContext, useState, useEffect, ReactNode } from "react";
+
+// Expo & External Library Imports
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
-import { decode as decodeBase64 } from "base-64";
-import User from "@/models/user";
-import { 
-  saveAccessToken, 
-  saveRefreshToken, 
-  saveUser, 
-  getUser, 
-  saveEmail, 
-  getEmail,
-  getAccessToken
-} from "@/utils/secureTokens";
-import useApi from "@/utils/api";
-import { handleApiError } from "@/utils/errorHandler";
 
+// Model Imports
+import User from "@/models/user";
+
+// Utility Imports
+import {
+  saveAccessToken,
+  saveRefreshToken,
+  saveUser,
+  getUser,
+} from "@/utils/secureTokens";
+import api from "@/utils/api";
+import { handleApiError } from "@/utils/errorHandler";
+import { saveCategories, saveDestinations, saveTrip } from "@/utils/asyncStorage";
 
 //Ahora mismo está usando backend cogido de constantes
 WebBrowser.maybeCompleteAuthSession();
 
-const webClientId = "441443892104-tjh14gkg69fa8ngea15cpau54mrdhbrj.apps.googleusercontent.com";
-const iosClientId = "441443892104-fu2htqbjkkf7gf84mm2f9em24.apps.googleusercontent.com";
-const androidClientId = "441443892104-q9e2hmjhrio3ukp1ed0m4edle1bhddut.apps.googleusercontent.com";
+const webClientId =
+  "441443892104-tjh14gkg69fa8ngea15cpau54mrdhbrj.apps.googleusercontent.com";
+const iosClientId =
+  "441443892104-fu2htqbjkkf7gf84mm2f9em24.apps.googleusercontent.com";
+const androidClientId =
+  "441443892104-q9e2hmjhrio3ukp1ed0m4edle1bhddut.apps.googleusercontent.com";
 
 const redirectUri = AuthSession.makeRedirectUri({ scheme: "myapp" });
 
+export type ApiResponse<T = never> = {
+  success: boolean;
+  error: string;
+  data?: T; 
+};
+
 interface AuthContextType {
   user: User | null;
+  resetEmail: string | null;
   promptAsync: () => void;
   logout: () => void;
   login: (
     username: string,
     password: string
-  ) => Promise<{ success: boolean; error?: string }>; // Añade login propio
+  ) => Promise<ApiResponse>; // Añade login propio
   register: (
     email: string,
     password: string
-  ) => Promise<{ success: boolean; error?: string }>;
+  ) => Promise<ApiResponse>;
   finishRegister: (
     username: string,
     bio: string,
-    user: User,
     name: string
-  ) => Promise<{ success: boolean; error?: string }>;
+  ) => Promise<ApiResponse>;
   requestConfirmationCode: (
     email: string,
     mode: string
-  ) => Promise<{ success: boolean; error?: string }>;
+  ) => Promise<ApiResponse>;
   verifyConfirmationCode: (
-    email: string,
     code: string,
     isRegistration: boolean
-  ) => Promise<{ success: boolean; error?: string }>;
+  ) => Promise<ApiResponse>;
   resetPassword: (
-    user: User,
     newPassword: string
-  ) => Promise<{ success: boolean; error?: string }>;
+  ) => Promise<ApiResponse>;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
+  const [resetEmail, setResetEmail] = useState<string | null>(null);
+  const [code, setCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const api = useApi();
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId,
     iosClientId,
@@ -86,233 +101,158 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     if (response?.type === "success") {
-      handleToken(response.params.id_token);
+      handleGoogleToken(response.params.id_token);
     }
   }, [response]);
 
-  const handleToken = async (idToken: string | undefined) => {
+  const handleGoogleToken = async (idToken: string | undefined) => {
     if (!idToken) {
       console.error("No se recibió ID token");
       return;
     }
 
     try {
-      const response = await api.post(
+      const { data: authResponse } = await api.post(
         "/verify-google-token",
         {},
         {
           headers: { Authorization: `Bearer ${idToken}` },
         }
       );
-
-      const { access_token, refresh_token } = response.data;
-
-      if (access_token && refresh_token) {
-        await saveAccessToken(access_token);
-        await saveRefreshToken(refresh_token);
-
-        const email = decodeEmailJwt(idToken);
-        if (email) await saveEmail(email);
-
-        await fetchUserDetails(access_token);
-      } else {
-        console.error("Tokens no válidos en la respuesta");
-      }
-    }catch (error) {
-      console.error("Error en la verificación del token:", handleApiError(error, "No se pudo verificar el token"));
-    }
-  };
-
-  const fetchUserDetails = async (accessToken: string) => {
-    try {
-      const email = await getEmail();
-      if (!email) return console.error("No se encontró el email");
-
-      const response = await api.get<User>(`/users/${email}`, {
-      });
-
-      const userData = response.data;
-      userData.is_verified = true;
-      userData.verification_type = "register";
-      await saveUser(userData);
-      setUser(userData);
+      await Promise.all([
+        saveAccessToken(authResponse.tokens.access_token),
+        saveRefreshToken(authResponse.tokens.refresh_token),
+        saveUser(authResponse.user),
+      ]);
+       setUser(authResponse.user);
+       return { success: true, error: "" };
     } catch (error) {
-      console.error(
-        "Error al obtener los detalles del usuario:",
-        handleApiError(error, "No se pudo obtener el usuario")
-      );
+      return { success: false, error: handleApiError(error) };
     }
   };
+
 
   const login = async (userid: string, password: string) => {
     try {
       // Petición de login
-      const { data: userTokens } = await api.post("/login", {
-        userid,
-        password,
-      });
+      const { data: authResponse } = await api.post(
+        "/login",
+        new URLSearchParams({ username: userid, password })
+      );
 
-      await saveAccessToken(userTokens.access_token);
-      await saveRefreshToken(userTokens.refresh_token);
-
-      // Obtener datos del usuario tras login exitoso
-      const { data: userData } = await api.get<User>(`/users/${userid}`, {
-      });
-
-      await saveUser(userData);
-      setUser(userData);
-
-      return { success: true };
+     await Promise.all([
+       saveAccessToken(authResponse.tokens.access_token),
+       saveRefreshToken(authResponse.tokens.refresh_token),
+       saveUser(authResponse.user),
+     ]);
+      setUser(authResponse.user);
+      return { success: true, error: "" };
     } catch (error) {
-      return {
-        success: false,
-        error: handleApiError(error, "Hubo un problema con el login."),
-      };
+      console.error("Error en login:", error);
+      return { success: false, error: handleApiError(error) };
     }
   };
 
   const register = async (email: string, password: string) => {
     try {
-      // Petición de registro
-      const { data: userTokens } = await api.post("/register", {
+      const { data: userData } = await api.post("/register", {
         email,
         password,
       });
-
-      await saveAccessToken(userTokens.access_token);
-      await saveRefreshToken(userTokens.refresh_token);
-
-      // Obtener datos del usuario tras el registro
-      const { data: userData } = await api.get<User>(`/users/${email}`, {
-      });
-
       await saveUser(userData);
       setUser(userData);
-
-      return { success: true };
+      return { success: true, error: "" };
     } catch (error) {
-      return {
-        success: false,
-        error: handleApiError(error, "Hubo un problema con el registro."),
-      };
+      return { success: false, error: handleApiError(error) };
     }
   };
 
-  const logout = async () => {
-     await Promise.all([
-       saveUser(null),
-       saveAccessToken(""),
-       saveRefreshToken(""),
-     ]);
-    setUser(null);
-  };
 
+  const logout = async () => {
+    await Promise.all([
+      saveUser(null),
+      saveAccessToken(""),
+      saveRefreshToken(""),
+      saveTrip(null),
+      saveCategories([]),
+      saveDestinations([]),
+    ]);
+    setUser(null);
+    
+  };
 
   const finishRegister = async (
     username: string,
     bio: string,
-    user: User,
     name: string
   ) => {
     try {
-      const accessToken = await getAccessToken();
-
       const updatedUserInfo = { ...user, username, bio, name };
 
-      await api.put(`/users/${user.email}`, updatedUserInfo, {
-      });
-
-      setUser(updatedUserInfo);
+      const updatedUser = await api.put(`/users/${user!.id}`, updatedUserInfo, {});
       await saveUser(updatedUserInfo);
+      setUser(updatedUserInfo);
 
-      return { success: true };
+      return { success: true, error: "" };
     } catch (error) {
-      return {
-        success: false,
-        error: handleApiError( error, "Error inesperado al completar el perfil."),
-      };
+      return { success: false, error: handleApiError(error) };
     }
   };
 
   //Confirmation codes
   const requestConfirmationCode = async (email: string, mode: string) => {
     try {
-      const response = await api.post("/confirmation-code/request", { email });
-      if(response.data.success){
-        const userData : User = {
-          email: email,
-          username: "",
-          profile_photo_url: null,
-          bio: null,
-          total_points: 0,
-          is_verified: false,
-          verification_type: mode ==="passwordReset" ? "passwordReset" : "register",
-          sub: null
-        }; // Save only the email    
-        await saveUser(userData);
-        setUser(userData);
+      const response = await api.post(`/confirmation_codes/request?type=${mode}`, { email });
+      if(mode == "passwordReset"){
+        setResetEmail(email);
       }
-      return { success: response.data.success,};
-    } catch (error: any) {
-      return{
-        success: false,
-        error: handleApiError(error, "Error al solicitar el código"),
-      }
+      return { success: true, error: "" };
+    } catch (error) {
+      return { success: false, error: handleApiError(error) };
     }
   };
 
-  const verifyConfirmationCode = async (email: string, code: string, isRegistration = false) => {
+  const verifyConfirmationCode = async (
+    code: string,
+    isRegistration = false
+  ) => {
     try {
-      const response = await api.post("/confirmation-code/verify", { email, code, is_registration: isRegistration });
-      console.log("AUth:" + isRegistration);
-      if(response.data.success){
-        if(user){
-            const updatedUserInfo : User = {
-              ...user,
-              is_verified: true,
-              verification_type: isRegistration ? "register" : "passwordReset",
-            } ;
-
-            await saveUser(updatedUserInfo); // Guardar en el storage
-            setUser(updatedUserInfo);
-        }
-      }
-      return { success: response.data.success, };
-    } catch (error: any) {
-      return{
-        success: false,
-        error: handleApiError(error, "Error al verificar el código"),
-      }
-    }
-  }
-
-  const resetPassword = async (user: User, new_password: string) => {
-    try {
-      const response = await api.post(`/users/reset-password/${user.email}`, {new_password });
-      if(response.data.success){
-        await Promise.all([
-          saveUser(null),
-          saveAccessToken(""),
-          saveRefreshToken(""),
+      const {data: authResponse} = await api.post("/confirmation_codes/verify", {
+        email: isRegistration ? user?.email : resetEmail,
+        code,
+        is_registration: isRegistration,
+      });
+      if (isRegistration) {
+         await Promise.all([
+          saveAccessToken(authResponse.tokens.access_token),
+          saveRefreshToken(authResponse.tokens.refresh_token),
+          saveUser(authResponse.user),
         ]);
-        setUser(null);
+
+        setUser(authResponse.user);
+      }else {
+          setCode(code);
       }
-      return { success: response.data.success,};
-    } catch (error: any) {
-      return{
-        success: false,
-        error: handleApiError(error, "Error al solicitar el código"),
-      }
-    }
-  }
-  const decodeEmailJwt = (token: string): string | null => {
-    try {
-      const base64Url = token.split(".")[1];
-      const jsonPayload = JSON.parse(decodeBase64(base64Url.replace(/-/g, "+").replace(/_/g, "/")));
-      return jsonPayload.email || null;
+      return { success: true, error: "" };
     } catch (error) {
-      console.error("Error al decodificar el id_token:", error);
-      return null;
+      return { success: false, error: handleApiError(error) };
+    }
+  };
+
+  const resetPassword = async ( new_password: string) => {
+    try {
+      console.log("resetEmail", resetEmail);
+      console.log("code", code);
+      const response = await api.post(`/users/reset-password/${resetEmail}`, {
+        new_password,
+        code,
+      });
+      
+      setCode(null);
+      setResetEmail(null);
+      return { success: true, error: ""};
+    } catch (error) {
+      return { success: false, error: handleApiError(error) };
     }
   };
 
@@ -320,6 +260,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     <AuthContext.Provider
       value={{
         user,
+        resetEmail,
         promptAsync,
         logout,
         login,
