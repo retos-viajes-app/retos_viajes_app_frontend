@@ -137,6 +137,12 @@
   "pendingTrips":{
     "title": "Pending Trips"
   },
+  "challengeDetail":{
+    "estimatedTime": "Estimated time",
+    "price": "Price",
+    "availablity": "Availability",
+    "experience": "experience"
+  },
   "errorsBackend": {
     "invalidCredentials": "Incorrect username or password",
     "userNotVerified": "User not verified",
