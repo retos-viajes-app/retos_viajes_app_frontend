@@ -7,6 +7,7 @@ export  interface Destination {
   active?: boolean;
   currency?: string;
   language?: string; 
+  visited?: boolean;
 }
 
 

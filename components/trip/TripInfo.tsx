@@ -45,13 +45,13 @@ function TripInfo({ trip }: TripInfoProps) {
             {/* Update with the real image of the trip destination */}
             <View style={[bannersStyles.bannerCurrentTrip]}>
                 <ImageBackground 
-                    source={require("@/assets/images/ciudad-defecto-destino-grid.jpg")} 
+                    source={{uri: trip.destination_image_url}} 
                     style={styles.image} 
                 >
                     <View style={styles.containerPadding}>
                         <View style={styles.upperContainer}>
                             <View>
-                                <Text style={{...globalStyles.smallBodyRegular, color: Colors.colors.neutral[100]}}>TU VIAJE A</Text>
+                                <Text style={{...globalStyles.smallBodyRegular, color: Colors.colors.neutral[100]}}>{t('tripBanner.yourTrip')}</Text>
                                 <Text style={{...globalStyles.diplaySemiBold, color: Colors.colors.neutral[100]}}>{trip.destination_name}</Text>
                             </View>
                             <Pressable style={{ ...buttonStyles.roundedRectangleButton }}>
@@ -84,6 +84,9 @@ function TripInfo({ trip }: TripInfoProps) {
             <View style={styles.challengesContainer}>
                 <ChallengesFlatList 
                     challenges={filteredChallenges} 
+                    paginated={false}
+                    completedChallengesIds={trip.completed_challenges_ids || []}
+                    isForTripInfo={true}
                 />
             </View>
         </View>
@@ -94,6 +97,7 @@ const styles = StyleSheet.create({
     image:{
         width: '100%',
         height:137,
+        backgroundColor: Colors.colors.background.default,
     },
     containerPadding:{
         padding: 16,

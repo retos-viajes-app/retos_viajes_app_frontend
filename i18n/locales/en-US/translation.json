@@ -216,7 +216,8 @@
     "title": "Destination",
     "visited": "Visited",
     "languages": "Language(s)",
-    "currency": "Currency"
+    "currency": "Currency",
+    "toVisit": "To visit"
   },
   "language": {
     "es": "Spanish",
@@ -329,6 +330,9 @@
     "proximity": "Proximity"
   },
   "challenge":{
-    "title": "Challenge"
+    "title": "Challenge",
+    "completed": "completed",
+    "notCompleted": "To complete",
+    "complete": "Complete"
   }
 }

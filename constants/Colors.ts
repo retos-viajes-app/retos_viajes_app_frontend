@@ -65,7 +65,8 @@ export const Colors = {
       card: "#ffffff",
       hover: "#F2F3F5",
       disabled: "#F2F3F5",
-      overlay: "#F2F3F5"
+      overlay: "#F2F3F5",
+      image: '#808080',
     },
     backgroundButton: {
       white: "#FFFFFF",

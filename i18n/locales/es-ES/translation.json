@@ -272,6 +272,7 @@
   "destination":{
     "title": "Destino",
     "visited": "Visitado",
+    "toVisit": "Por visitar",
     "languages": "Idioma(s)",
     "currency": "Moneda"
   },
@@ -386,6 +387,9 @@
     "proximity": "Proximidad"
   },
   "challenge":{
-    "title": "Misión"
+    "title": "Misión",
+    "completed": "completada",
+    "notCompleted": "Por completar",
+    "complete": "Completar"
   }
 }

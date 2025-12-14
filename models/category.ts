@@ -2,5 +2,5 @@ export default interface Category {
   id?: number;
   name?: string;
   description?: string;
-  icon_url?: string;
+  icon_name?: string;
 }

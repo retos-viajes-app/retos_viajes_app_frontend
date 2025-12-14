@@ -1,6 +1,7 @@
 import Category from "@/models/category"
 import {Destination} from "@/models/destination";
 import {Detail} from "@/models/detail";
+import Recommendation from "@/models/recommendation";
 export default interface Challenge {
   id?: number;
   longitude?: number;
@@ -15,6 +16,7 @@ export default interface Challenge {
   points?: number;
   difficulty?: number;
   active?: boolean;
+  recommendations?: Recommendation[];
   detail?: Detail;
 }
 
