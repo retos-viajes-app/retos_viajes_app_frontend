@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "retos_viajes_app",
+    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -45,8 +45,7 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-secure-store",
-      "expo-localization"
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
@@ -59,14 +58,7 @@
         "projectId": "df458414-66fd-4726-827f-ba3e0302ad44"
       },
       "API_URL_WEB": "http://localhost:13000",
-      // Ordenador rafa:
-      "API_URL_ANDROID": "http://192.168.178.28:13000",
-      // Ordenador pablo:
-      // "API_URL_ANDROID": "http://192.168.1.190:13000",
-      // Emulador android rafa:
-      // "API_URL_ANDROID": "http://10.0.2.2:13000",
-      // Ordenador pablo:
-      "API_URL_IOS": "http://192.168.1.190:13000"
+      "API_URL_ANDROID": "http://10.0.2.2:13000"
     }
   }
 }

@@ -1,12 +1,12 @@
 //View para formularios
 
-import React from 'react';
+import React, { Children } from 'react';
 import { View} from 'react-native';
 
 
 const ViewInputs= ({ children }: { children: React.ReactNode }) => {
   return (
- <View style={{ width: "100%", gap:8 }}>
+ <View style={{ width: "100%", gap:10 }}>
     {children}
 </View>
   );
